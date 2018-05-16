@@ -1,7 +1,7 @@
 <!--
-	Módulo de creación de Usuarios
-	Martes, 17 de abril el 2018
-	11:30 PM
+	Módulo de registro de productos
+	Lunes, 14 de mayo del 2018
+	10:27 PM
 	Gemis Daniel Guevara Villeda
 	UMG - Morales Izabal
 -->
@@ -60,137 +60,107 @@
 					<div class="container-fluid">
 						<div class="row">
 							<div class="col-xs-6 col-xs-offset-3">
-							<h1 class="text-center">Registro de usuario</h1>
+							<h1 class="text-center">Registro de Productos</h1>
 							</div>
 						</div>
 						<!-- Contenedor del ícono del Usuario -->
 						
 							<div class="Icon">
 								<!-- Icono de usuario -->
-								<span class="glyphicon glyphicon-user"></span>
+								<span class="glyphicon glyphicon-edit"></span>
 							</div>
 						
-					<!-- Nombre del usuario -->
+					<!-- Nombre del producto -->
 					<div class="row">
 						<div class="col-xs-10 col-xs-offset-1">
 							<div class="input-group input-group-lg">
-								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i></span>
-								<input type="text" class="form-control" name="NombreUsuario" placeholder="Nombre" id="NombreUsuario" aria-describedby="sizing-addon1" required>
+								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-edit"></i></span>
+								<input type="text" class="form-control" name="NombreProducto" placeholder="Nombre" id="NombreProducto" aria-describedby="sizing-addon1" required>
 							</div>
 						</div>
 					</div>
 					<br>
-					<!-- Apellido del usuario -->
+					<!-- Precio del Producto -->
 					<div class="row">
 						<div class="col-xs-10 col-xs-offset-1">
 							<div class="input-group input-group-lg">
-								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i></span>
-								<input type="text" class="form-control" name="ApellidoUsuario" placeholder="Apellido" id="ApellidoUsuario" aria-describedby="sizing-addon1" required>
+								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-usd"></i></span>
+								<input type="text" class="form-control" name="Precio" placeholder="Precio" id="Precio" aria-describedby="sizing-addon1" required>
 							</div>
 						</div>
 					</div>
 					<br>
-					<!-- Fecha de Nacimiento -->
+					<!-- Codigo de inventario -->
 					<div class="row">
 						<div class="col-xs-10 col-xs-offset-1">
 							<div class="input-group input-group-lg">
-								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-lock"></i></span>
-								<input type="password" class="form-control" name="FechaNacimiento" placeholder="Fecha de Nacimiento" id="FechaNacimiento" aria-describedby="sizing-addon1" required>
+								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-qrcode"></i></span>
+								<input type="text" class="form-control" name="CodigoInventario" placeholder="Código" id="CodigoInventario" aria-describedby="sizing-addon1" required>
 							</div>
 						</div>
 					</div>
 					<br>
-					<!-- Dirección del usuario -->
+					<!-- MarcaProducto-->
 					<div class="row">
 						<div class="col-xs-10 col-xs-offset-1">
 							<div class="input-group input-group-lg">
-								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-home"></i></span>
-								<input type="text" class="form-control" name="DireccionUsuario" placeholder="Dirección" id="DireccionUsuario" aria-describedby="sizing-addon1" required>
-							</div>
-						</div>
-					</div>
-					<br>
-					<!-- DPIPersona -->
-					<div class="row">
-						<div class="col-xs-10 col-xs-offset-1">
-							<div class="input-group input-group-lg">
-								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-credit-card"></i></span>
-								<input type="text" class="form-control" name="DPIPersona" placeholder="DPI" id="DPIPersona" aria-describedby="sizing-addon1" required>
-							</div>
-						</div>
-					</div>
-					<br>
-					<!-- Teléfono del usuario -->
-					<div class="row">
-						<div class="col-xs-10 col-xs-offset-1">
-							<div class="input-group input-group-lg">
-								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-earphone"></i></span>
-								<input type="tel" class="form-control" name="TelefonoUsuario" placeholder="Teléfono" id="TelefonoUsuario" aria-describedby="sizing-addon1" required>
-							</div>
-						</div>
-					</div>
-					<br>
-					<!-- Correo del usuario -->
-					<div class="row">
-						<div class="col-xs-10 col-xs-offset-1">
-							<div class="input-group input-group-lg">
-								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-envelope"></i></span>
-								<input type="email" class="form-control" name="CorreoUsuario" placeholder="Correo" id="CorreoUsuario" aria-describedby="sizing-addon1" required>
-							</div>
-						</div>
-					</div>
-					<br>
-					<!-- Fecha de nacimiento -->
-					<div class="row">
-						<div class="col-xs-10 col-xs-offset-1">
-							<div class="input-group input-group-lg">
-								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-lock"></i></span>
-								<input type="date" class="form-control" name="FechaNacimiento" placeholder="Fecha de Nacimiento" id="FechaNacimiento" aria-describedby="sizing-addon1" required>
-							</div>
-						</div>
-					</div>
-					<br>
-					<!-- Privililegio del usuario -->
-					<div class="row">
-						<div class="col-xs-10 col-xs-offset-1">
-							<div class="input-group input-group-lg">
-								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-lock"></i></span>
-								<select class="form-control" name="PuestoUsuario" id="PuestoUsuario">
-								<option value="" disabled selected>Privilegios</option>
-										<option value="Administrador">Administrador</option>
-										<option value="Jefatura">Jefatura</option>
-										<option value="Operador">Operador</option>
+								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-asterisk"></i></span>
+								<select class="form-control" name="Marca" id="Marca">
+								<option value="" disabled selected>Marca</option>
+										<option value=""></option>
+										<option value=""></option>
+										<option value=""></option>
 								</select>
 							</div>
 						</div>
 					</div>
 					<br>
-					<!-- Nombre de usuario -->
+					<!-- Modelo producto -->
 					<div class="row">
 						<div class="col-xs-10 col-xs-offset-1">
 							<div class="input-group input-group-lg">
-								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-lock"></i></span>
-								<input type="text" class="form-control" name="username" placeholder="Nombre e Usuario" id="username" aria-describedby="sizing-addon1" required>
+								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-ok"></i></span>
+								<input type="number" class="form-control" name="Modelo" placeholder="Modelo" id="Modelo" aria-describedby="sizing-addon1" required>
 							</div>
 						</div>
 					</div>
 					<br>
-					<!-- Contraseña del usuario -->
+					<!-- Linea producto -->
 					<div class="row">
 						<div class="col-xs-10 col-xs-offset-1">
 							<div class="input-group input-group-lg">
-								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-lock"></i></span>
-								<input type="password" class="form-control" name="PasswordUsuario" placeholder="Contraseña" id="PaswordUsuario" aria-describedby="sizing-addon1" required>
+								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-check"></i></span>
+								<select class="form-control" name="LineaProducto" id="LineaProducto">
+								<option value="" disabled selected>Línea</option>
+										<option value=""></option>
+										<option value=""></option>
+										<option value=""></option>
+								</select>
 							</div>
 						</div>
 					</div>
 					<br>
-					<!-- Repetición de contraseña del usuario -->
+					<!-- UnidadMedida -->
 					<div class="row">
 						<div class="col-xs-10 col-xs-offset-1">
 							<div class="input-group input-group-lg">
-								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-lock"></i></span>
-								<input type="password" class="form-control" name="RePasswordUsuario" placeholder="Ingrese nuevamente la contraseña" id="RePaswordUsuario" aria-describedby="sizing-addon1" required>
+								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-leaf"></i></span>
+								<select class="form-control" name="UnidadMedida" id="PuestoUsuario">
+								<option value="" disabled selected>Unidad de medida</option>
+										<option value=""></option>
+										<option value=""></option>
+										<option value=""></option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<br>
+					<!-- Color Producto -->
+					<div class="row">
+						<div class="col-xs-10 col-xs-offset-1">
+							<div class="input-group input-group-lg">
+								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-eye-open"></i></span>
+								<input type="text" class="form-control" name="ColorProducto" placeholder="Color" id="ColorProduct" aria-describedby="sizing-addon1" required>
 							</div>
 						</div>
 					</div>

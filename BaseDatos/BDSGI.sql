@@ -36,16 +36,26 @@ CREATE TABLE LineaProducto(
 	NombreLineaProducto		VARCHAR(25)
 );
 
+CREATE TABLE Marca(
+	idMarca					TINYINT			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
+	NombreMarca				VARCHAR(20)
+);
+
 CREATE TABLE Producto(
 	idProducto				INTEGER			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
 	NombreProducto			VARCHAR(100)	NOT NULL,
 	PrecioProducto			DECIMAL			NOT NULL,
-	MarcaProducto			VARCHAR(15),
+	idMarca					TINYINT,
 	idUnidadMedida			TINYINT,
 	NumeroInvenProd			VARCHAR(20),
 	ModeloProducto			INTEGER,
 	idLinea					INTEGER,
 	ColorProducto			VARCHAR(15),
+	INDEX (idMarca),
+	FOREIGN KEY(idMarca)
+		REFERENCES Marca(idMarca)
+		ON DELETE CASCADE
+		ON UPDATE NO ACTION,
 	INDEX (idUnidadMedida),
 	FOREIGN KEY(idUnidadMedida)
 		REFERENCES UnidadMedida(idUnidadMedida)
@@ -93,6 +103,7 @@ CREATE TABLE RegistroEntrada(
 	idUsuario				TINYINT			NOT NULL,
 	idProducto				INTEGER			NOT NULL,
 	CantidadEntrada			DECIMAL			NOT NULL,
+	DetalleEntrada			VARCHAR(50)		NOT NULL,
 	INDEX (idProducto),
 	FOREIGN KEY(idProducto)
 		REFERENCES Producto(idProducto)
@@ -111,6 +122,7 @@ CREATE TABLE RegistroSalida(
 	idUsuario				TINYINT			NOT NULL,
 	idProducto				INTEGER			NOT NULL,
 	CantidadSalida			DECIMAL			NOT NULL,
+	DetalleEntrada			VARCHAR(50)		NOT NULL,
 	INDEX (idProducto),
 	FOREIGN KEY(idProducto)
 		REFERENCES Producto(idProducto)
