@@ -11,12 +11,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SGI</title>
-
+<title>Estación de Bomberos</title>
+<!-- Icono de la página -->  
+<link rel="shortcut icon" href="imagenes/icono.ico" type="image/ico">
 <!-- Bootstrap -->
 <link href="css/bootstrap.css" rel="stylesheet">
-<!-- se vincula al hoja de estilo para definir el aspecto del formulario de login -->
-<link rel="stylesheet" type="text/css" href="text/estilo.css"> 
+<!-- se vincula al hoja de estilo para definir el aspecto del formulario de login-->  
+<link rel="stylesheet" type="text/css" href="css/estilo.css">
 
 </head>
 	<?php
@@ -24,21 +25,54 @@
 		// Incluimos el archivo que valida si hay una sesión activa
 		include_once "Seguridad/seguro.php";
 		// Si en la sesión activa tiene privilegios de administrador puede ver el formulario
-		if($_SESSION["PrivilegioUsuario"] == 'administrador'){
+		if($_SESSION["PrivilegioUsuario"] == 'Administrador'){
 		?>
 			<body>
-				<nav class="navbar navbar-default">
+				<nav class="navbar navbar-default navbar-fixed-top">
 				  <div class="container-fluid"> 
 					<!-- Brand and toggle get grouped for better mobile display -->
 					<div class="navbar-header">
 					  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#defaultNavbar1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
-					  <a class="navbar-brand" href="principal.php">Administración</a></div>
+					  <a class="navbar-brand" href="principal.php"><img src="imagenes/logo.png" class="img-circle" width="25" height="25"></a></div>
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse" id="defaultNavbar1">
 					  <ul class="nav navbar-nav">
+						<!--
+						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Bancos<span class="caret"></span></a>
+						  <ul class="dropdown-menu" role="menu">
+							<li><a href="CrearBanco.php">Mantenimiento de bancos</a></li>
+						  </ul>
+						</li>
+						-->
+						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ajuste<span class="caret"></span></a>
+						  <ul class="dropdown-menu" role="menu">
+							<li><a href="Ajuste.php">Ajuste de inventario</a></li>
+						  </ul>
+						</li>
+						<li class="dropdown">
+						  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Salida de inventario<span class="caret"></span></a>
+						  <ul class="dropdown-menu" role="menu">
+							<li><a href="SalidaInventario.php">Salida de inventario</a></li>
+						  </ul>
+						</li>
+						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Productos<span class="caret"></span></a>
+						  <ul class="dropdown-menu" role="menu">
+							<li><a href="RegistroProducto.php">Registrar Producto</a></li>
+						  </ul>
+						</li>
+						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Entradas<span class="caret"></span></a>
+						  <ul class="dropdown-menu" role="menu">
+							<li><a href="EntradaInventario.php">Entradas de inventario</a></li>
+						  </ul>
+						</li>
+						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hojas de Reponsabilidad<span class="caret"></span></a>
+						  <ul class="dropdown-menu" role="menu">
+							<li><a href="CrearHojaResponsabilidad.php">Crear hoja de responsabilidad</a></li>
+						  </ul>
+						</li>
 						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestión de Usuarios<span class="caret"></span></a>
 						  <ul class="dropdown-menu" role="menu">
-							<li><a href="#">Crear usuario</a></li>
+							<li><a href="CrearUsuario.php">Crear usuario</a></li>
 							<li><a href="#">Eliminar Usuario</a></li>
 							<li><a href="#">Editar usuario</a></li>
 						  </ul>
@@ -54,22 +88,23 @@
 				  </div>
 				  <!-- /.container-fluid --> 
 				</nav>
-
+				<br>
+				<br>
+				<br>
 				<div class="container">
 				  <div class="row text-center">
 					<div class="container-fluid">
 						<div class="row">
-							<div class="col-xs-6 col-xs-offset-3">
+							<div class="col-xs-6">
 							<h1 class="text-center">Ajuste de inventario</h1>
 							</div>
-						</div>
-						<!-- Contenedor del ícono del Usuario -->
-						
-							<div class="Icon">
+							<!-- Contenedor del ícono del Usuario -->
+							<div class="col-xs-6 Icon">
 								<!-- Icono de usuario -->
 								<span class="glyphicon glyphicon-list-alt"></span>
 							</div>
-						
+						</div>
+						<br>
 					<!-- Producto-->
 					<div class="row">
 						<div class="col-xs-10 col-xs-offset-1">

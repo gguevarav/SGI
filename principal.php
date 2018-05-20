@@ -1,4 +1,4 @@
-<!--
+	<!--
 	Módulo Principal
 	Martes, 17 de abril el 2018
 	9:00 PM
@@ -11,32 +11,29 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SGI</title>
+<link rel="shortcut icon" href="imagenes/icono.ico">
+<title>Estación de Bomberos</title>
 
 <!-- Bootstrap -->
 <link href="css/bootstrap.css" rel="stylesheet">
+<!-- se vincula al hoja de estilo para definir el aspecto del formulario de login-->  
+<link rel="stylesheet" type="text/css" href="css/estilo.css">
 
-<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
 </head>
 	<?php
 		//include_once 'Seguridad/conexion.php';
 		// Incluimos el archivo que valida si hay una sesión activa
 		include_once "Seguridad/seguro.php";
 		// Si en la sesión activa tiene privilegios de administrador puede ver el formulario
-		if($_SESSION["PrivilegioUsuario"] == 'administrador'){
+		if($_SESSION["PrivilegioUsuario"] == 'Administrador'){
 		?>
 			<body>
-				<nav class="navbar navbar-default">
+				<nav class="navbar navbar-default navbar-fixed-top">
 				  <div class="container-fluid"> 
 					<!-- Brand and toggle get grouped for better mobile display -->
 					<div class="navbar-header">
 					  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#defaultNavbar1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
-					  <a class="navbar-brand" href="#">Administración</a></div>
+					  <a class="navbar-brand" href="principal.php"><img src="imagenes/logo.png" class="img-circle" width="25" height="25"></a></div>
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse" id="defaultNavbar1">
 					  <ul class="nav navbar-nav">
@@ -46,44 +43,33 @@
 							<li><a href="CrearBanco.php">Mantenimiento de bancos</a></li>
 						  </ul>
 						</li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Chequeras<span class="caret"></span></a>
+						-->
+						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ajuste<span class="caret"></span></a>
 						  <ul class="dropdown-menu" role="menu">
-							<li><a href="CrearChequera.php">Mantenimiento de chequeras</a></li>
-						  </ul>
-						</li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Administración de Niveles<span class="caret"></span></a>
-						  <ul class="dropdown-menu" role="menu">
-							<li><a href="#">Action</a></li>
-							<li><a href="#">Another action</a></li>
-							<li><a href="#">Something else here</a></li>
-							<li class="divider"></li>
-							<li><a href="#">Separated link</a></li>
-							<li class="divider"></li>
-							<li><a href="#">One more separated link</a></li>
+							<li><a href="Ajuste.php">Ajuste de inventario</a></li>
 						  </ul>
 						</li>
 						<li class="dropdown">
-						  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Cuentas<span class="caret"></span></a>
+						  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Salida de inventario<span class="caret"></span></a>
 						  <ul class="dropdown-menu" role="menu">
-							<li><a href="CrearCuenta.php">Mantenimiento de cuentas</a></li>
+							<li><a href="SalidaInventario.php">Salida de inventario</a></li>
 						  </ul>
 						</li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Liberación de Cheques<span class="caret"></span></a>
+						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Productos<span class="caret"></span></a>
 						  <ul class="dropdown-menu" role="menu">
-							<li><a href="#">Liberar un cheque</a></li>
-							<li><a href="#">Cheques en cola</a></li>
+							<li><a href="RegistroProducto.php">Registrar Producto</a></li>
 						  </ul>
 						</li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Impresión de Cheques<span class="caret"></span></a>
+						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Entradas<span class="caret"></span></a>
 						  <ul class="dropdown-menu" role="menu">
-							<li><a href="#">Cheques en cola</a></li>
+							<li><a href="EntradaInventario.php">Entradas de inventario</a></li>
 						  </ul>
 						</li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reportes<span class="caret"></span></a>
+						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hojas de Reponsabilidad<span class="caret"></span></a>
 						  <ul class="dropdown-menu" role="menu">
+							<li><a href="CrearHojaResponsabilidad.php">Crear hoja de responsabilidad</a></li>
 						  </ul>
 						</li>
-						-->
 						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestión de Usuarios<span class="caret"></span></a>
 						  <ul class="dropdown-menu" role="menu">
 							<li><a href="CrearUsuario.php">Crear usuario</a></li>
@@ -102,10 +88,13 @@
 				  </div>
 				  <!-- /.container-fluid --> 
 				</nav>
+				<br>
+				<br>
+				<br>
 				<div class="container-fluid">
 				  <div class="row">
 					<div class="col-md-6 col-md-offset-3">
-					  <h1 class="text-center">SGI</h1>
+					  <h1 class="text-center">Estación de Bomberos</h1>
 					</div>
 				  </div>
 				</div>

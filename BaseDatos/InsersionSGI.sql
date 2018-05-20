@@ -1,4 +1,4 @@
-USE SREBV73;
+USE BDBomberos;
 
 INSERT INTO Persona (NombrePersona, ApellidoPersona, DireccionPersona,
                      DPIPersona, TelefonoPersona, FechaNacPersona, CorreoPersona)
@@ -6,4 +6,4 @@ INSERT INTO Persona (NombrePersona, ApellidoPersona, DireccionPersona,
                      '5555-5555', '1990-1-1', 'admin@site.com');
 
 INSERT INTO Usuario (NombreUsuario, ContraseniaUsuario, idPersona, PrivilegioUsuario)
-              VALUES('gguevara', 'e60c177bc95bb0d56e2f95ac372bde51', 1, 'administrador');
+              VALUES('gguevara', 'e60c177bc95bb0d56e2f95ac372bde51', 1, 'Administrador');

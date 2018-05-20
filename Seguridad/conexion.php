@@ -14,7 +14,7 @@
 		<?php
 		   // Datos para la conexión a la base de datos.
 			define('DB_SERVER', 'localhost');
-			define('DB_NAME', 'srebv73');
+			define('DB_NAME', 'BDBomberos');
 			define('DB_USER', 'root');
 			define('DB_PASS', '');
 			
