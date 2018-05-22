@@ -74,7 +74,7 @@
 						  <ul class="dropdown-menu" role="menu">
 							<li><a href="CrearUsuario.php">Crear usuario</a></li>
 							<li><a href="#">Eliminar Usuario</a></li>
-							<li><a href="#">Editar usuario</a></li>
+							<li><a href="Usuario.php">Usuarios</a></li>
 						  </ul>
 						</li>
 						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Cerrar Sesión<span class="caret"></span></a>

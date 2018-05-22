@@ -73,8 +73,7 @@
 						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestión de Usuarios<span class="caret"></span></a>
 						  <ul class="dropdown-menu" role="menu">
 							<li><a href="CrearUsuario.php">Crear usuario</a></li>
-							<li><a href="#">Eliminar Usuario</a></li>
-							<li><a href="#">Editar usuario</a></li>
+							<li><a href="Usuario.php">Usuarios</a></li>
 						  </ul>
 						</li>
 						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Cerrar Sesión<span class="caret"></span></a>
@@ -102,42 +101,6 @@
 				  <div class="row text-center">
 					<div class="col-md-10 col-md-offset-1">Página principal de administración del sistema del proyecto SGI de curso ATI.</div>
 				  </div>
-				  <!--
-				  <div class="row">
-					<div class="text-justify col-sm-4"> Click here to select this<strong> column.</strong> Always place your content within a column. Columns are indicated by a dashed blue line. </div>
-					<div class="col-sm-4 text-justify"> You can <strong>resize a column</strong> using the handle on the right. Drag it to increase or reduce the number of columns.</div>
-					<div class="col-sm-4 text-justify"> You can <strong>offset a column</strong> using the handle on the left. Drag it to increase or reduce the offset. </div>
-				  </div>
-				  <hr>
-				  <div class="row">
-					<div class="text-center col-md-12">
-					  <div class="well"><strong> Easily build your page using the Bootstrap components from the Insert panel.</strong></div>
-					</div>
-				  </div>
-				  <div class="row">
-					<div class="col-sm-4 text-center">
-					  <h4>Adding <strong>Buttons</strong></h4>
-					  <p>Quickly add buttons to your page by using the button component in the insert panel. </p>
-					  <button type="button" class="btn btn-info btn-sm">Info Button</button>
-					  <button type="button" class="btn btn-success btn-sm">Success Button</button>
-					</div>
-					<div class="text-center col-sm-4">
-					  <h4>Adding <strong>Labels</strong></h4>
-					  <p>Using the insert panel, add labels to your page by using the label component.</p>
-					  <span class="label label-warning">Info Label</span><span class="label label-danger">Danger Label</span> </div>
-					<div class="text-center col-sm-4">
-					  <h4>Adding <strong>Glyphicons</strong></h4>
-					  <p>You can also add glyphicons to your page from within the insert panel.</p>
-					  <div class="row">
-						<div class="col-xs-4"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></div>
-						<div class="col-xs-4"><span class="glyphicon glyphicon-home" aria-hidden="true"> </span> </div>
-						<div class="col-xs-4"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></div>
-					  </div>
-					</div>
-				  </div>
-
-				  <hr>
-				  -->
 				  <!-- Pie de página, se utilizará el mismo para todos. -->
 				<footer>
 					<hr>
