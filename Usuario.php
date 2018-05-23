@@ -90,7 +90,6 @@
 				<br>
 				<br>
 				<div class="form-group">
-					<form name="CrearUsuario" action="CrearUsuario.php" method="post">
 						<div class="container">
 							<div class="row text-center">
 								<div class="container-fluid">
@@ -148,9 +147,9 @@
 																$PrivilegioDeUsuario = $ResultadoConsulta['PrivilegioUsuario'];
 																?>
 																<tr>
-																<td><?php echo $row['idPersona'] ?></td>
-																<td><?php echo $row['NombrePersona'] ?></td>
-																<td><?php echo $row['ApellidoPersona'] ?></td>
+																<td><span id="idPersonaEliminar<?php echo $row['idPersona'];?>"><?php echo $row['idPersona'] ?></span></td>
+																<td><span id="NombreUsuario<?php echo $row['idPersona'];?>"><?php echo $row['NombrePersona'] ?></span></td>
+																<td><span id="ApellidoUsuario<?php echo $row['idPersona'];?>"><?php echo $row['ApellidoPersona'] ?></span></td>
 																<td><?php echo $row['DireccionPersona'] ?></td>
 																<td><?php echo $row['DPIPersona'] ?></td>
 																<td><?php echo $row['TelefonoPersona'] ?></td>
@@ -170,7 +169,7 @@
 																	<!-- Eliminación -->
 																	<div>
 																		<div class="input-group input-group-lg">
-																			<button type="button" class="btn btn-danger eliminar" value="<?php echo $row['NombrePersona']. " " .$row['ApellidoPersona']; ?>"><span class="glyphicon glyphicon-minus"></span></button>
+																			<button type="button" class="btn btn-danger eliminar" value="<?php echo $row['idPersona']; ?>"><span class="glyphicon glyphicon-minus"></span></button>
 																		</div>
 																	</div>
 																</td>
@@ -194,22 +193,49 @@
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 									<center><h1 class="modal-title" id="myModalLabel">Eliminar usuario</h1></center>
 								</div>
+								<form method="post" action="Usuario.php" id="myForm">
 								<div class="modal-body">
 									<p class="lead">¿Está seguro que desea eliminar al siguiente usuario?</p>
-									<form method="post" id="myForm">
-										<div class="form-group">
-											<label id="name"></label>
-										</div>
-									</form>
+									<div class="form-group input-group">
+										<input type="text" name="idUsuarioEliminacion" style="width:350px; visibility:hidden;" class="form-control" id="idAEliminar">
+										<br>
+										<label id="NombresApellidos"></label>
+									</div>
 								</div>
 								<div class="modal-footer">
 									<input type="submit" name="EliminarUsuario" class="btn btn-danger" value="Eliminar Usuario">
 									<button type="button" class="btn btn-success" data-dismiss="modal">Cancelar</button>
 								</div>
+								</form>
 							</div>
 						</div>
 					</div>
 				<!-- /.modal -->
+				<?php
+					include_once "Seguridad/conexion.php";
+					include_once "Clases/clsPrincipal.php";
+					if (isset($_POST['EliminarUsuario'])) {
+						// Guardamos el id en una variable
+						$idUsuarioaEliminar = $_POST['idUsuarioEliminacion'];
+						// Preparamos la consulta
+						$query = "DELETE FROM persona WHERE idPersona=".$idUsuarioaEliminar.";";
+						// Ejecutamos la consulta
+						if(!$resultado = $mysqli->query($query)){
+    					echo "Error: La ejecución de la consulta falló debido a: \n";
+    					echo "Query: " . $query . "\n";
+    					echo "Errno: " . $mysqli->errno . "\n";
+    					echo "Error: " . $mysqli->error . "\n";
+    					exit;
+						}
+						else{
+    						?>
+    						<div class="alert alert-warning"> Usuario eliminado </div>
+    						<?php
+							// Recargamos la página
+    						echo "<meta http-equiv=\"refresh\" content=\"0;URL=Usuario.php\">"; 
+    					}
+					}
+				?>
 				<!-- Edit Modal-->
 					<div class="modal fade" id="editar" tabindex="-1" role="dialog" aria-labelledby="EditarUsuario" aria-hidden="true">
 						<div class="modal-dialog">
