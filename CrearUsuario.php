@@ -37,32 +37,24 @@
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse" id="defaultNavbar1">
 					  <ul class="nav navbar-nav">
-						<!--
-						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Bancos<span class="caret"></span></a>
-						  <ul class="dropdown-menu" role="menu">
-							<li><a href="CrearBanco.php">Mantenimiento de bancos</a></li>
-						  </ul>
-						</li>
-						-->
 						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ajuste<span class="caret"></span></a>
 						  <ul class="dropdown-menu" role="menu">
 							<li><a href="Ajuste.php">Ajuste de inventario</a></li>
 						  </ul>
 						</li>
 						<li class="dropdown">
-						  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Salida de inventario<span class="caret"></span></a>
+						  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Inventario<span class="caret"></span></a>
 						  <ul class="dropdown-menu" role="menu">
 							<li><a href="SalidaInventario.php">Salida de inventario</a></li>
+							<li><a href="EntradaInventario.php">Entrada de inventario</a></li>
 						  </ul>
 						</li>
 						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Productos<span class="caret"></span></a>
 						  <ul class="dropdown-menu" role="menu">
 							<li><a href="RegistroProducto.php">Registrar Producto</a></li>
-						  </ul>
-						</li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Entradas<span class="caret"></span></a>
-						  <ul class="dropdown-menu" role="menu">
-							<li><a href="EntradaInventario.php">Entradas de inventario</a></li>
+							<li><a href="CreacionLinea.php">Registro de lineas de Producto</a></li>
+							<li><a href="CreacionMarca.php">Registrar marca</a></li>
+							<li><a href="CreacionUnidadMedida.php">Registrar unidad de Medida</a></li>
 						  </ul>
 						</li>
 						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hojas de Reponsabilidad<span class="caret"></span></a>
@@ -82,7 +74,7 @@
 						  </ul>
 						</li>
 					  </ul>
-				</div>
+					</div>
 					<!-- /.navbar-collapse --> 
 				  </div>
 				  <!-- /.container-fluid --> 

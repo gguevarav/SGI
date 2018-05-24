@@ -52,8 +52,8 @@
 						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Productos<span class="caret"></span></a>
 						  <ul class="dropdown-menu" role="menu">
 							<li><a href="RegistroProducto.php">Registrar Producto</a></li>
-							<li><a href="CreacionLinea.php">Registro de lineas de Producto</a></li>
-							<li><a href="#">Registrar marca</a></li>
+							<li><a href="#">Registro de lineas de Producto</a></li>
+							<li><a href="CreacionMarca.php">Registrar marca</a></li>
 							<li><a href="CreacionUnidadMedida.php">Registrar unidad de Medida</a></li>
 						  </ul>
 						</li>
