@@ -100,7 +100,7 @@
 										<!-- Contenedor del ícono del Usuario -->
 										<div class="col-xs-6 Icon">
 											<!-- Icono de usuario -->
-											<span class="glyphicon glyphicon-minus"></span>
+											<span class="glyphicon glyphicon-user"></span>
 										</div>
 									</div>
 									<br>
@@ -125,7 +125,6 @@
 											<!-- Cuerpo de la tabla -->
 											<tbody>
 												<!-- Contenido de la tabla -->
-												
 													<!-- Acá mostraremos los usuarios y seleccionaremos el que deseamos eliminar -->
 													<?php
 														// Primero hacemos la consulta en la tabla de persona
@@ -150,18 +149,18 @@
 																<td><span id="idPersonaEliminar<?php echo $row['idPersona'];?>"><?php echo $row['idPersona'] ?></span></td>
 																<td><span id="NombreUsuario<?php echo $row['idPersona'];?>"><?php echo $row['NombrePersona'] ?></span></td>
 																<td><span id="ApellidoUsuario<?php echo $row['idPersona'];?>"><?php echo $row['ApellidoPersona'] ?></span></td>
-																<td><?php echo $row['DireccionPersona'] ?></td>
-																<td><?php echo $row['DPIPersona'] ?></td>
-																<td><?php echo $row['TelefonoPersona'] ?></td>
-																<td><?php echo $row['FechaNacPersona'] ?></td>
-																<td><?php echo $row['CorreoPersona'] ?></td>
+																<td><span id="DireccionUsuario<?php echo $row['idPersona'];?>"><?php echo $row['DireccionPersona'] ?></span></td>
+																<td><span id="DPIUsuario<?php echo $row['idPersona'];?>"><?php echo $row['DPIPersona'] ?></span></td>
+																<td><span id="TelefonoUsuario<?php echo $row['idPersona'];?>"><?php echo $row['TelefonoPersona'] ?></span></td>
+																<td><span id="FechaNacUsuario<?php echo $row['idPersona'];?>"><?php echo $row['FechaNacPersona'] ?></span></td>
+																<td><span id="CorreoUsuario<?php echo $row['idPersona'];?>"><?php echo $row['CorreoPersona'] ?></span></td>
 																<td><?php echo $NombreDeUsuario ?></td>
-																<td><?php echo $PrivilegioDeUsuario ?></td>
+																<td><span id="PrivilegioUsuario<?php echo $row['idPersona'];?>"><?php echo $PrivilegioDeUsuario ?></span></td>
 																<td>
 																	<!-- Edición -->
 																	<div>
 																		<div class="input-group input-group-lg">
-																			<button type="button" class="btn btn-success editar" value="<?php echo $row['NombrePersona']. " " .$row['ApellidoPersona']; ?>"><span class="glyphicon glyphicon-edit"></span></button>
+																			<button type="button" class="btn btn-success EditarUsuario" value="<?php echo $row['idPersona']; ?>"><span class="glyphicon glyphicon-edit"></span></button>
 																		</div>
 																	</div>
 																</td>
@@ -169,7 +168,7 @@
 																	<!-- Eliminación -->
 																	<div>
 																		<div class="input-group input-group-lg">
-																			<button type="button" class="btn btn-danger eliminar" value="<?php echo $row['idPersona']; ?>"><span class="glyphicon glyphicon-minus"></span></button>
+																			<button type="button" class="btn btn-danger EliminarUsuario" value="<?php echo $row['idPersona']; ?>"><span class="glyphicon glyphicon-minus"></span></button>
 																		</div>
 																	</div>
 																</td>
@@ -186,7 +185,7 @@
 					</div>
 				</div>
 				<!-- Edit Modal-->
-					<div class="modal fade" id="eliminar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal fade" id="frmEliminar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -214,6 +213,7 @@
 				<?php
 					include_once "Seguridad/conexion.php";
 					include_once "Clases/clsPrincipal.php";
+					// Código que recibe la información de eliminar usuario
 					if (isset($_POST['EliminarUsuario'])) {
 						// Guardamos el id en una variable
 						$idUsuarioaEliminar = $_POST['idUsuarioEliminacion'];
@@ -235,55 +235,121 @@
     						echo "<meta http-equiv=\"refresh\" content=\"0;URL=Usuario.php\">"; 
     					}
 					}
+					// Termina código para eliminar usuario
+					// Código para editar un usuario
+					if (isset($_POST['EditarUsuario'])) {
+						// Guardamos La información proveniente del formulario
+						$idPersonaEditar = $_POST['idEditar'];
+						$NombreEditar = $_POST['NombreEditar'];
+						$ApellidoEditar = $_POST['ApellidoEditar'];
+						$DireccionEditar = $_POST['DireccionEditar'];
+						$DPIEditar = $_POST['DPIEditar'];
+						$TelefonoEditar = $_POST['TelefonoEditar'];
+						$FechaNacEditar = $_POST['FechaNacEditar'];
+						$CorreoEditar = $_POST['CorreoEditar'];
+						$PrivilegioEditar = $_POST['PrivilegioEditar'];
+						
+						// Preparamos las consultas
+						$EditarTablaPersona = "UPDATE persona
+								  SET NombrePersona = '" .$NombreEditar."',
+									  ApellidoPersona = '" .$ApellidoEditar."',
+									  DireccionPersona = '".$DireccionEditar."',
+									  DPIPersona = '".$DPIEditar."',
+									  TelefonoPersona = '".$TelefonoEditar."',
+									  FechaNacPersona = '".$FechaNacEditar."',
+									  CorreoPersona = '".$CorreoEditar."'
+								  WHERE idPersona=".$idPersonaEditar.";";
+						$EditarTablaUsuario = "UPDATE usuario
+								  SET PrivilegioUsuario = '".$PrivilegioEditar."'
+								  WHERE idPersona=".$idPersonaEditar.";";
+						
+						// Ejecutamos la consulta para la tabla de persona
+						if(!$resultado = $mysqli->query($EditarTablaPersona)){
+							echo "Error: La ejecución de la consulta falló debido a: \n";
+							echo "Query: " . $EditarTablaPersona . "\n";
+							echo "Errno: " . $mysqli->errno . "\n";
+							echo "Error: " . $mysqli->error . "\n";
+							exit;
+						}
+						
+						// Ejecutamos la consulta para la tabla de usuario
+						if(!$resultado2 = $mysqli->query($EditarTablaUsuario)){
+							echo "Error: La ejecución de la consulta falló debido a: \n";
+							echo "Query: " . $EditarTablaUsuario . "\n";
+							echo "Errno: " . $mysqli->errno . "\n";
+							echo "Error: " . $mysqli->error . "\n";
+							exit;
+						}
+						else{
+							// Recargamos la página
+    						echo "<meta http-equiv=\"refresh\" content=\"0;URL=Usuario.php\">"; 
+							?>
+							<div class="alert alert-success" role="alert">
+							  <strong>Usuario actualizado</strong>
+							</div>
+    						<?php
+    					}
+					}
 				?>
 				<!-- Edit Modal-->
-					<div class="modal fade" id="editar" tabindex="-1" role="dialog" aria-labelledby="EditarUsuario" aria-hidden="true">
+					<div class="modal fade" id="frmEditar" tabindex="-2" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 									<center><h4 class="modal-title" id="myModalLabel">Editar usuario</h4></center>
 								</div>
-								<div class="modal-body">
-								<div class="container-fluid">
-									<div class="form-group input-group">
-										<span class="input-group-addon" style="width:150px;">Nombre</span>
-										<input type="text" style="width:350px;" class="form-control" id="efirstname">
+								<form method="post" action="Usuario.php" id="frmEdit">
+									<div class="modal-body">
+									<div class="container-fluid">
+											<div class="form-group input-group">
+												<span class="input-group-addon" style="width:150px;">ID</span>
+												<input type="text" style="width:350px;" class="form-control" name="idEditar" id="idEditar">
+											</div>
+											<div class="form-group input-group">
+												<span class="input-group-addon" style="width:150px;">Nombre</span>
+												<input type="text" style="width:350px;" class="form-control" name="NombreEditar" id="NombreEditar">
+											</div>
+											<div class="form-group input-group">
+												<span class="input-group-addon" style="width:150px;">Apellido</span>
+												<input type="text" style="width:350px;" class="form-control" name="ApellidoEditar" id="ApellidoEditar">
+											</div>
+											<div class="form-group input-group">
+												<span class="input-group-addon" style="width:150px;">Dirección</span>
+												<input type="text" style="width:350px;" class="form-control" name="DireccionEditar" id="DireccionEditar">
+											</div>
+											<div class="form-group input-group">
+												<span class="input-group-addon" style="width:150px;">No. de DPI</span>
+												<input type="text" style="width:350px;" class="form-control" name="DPIEditar" id="DPIEditar">
+											</div>
+											<div class="form-group input-group">
+												<span class="input-group-addon" style="width:150px;">No. de telefono</span>
+												<input type="tel" style="width:350px;" class="form-control" name="TelefonoEditar" id="TelefonoEditar">
+											</div>
+											<div class="form-group input-group">
+												<span class="input-group-addon" style="width:150px;">Fecha Nacimiento</span>
+												<input type="date" style="width:350px;" class="form-control" name="FechaNacEditar" id="FechaNacEditar">
+											</div>
+											<div class="form-group input-group">
+												<span class="input-group-addon" style="width:150px;">Correo</span>
+												<input type="email" style="width:350px;" class="form-control" name="CorreoEditar" id="CorreoEditar">
+											</div>
+											<div class="form-group input-group">
+												<span class="input-group-addon" style="width:150px;">Privilegio</span>
+												<select class="form-control" style="width:350px;" name="PrivilegioEditar" id="PrivilegioEditar">
+													<option value="" disabled selected>Privilegios</option>
+															<option value="Administrador">Administrador</option>
+															<option value="Jefatura">Jefatura</option>
+															<option value="Operador">Operador</option>
+													</select>
+											</div>
+										</div>
 									</div>
-									<div class="form-group input-group">
-										<span class="input-group-addon" style="width:150px;">Apellido</span>
-										<input type="text" style="width:350px;" class="form-control" id="elastname">
+									<div class="modal-footer">
+										<button type="button" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+										<input type="submit" name="EditarUsuario" class="btn btn-warning" value="Editar Usuario">
 									</div>
-									<div class="form-group input-group">
-										<span class="input-group-addon" style="width:150px;">Dirección</span>
-										<input type="text" style="width:350px;" class="form-control" id="eaddress">
-									</div>
-									<div class="form-group input-group">
-										<span class="input-group-addon" style="width:150px;">No. de DPI</span>
-										<input type="text" style="width:350px;" class="form-control" id="DPI">
-									</div>
-									<div class="form-group input-group">
-										<span class="input-group-addon" style="width:150px;">No. de telefono</span>
-										<input type="text" style="width:350px;" class="form-control" id="teléfono">
-									</div>
-									<div class="form-group input-group">
-										<span class="input-group-addon" style="width:150px;">Fecha Nacimiento</span>
-										<input type="text" style="width:350px;" class="form-control" id="FechaNac">
-									</div>
-									<div class="form-group input-group">
-										<span class="input-group-addon" style="width:150px;">Correo</span>
-										<input type="text" style="width:350px;" class="form-control" id="Correo">
-									</div>
-									<div class="form-group input-group">
-										<span class="input-group-addon" style="width:150px;">Privileio</span>
-										<input type="text" style="width:350px;" class="form-control" id="Privilegio">
-									</div>
-								</div>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
-									<button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span> </i> Actualizar</button>
-								</div>
+								</form>
 							</div>
 						</div>
 					</div>
@@ -300,7 +366,7 @@
 					<hr>
 					<div class="row">
 						<div class="text-center col-md-6 col-md-offset-3">
-							<h4>Sistema de Reportes</h4>
+							<h4>Sistema de gestión de inventario</h4>
 							<p>Copyright &copy; 2018 &middot; All Rights Reserved &middot; <a href="http://www.umg.edu.gt/" >www.umg.edu.gt</a></p>
 						</div>
 					</div>
