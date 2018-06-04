@@ -26,6 +26,9 @@
 		include_once "Seguridad/seguro.php";
 		// Si en la sesión activa tiene privilegios de administrador puede ver el formulario
 		if($_SESSION["PrivilegioUsuario"] == 'Administrador'){
+			// Guardamos el nombre del usuario en una variable
+			$NombreUsuario =$_SESSION["NombreUsuario"];
+			$idUsuario2 =$_SESSION["idUsuario"];
 		?>
 			<body>
 				<nav class="navbar navbar-default navbar-fixed-top">
@@ -36,42 +39,44 @@
 					  <a class="navbar-brand" href="principal.php"><img src="imagenes/logo.png" class="img-circle" width="25" height="25"></a></div>
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse" id="defaultNavbar1">
-					  <ul class="nav navbar-nav">
-						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ajuste<span class="caret"></span></a>
-						  <ul class="dropdown-menu" role="menu">
-							<li><a href="Ajuste.php">Ajuste de inventario</a></li>
-						  </ul>
-						</li>
+						<ul class="nav navbar-nav">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Inventario<span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="EntradaInventario.php">Entrada de inventario</a></li>
+									<li><a href="SalidaInventario.php">Salida de inventario</a></li>
+								</ul>
+							</li>
+							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Productos<span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="RegistroProducto.php">Registrar Producto</a></li>
+								</ul>
+							</li>
+							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hojas de Reponsabilidad<span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="#">Crear hoja de responsabilidad</a></li>
+								</ul>
+							</li>
+							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ajuste<span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="Ajuste.php">Ajuste de inventario</a></li>
+								</ul>
+							</li>
+							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestión de usuarios<span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="CrearUsuario.php">Crear usuario</li>
+									<li><a href="Usuario.php">Ver usuarios</a></li>
+								</ul>
+							</li>
+					  </ul>
+					  <ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
-						  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Inventario<span class="caret"></span></a>
-						  <ul class="dropdown-menu" role="menu">
-							<li><a href="SalidaInventario.php">Salida de inventario</a></li>
-							<li><a href="EntradaInventario.php">Entrada de inventario</a></li>
-						  </ul>
-						</li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Productos<span class="caret"></span></a>
-						  <ul class="dropdown-menu" role="menu">
-							<li><a href="RegistroProducto.php">Registrar Producto</a></li>
-							<li><a href="CreacionLinea.php">Registro de lineas de Producto</a></li>
-							<li><a href="CreacionMarca.php">Registrar marca</a></li>
-							<li><a href="CreacionUnidadMedida.php">Registrar unidad de Medida</a></li>
-						  </ul>
-						</li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hojas de Reponsabilidad<span class="caret"></span></a>
-						  <ul class="dropdown-menu" role="menu">
-							<li><a href="#">Crear hoja de responsabilidad</a></li>
-						  </ul>
-						</li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestión de Usuarios<span class="caret"></span></a>
-						  <ul class="dropdown-menu" role="menu">
-							<li><a href="CrearUsuario.php">Crear usuario</a></li>
-							<li><a href="Usuario.php">Usuarios</a></li>
-						  </ul>
-						</li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Cerrar Sesión<span class="caret"></span></a>
-						  <ul class="dropdown-menu" role="menu">
-							<li><a href="Seguridad/logout.php">Cerrar Sesión</a></li>
-						  </ul>
+							<!-- Acá mostramos el nombre del usuario -->
+							<a href="#" class="dropdown-toggle negrita" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $NombreUsuario; ?></a>
+							<!-- <span class="caret"></span> Agrega un indicador de flecha abajo -->
+							<ul class="dropdown-menu">
+								<li><a href="Seguridad/logout.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Cerrar Sesión</a></li>
+							</ul>
 						</li>
 					  </ul>
 					</div>

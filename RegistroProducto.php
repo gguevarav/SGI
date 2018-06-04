@@ -23,8 +23,13 @@
 		//include_once 'Seguridad/conexion.php';
 		// Incluimos el archivo que valida si hay una sesión activa
 		include_once "Seguridad/seguro.php";
+		// Primero hacemos la consulta en la tabla de persona
+		include_once "Seguridad/conexion.php";
 		// Si en la sesión activa tiene privilegios de administrador puede ver el formulario
 		if($_SESSION["PrivilegioUsuario"] == 'Administrador'){
+			// Guardamos el nombre del usuario en una variable
+			$NombreUsuario =$_SESSION["NombreUsuario"];
+			$idUsuario2 =$_SESSION["idUsuario"];
 		?>
 			<body>
 				<nav class="navbar navbar-default navbar-fixed-top">
@@ -35,42 +40,44 @@
 					  <a class="navbar-brand" href="principal.php"><img src="imagenes/logo.png" class="img-circle" width="25" height="25"></a></div>
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse" id="defaultNavbar1">
-					  <ul class="nav navbar-nav">
-						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ajuste<span class="caret"></span></a>
-						  <ul class="dropdown-menu" role="menu">
-							<li><a href="Ajuste.php">Ajuste de inventario</a></li>
-						  </ul>
-						</li>
+						<ul class="nav navbar-nav">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Inventario<span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="EntradaInventario.php">Entrada de inventario</a></li>
+									<li><a href="SalidaInventario.php">Salida de inventario</a></li>
+								</ul>
+							</li>
+							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Productos<span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="#">Registrar Producto</a></li>
+								</ul>
+							</li>
+							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hojas de Reponsabilidad<span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="CrearHojaResponsabilidad.php">Crear hoja de responsabilidad</a></li>
+								</ul>
+							</li>
+							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ajuste<span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="Ajuste.php">Ajuste de inventario</a></li>
+								</ul>
+							</li>
+							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestión de usuarios<span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="CrearUsuario.php">Crear usuario</li>
+									<li><a href="Usuario.php">Ver usuarios</a></li>
+								</ul>
+							</li>
+					  </ul>
+					  <ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
-						  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Inventario<span class="caret"></span></a>
-						  <ul class="dropdown-menu" role="menu">
-							<li><a href="SalidaInventario.php">Salida de inventario</a></li>
-							<li><a href="EntradaInventario.php">Entrada de inventario</a></li>
-						  </ul>
-						</li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Productos<span class="caret"></span></a>
-						  <ul class="dropdown-menu" role="menu">
-							<li><a href="#">Registrar Producto</a></li>
-							<li><a href="CreacionLinea.php">Registro de lineas de Producto</a></li>
-							<li><a href="CreacionMarca.php">Registrar marca</a></li>
-							<li><a href="CreacionUnidadMedida.php">Registrar unidad de Medida</a></li>
-						  </ul>
-						</li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hojas de Reponsabilidad<span class="caret"></span></a>
-						  <ul class="dropdown-menu" role="menu">
-							<li><a href="CrearHojaResponsabilidad.php">Crear hoja de responsabilidad</a></li>
-						  </ul>
-						</li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestión de Usuarios<span class="caret"></span></a>
-						  <ul class="dropdown-menu" role="menu">
-							<li><a href="CrearUsuario.php">Crear usuario</a></li>
-							<li><a href="Usuario.php">Usuarios</a></li>
-						  </ul>
-						</li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Cerrar Sesión<span class="caret"></span></a>
-						  <ul class="dropdown-menu" role="menu">
-							<li><a href="Seguridad/logout.php">Cerrar Sesión</a></li>
-						  </ul>
+							<!-- Acá mostramos el nombre del usuario -->
+							<a href="#" class="dropdown-toggle negrita" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $NombreUsuario; ?></a>
+							<!-- <span class="caret"></span> Agrega un indicador de flecha abajo -->
+							<ul class="dropdown-menu">
+								<li><a href="Seguridad/logout.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Cerrar Sesión</a></li>
+							</ul>
 						</li>
 					  </ul>
 					</div>
@@ -127,15 +134,29 @@
 					<br>
 					<!-- MarcaProducto-->
 					<div class="row">
-						<div class="col-xs-10 col-xs-offset-1">
+						<div class="col-xs-9 col-xs-offset-1">
 							<div class="input-group input-group-lg">
 								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-asterisk"></i></span>
 								<select class="form-control" name="Marca" id="Marca">
 								<option value="" disabled selected>Marca</option>
-										<option value=""></option>
-										<option value=""></option>
-										<option value=""></option>
+									<!-- Acá mostraremos los puestos que existen en la base de datos -->
+									<?php							
+										$VerPuestos = "SELECT * FROM marca;";
+										// Hacemos la consulta
+										$resultado = $mysqli->query($VerPuestos);			
+											while ($row = mysqli_fetch_array($resultado)){
+												?>
+												<option value="<?php echo $row['idMarca'];?>"><?php echo $row['NombreMarca'] ?></option>
+									<?php
+											}
+									?>
 								</select>
+							</div>
+						</div>
+						<!-- Button trigger modal -->
+						<div class="col-xs-1">
+							<div class="input-group input-group-lg">
+								<button type="button" class="btn btn-success btn-lg AgregarMarca" value="" data-toggle="modal" data-target="#ModalAgregarMarca">+</button>
 							</div>
 						</div>
 					</div>
@@ -152,30 +173,58 @@
 					<br>
 					<!-- Linea producto -->
 					<div class="row">
-						<div class="col-xs-10 col-xs-offset-1">
+						<div class="col-xs-9 col-xs-offset-1">
 							<div class="input-group input-group-lg">
 								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-check"></i></span>
 								<select class="form-control" name="LineaProducto" id="LineaProducto">
 								<option value="" disabled selected>Línea</option>
-										<option value=""></option>
-										<option value=""></option>
-										<option value=""></option>
+									<!-- Acá mostraremos los puestos que existen en la base de datos -->
+									<?php							
+										$VerPuestos = "SELECT * FROM lineaproducto;";
+										// Hacemos la consulta
+										$resultado = $mysqli->query($VerPuestos);			
+											while ($row = mysqli_fetch_array($resultado)){
+												?>
+												<option value="<?php echo $row['idLinea'];?>"><?php echo $row['NombreLineaProducto'] ?></option>
+									<?php
+											}
+									?>
 								</select>
+							</div>
+						</div>
+						<!-- Button trigger modal -->
+						<div class="col-xs-1">
+							<div class="input-group input-group-lg">
+								<button type="button" class="btn btn-success btn-lg AgregarLinea" value="" data-toggle="modal" data-target="#ModalAgregarLinea">+</button>
 							</div>
 						</div>
 					</div>
 					<br>
 					<!-- UnidadMedida -->
 					<div class="row">
-						<div class="col-xs-10 col-xs-offset-1">
+						<div class="col-xs-9 col-xs-offset-1">
 							<div class="input-group input-group-lg">
 								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-leaf"></i></span>
 								<select class="form-control" name="UnidadMedida" id="PuestoUsuario">
 								<option value="" disabled selected>Unidad de medida</option>
-										<option value=""></option>
-										<option value=""></option>
-										<option value=""></option>
+									<!-- Acá mostraremos los puestos que existen en la base de datos -->
+									<?php							
+										$VerPuestos = "SELECT * FROM unidadmedida;";
+										// Hacemos la consulta
+										$resultado = $mysqli->query($VerPuestos);			
+											while ($row = mysqli_fetch_array($resultado)){
+												?>
+												<option value="<?php echo $row['idUnidadMedida'];?>"><?php echo $row['NombreUnidadMedida'] ?></option>
+									<?php
+											}
+									?>
 								</select>
+							</div>
+						</div>
+						<!-- Button trigger modal -->
+						<div class="col-xs-1">
+							<div class="input-group input-group-lg">
+								<button type="button" class="btn btn-success btn-lg AgregarUnidadMedida" value="" data-toggle="modal" data-target="#ModalAgregarUnidadMedida">+</button>
 							</div>
 						</div>
 					</div>
@@ -203,6 +252,282 @@
 					</div>
 					<br>
 				</div>
+				<!-- Modal para crear marcas -->
+				<div class="modal fade slide left" id="ModalAgregarMarca" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				  <div class="modal-dialog" role="document">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+
+						</button>
+						<h1 class="modal-title" id="myModalLabel">Registrar nueva marca</h1>
+
+					  </div>
+					  <div class="modal-body">
+						<p class="lead">Ingrese los datos</p>
+						<form method="post" id="myForm">
+						  <div class="form-group">
+							<label for="email">Nombre de marca</label>
+							<input type="text" name="NombreMarca" id="NombreMarca" class="form-control" placeholder="Nombre" value="" required/>
+						  </div>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+						<input type="submit" name="AgregarMarca" class="btn btn-success" value="Registrar marca">
+					  </div>
+					</form>
+					</div>
+				  </div>
+				</div>
+				<!-- /Modal Agregar Marcas -->
+				<!-- Modal para crear lineas -->
+				<div class="modal fade slide left" id="ModalAgregarLinea" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				  <div class="modal-dialog" role="document">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+
+						</button>
+						<h1 class="modal-title" id="myModalLabel">Registrar nueva línea</h1>
+
+					  </div>
+					  <div class="modal-body">
+						<p class="lead">Ingrese los datos</p>
+						<form method="post" id="myForm">
+						  <div class="form-group">
+							<label for="email">Nombre de la línea</label>
+							<input type="text" name="NombreLinea" id="NombreLinea" class="form-control" placeholder="Nombre" value="" required/>
+						  </div>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+						<input type="submit" name="AgregarLinea" class="btn btn-success" value="Registrar linea">
+					  </div>
+					</form>
+					</div>
+				  </div>
+				</div>
+				<!-- /Modal Agregar lineas -->
+				<!-- Modal para crear UnidadMedida -->
+				<div class="modal fade slide left" id="ModalAgregarUnidadMedida" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				  <div class="modal-dialog" role="document">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+
+						</button>
+						<h1 class="modal-title" id="myModalLabel">Registrar nueva unidad de medida</h1>
+
+					  </div>
+					  <div class="modal-body">
+						<p class="lead">Ingrese los datos</p>
+						<form method="post" id="myForm">
+						  <div class="form-group">
+							<label for="email">Nombre de la unidad de medida</label>
+							<input type="text" name="NombreUnidad" id="NombreUnidad" class="form-control" placeholder="Nombre" value="" required/>
+						  </div>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+						<input type="submit" name="AgregarUnidad" class="btn btn-success" value="Registrar unidad de medida">
+					  </div>
+					</form>
+					</div>
+				  </div>
+				</div>
+				<!-- /Modal Agregar Unidad de medida -->
+				<?php
+					// Código que recibe la información para agregar nueva marca
+					if (isset($_POST['AgregarMarca'])) {
+						// Guardamos la información en variables
+						$NombreMarca = $_POST['NombreMarca'];
+						//Primero revisamos que no exista la marca ya en la base de datos
+						$ConsultaExisteMarca = "SELECT NombreMarca FROM marca WHERE NombreMarca='".$NombreMarca."';";
+						$ResultadoExisteMarca = $mysqli->query($ConsultaExisteMarca);			
+						$row = mysqli_fetch_array($ResultadoExisteMarca);
+						if($row['NombreMarca'] != null){
+							?>
+							<div class="form-group">
+								<form name="Alerta">
+									<div class="container">
+										<div class="row text-center">
+											<div class="container-fluid">
+												<div class="row">
+													<div class="col-xs-10 col-xs-offset-1">
+														<div class="alert alert-success">La marca ya existe</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+							<?php
+						}
+						else{
+							// Preparamos la consulta
+							$query = "INSERT INTO marca(NombreMarca)
+												  VALUES('".$NombreMarca."');";
+							// Ejecutamos la consulta
+							if(!$resultado = $mysqli->query($query)){
+							echo "Error: La ejecución de la consulta falló debido a: \n";
+							echo "Query: " . $query . "\n";
+							echo "Errno: " . $mysqli->errno . "\n";
+							echo "Error: " . $mysqli->error . "\n";
+							exit;
+							}
+							else{
+								?>
+								<div class="form-group">
+									<form name="Alerta">
+										<div class="container">
+											<div class="row text-center">
+												<div class="container-fluid">
+													<div class="row">
+														<div class="col-xs-10 col-xs-offset-1">
+															<div class="alert alert-success">Marca registrada</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+								<?php
+								// Recargamos la página
+								echo "<meta http-equiv=\"refresh\" content=\"0;URL=RegistroProducto.php\">"; 
+							}
+						}
+					}
+					// Termina código para agregar una nueva marca
+					// Código que recibe la información para agregar una nueva linea
+					if (isset($_POST['AgregarLinea'])) {
+						// Guardamos la información en variables
+						$NombreLinea = $_POST['NombreLinea'];
+						//Primero revisamos que no exista la marca ya en la base de datos
+						$ConsultaExisteLinea = "SELECT NombreLineaProducto FROM lineaproducto WHERE NombreLineaProducto='".$NombreLinea."';";
+						$ResultadoExisteLinea = $mysqli->query($ConsultaExisteLinea);
+						$row = mysqli_fetch_array($ResultadoExisteLinea);
+						if($row['NombreLineaProducto'] != null){
+							?>
+							<div class="form-group">
+								<form name="Alerta">
+									<div class="container">
+										<div class="row text-center">
+											<div class="container-fluid">
+												<div class="row">
+													<div class="col-xs-10 col-xs-offset-1">
+														<div class="alert alert-success">La línea ya existe</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+							<?php
+						}
+						else{
+							// Preparamos la consulta
+							$query = "INSERT INTO lineaproducto(NombreLineaProducto)
+												  VALUES('".$NombreLinea."');";
+							// Ejecutamos la consulta
+							if(!$resultado = $mysqli->query($query)){
+							echo "Error: La ejecución de la consulta falló debido a: \n";
+							echo "Query: " . $query . "\n";
+							echo "Errno: " . $mysqli->errno . "\n";
+							echo "Error: " . $mysqli->error . "\n";
+							exit;
+							}
+							else{
+								?>
+								<div class="form-group">
+									<form name="Alerta">
+										<div class="container">
+											<div class="row text-center">
+												<div class="container-fluid">
+													<div class="row">
+														<div class="col-xs-10 col-xs-offset-1">
+															<div class="alert alert-success">Línea registrada</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+								<?php
+								// Recargamos la página
+								echo "<meta http-equiv=\"refresh\" content=\"0;URL=RegistroProducto.php\">"; 
+							}
+						}
+					}
+					// Termina código para agregar la línea
+					// Código que recibe la información para agregar una nueva unidad
+					if (isset($_POST['AgregarUnidad'])) {
+						// Guardamos la información en variables
+						$NombreUnidad = $_POST['NombreUnidad'];
+						//Primero revisamos que no exista la marca ya en la base de datos
+						$ConsultaExisteUnidad = "SELECT NombreUnidadMedida FROM unidadmedida WHERE NombreUnidadMedida='".$NombreUnidad."';";
+						$ResultadoExisteUnidad = $mysqli->query($ConsultaExisteUnidad);
+						$row = mysqli_fetch_array($ResultadoExisteUnidad);
+						if($row['NombreUnidadMedida'] != null){
+							?>
+							<div class="form-group">
+								<form name="Alerta">
+									<div class="container">
+										<div class="row text-center">
+											<div class="container-fluid">
+												<div class="row">
+													<div class="col-xs-10 col-xs-offset-1">
+														<div class="alert alert-success">La unidad de medida ya existe</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+							<?php
+						}
+						else{
+							// Preparamos la consulta
+							$query = "INSERT INTO unidadmedida(NombreUnidadMedida)
+												  VALUES('".$NombreUnidad."');";
+							// Ejecutamos la consulta
+							if(!$resultado = $mysqli->query($query)){
+							echo "Error: La ejecución de la consulta falló debido a: \n";
+							echo "Query: " . $query . "\n";
+							echo "Errno: " . $mysqli->errno . "\n";
+							echo "Error: " . $mysqli->error . "\n";
+							exit;
+							}
+							else{
+								?>
+								<div class="form-group">
+									<form name="Alerta">
+										<div class="container">
+											<div class="row text-center">
+												<div class="container-fluid">
+													<div class="row">
+														<div class="col-xs-10 col-xs-offset-1">
+															<div class="alert alert-success">Unidad de medida registrada</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+								<?php
+								// Recargamos la página
+								echo "<meta http-equiv=\"refresh\" content=\"0;URL=RegistroProducto.php\">"; 
+							}
+						}
+					}
+					// Termina código para agregar una nueva unidad
+				?>
+				<!-- Modal crear marca -->
 				<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
 				<script src="js/jquery-1.11.3.min.js"></script>
 

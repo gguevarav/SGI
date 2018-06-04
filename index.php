@@ -63,67 +63,83 @@
     		</div>
     		<?php
     			include_once "Seguridad/conexion.php";
-          include_once "Clases/clsPrincipal.php";
+				include_once "Clases/clsPrincipal.php";
     			if (isset($_POST['enviar'])) {
-    			if ($_POST['usuario'] == '' or $_POST['password'] == '') {
-    				?>
-    				<div class="alert alert-warning"> Los campos no pueden ir vacios </div>
-    				<?php
-    				//echo "<script languaje='javascript'>
-    				//	alert('Los campos no pueden ir vacios');
-    				//	</script>";
-    			}
-    			else {
-    				// Guardamos el nombre del usuario un una variable
-    				$Usuario= $_POST["usuario"];
-    				// Encriptamos la contraseña a MD5 para seguridad y lo guardamos en una variable
-    				$password = md5($_POST['password']);
+					if ($_POST['usuario'] == '' or $_POST['password'] == '') {
+						?>
+						<div class="alert alert-warning"> Los campos no pueden ir vacios </div>
+						<?php
+						//echo "<script languaje='javascript'>
+						//	alert('Los campos no pueden ir vacios');
+						//	</script>";
+					}
+					else {
+						// Guardamos el nombre del usuario un una variable
+						$Usuario= $_POST["usuario"];
+						// Encriptamos la contraseña a MD5 para seguridad y lo guardamos en una variable
+						$password = md5($_POST['password']);
 
-    				// Consulta SQL, seleccionamos todos los datos de la tabla y obtenemos solo
-    				// la fila que tiene el usario especificado
-    				$query = "SELECT * FROM usuario WHERE NombreUsuario='".$Usuario."'";
-    				if(!$resultado = $mysqli->query($query)){
-    					echo "Error: La ejecución de la consulta falló debido a: \n";
-    					echo "Query: " . $query . "\n";
-    					echo "Errno: " . $mysqli->errno . "\n";
-    					echo "Error: " . $mysqli->error . "\n";
-    					exit;
-    				}
-
-    				if ($resultado->num_rows == 0) {
-    					?>
-    					<div class="alert alert-danger"> Usuario no Registrado </div>
-    					<?php
-    					//echo "Usuario no registrado";
-    					exit;
-    				}
-
-    				$ResultadoConsulta = $resultado->fetch_assoc();
-    				if($ResultadoConsulta['NOmbreUsuario'] = $Usuario){
-    					if($ResultadoConsulta['ContraseniaUsuario'] == $password){
-    						if(SesionValida::is_session_started() !== TRUE){
-                  session_start();
-      						$_SESSION['NombreUsuario'] = $Usuario;
-      						$_SESSION['ContrasenaUsuario'] = $password;
-      						$_SESSION['PrivilegioUsuario'] = $ResultadoConsulta['PrivilegioUsuario'];
-    						  header("location:principal.php");
-                }
-    					}
-    					else{
-    						?>
-    						<div class="alert alert-warning"> Contraseña erronea </div>
-    						<?php
-    						//echo "Contraseña Erronea";
-    					}
-    				}
-    				else{
-    					?>
-    					<div class="alert alert-warning"> Usuario erroneo </div>
-    					<?php
-    						echo "Usuario erroneo";
-    					}
-    			}
-    			}
+						// Consulta SQL, seleccionamos todos los datos de la tabla y obtenemos solo
+						// la fila que tiene el usario especificado
+						$query = "SELECT * FROM usuario WHERE NombreUsuario='".$Usuario."'";
+						if(!$resultado = $mysqli->query($query)){
+							echo "Error: La ejecución de la consulta falló debido a: \n";
+							echo "Query: " . $query . "\n";
+							echo "Errno: " . $mysqli->errno . "\n";
+							echo "Error: " . $mysqli->error . "\n";
+							exit;
+						}
+						else{
+							if ($resultado->num_rows == 0) {
+							?>
+							<div class="alert alert-danger"> Usuario no Registrado </div>
+							<?php
+							//echo "Usuario no registrado";
+							exit;
+							}
+							else{
+								$ResultadoConsulta = $resultado->fetch_assoc();
+								if($ResultadoConsulta['NOmbreUsuario'] = $Usuario){
+									if($ResultadoConsulta['ContraseniaUsuario'] == $password){
+										$idPersona = $ResultadoConsulta['idPersona'];
+										if(SesionValida::is_session_started() !== TRUE){
+											$query = "SELECT * FROM persona WHERE idPersona='".$idPersona."'";
+											if(!$resultado = $mysqli->query($query)){
+												echo "Error: La ejecución de la consulta falló debido a: \n";
+												echo "Query: " . $query . "\n";
+												echo "Errno: " . $mysqli->errno . "\n";
+												echo "Error: " . $mysqli->error . "\n";
+												exit;
+											}
+											else{
+												$ResultadoConsultaPersona = $resultado->fetch_assoc();
+												session_start();
+												$_SESSION['NombreUsuario'] = $ResultadoConsultaPersona['NombrePersona'] . " " . $ResultadoConsultaPersona['ApellidoPersona'];
+												$_SESSION['Usuario'] = $ResultadoConsulta['NombreUsuario'];
+												$_SESSION['ContrasenaUsuario'] = $password;
+												$_SESSION['idUsuario'] = $ResultadoConsulta['idUsuario'];
+												$_SESSION['PrivilegioUsuario'] = $ResultadoConsulta['PrivilegioUsuario'];
+												header("location:principal.php");
+											}
+										}
+										else{
+											?>
+											<div class="alert alert-warning"> Contraseña erronea </div>
+											<?php
+											//echo "Contraseña Erronea";
+										}
+									}
+									else{
+										?>
+										<div class="alert alert-warning"> Usuario erroneo </div>
+										<?php
+											echo "Usuario erroneo";
+									}
+								}
+							}
+						}
+					}
+				}
     		?>
         </body>
         <?php
