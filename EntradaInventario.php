@@ -347,52 +347,90 @@
 						$FechaHora=date('Y-m-d H:i:s');
 						$Usuario=$_SESSION["Usuario"];
 					
-						// Preparamos la consulta
+						// Preparamos la consulta, esta insertará en la tabla de registro entrada
 						$query = "INSERT INTO registroentrada(FechaHoraEntrada, UsuarioEntrada, idProducto, CantidadEntrada, DetalleEntrada)
 											  VALUES('".$FechaHora."', '".$Usuario."', ".$Producto.", ".$Cantidad.", '".$DetalleProducto."');";
-						// Ejecutamos la consulta
-						if(!$resultado = $mysqli->query($query)){
-						echo "Error: La ejecución de la consulta falló debido a: \n";
-						echo "Query: " . $query . "\n";
-						echo "Errno: " . $mysqli->errno . "\n";
-						echo "Error: " . $mysqli->error . "\n";
-						exit;
+						// Lo primero que debemos hacer para insertar en la tabla de inventario es saber si ya existe el producto dentro del inventario
+						// Preparamos una consulta que nos verificará si ya existe, en caso dado que si, obtenemos el id del la fila, obtenemos la cantidad que tiene
+						// y le adicionamos la cantidad que estamos registrando
+						$ConsultaExisteInventario = "SELECT idInventario, idProducto, CantidadInventario FROM inventario WHERE idProducto=".$Producto.";";
+						$ResultadoExisteInventario = $mysqli->query($ConsultaExisteInventario);			
+						$row = mysqli_fetch_array($ResultadoExisteInventario);
+						if($row['idProducto'] != null){
+							// Esta es la cantidad que ya existe en la base de datos
+							$CantidadDisponible = $row['CantidadInventario'];
+							// Sumamos la disponible más lo que se desea insertar
+							$CantidadFinal = $CantidadDisponible += $Cantidad;
+							// Línea del inventario que vamos a utilizará
+							$LineaInventario = $row['idInventario'];
+							// Consulta
+							$ActualizarCantidadInventario = "UPDATE inventario
+															 SET CantidadInventario=".$CantidadFinal."
+															 WHERE idInventario=".$LineaInventario.";";
+							// Ejecutamos la primer consulta
+							if(!$resultado1 = $mysqli->query($ActualizarCantidadInventario)){
+								echo "Error: La ejecución de la consulta falló debido a: \n";
+								echo "Query: " . $ActualizarCantidadInventario . "\n";
+								echo "Errno: " . $mysqli->errno . "\n";
+								echo "Error: " . $mysqli->error . "\n";
+								exit;
+							}
 						}
 						else{
-							?>
-							<div class="form-group">
-								<form name="Alerta">
-									<div class="container">
-										<div class="row text-center">
-											<div class="container-fluid">
-												<div class="row">
-													<div class="col-xs-10 col-xs-offset-1">
-														<div class="alert alert-success">Se agregó 
-																							<?php
-																								// Mostramos la cantidad que agregamos para ver de cuánto fué el ingreso del producto, también mostramos
-																								// el nombre del producto que estamos registrando
-																								$Cantidad = $_POST['Cantidad'];
-																								$Producto = $_POST['Producto']; 
-																								echo $Cantidad . " ";
-																								// Consultaremos el nombre del producto que estamos registrando
-																								$VerNombreProducto = "SELECT NombreProducto FROM Producto WHERE idProducto=".$Producto.";";
-																								// Hacemos la consulta
-																								$resultado = $mysqli->query($VerNombreProducto);			
-																								$row = mysqli_fetch_array($resultado);
-																								$NombreProducto = $row['NombreProducto'];
-																								echo $NombreProducto;
-																							?>
+							// Preparamos la consulta, esta insertará en la tabla de inventario
+							$query2 = "INSERT INTO inventario(idProducto, CantidadInventario)
+												  VALUES(".$Producto.", ".$Cantidad.");";
+							// Ejecutamos la primer consulta
+							if(!$resultado = $mysqli->query($query)){
+								echo "Error: La ejecución de la consulta falló debido a: \n";
+								echo "Query: " . $query . "\n";
+								echo "Errno: " . $mysqli->errno . "\n";
+								echo "Error: " . $mysqli->error . "\n";
+								exit;
+							}
+							if(!$resultado2 = $mysqli->query($query2)){
+								echo "Error: La ejecución de la consulta falló debido a: \n";
+								echo "Query: " . $query2 . "\n";
+								echo "Errno: " . $mysqli->errno . "\n";
+								echo "Error: " . $mysqli->error . "\n";
+								exit;
+							}
+							else{
+								?>
+								<div class="form-group">
+									<form name="Alerta">
+										<div class="container">
+											<div class="row text-center">
+												<div class="container-fluid">
+													<div class="row">
+														<div class="col-xs-10 col-xs-offset-1">
+															<div class="alert alert-success">Se agregó 
+																								<?php
+																									// Mostramos la cantidad que agregamos para ver de cuánto fué el ingreso del producto, también mostramos
+																									// el nombre del producto que estamos registrando
+																									$Cantidad = $_POST['Cantidad'];
+																									$Producto = $_POST['Producto']; 
+																									echo $Cantidad . " ";
+																									// Consultaremos el nombre del producto que estamos registrando
+																									$VerNombreProducto = "SELECT NombreProducto FROM Producto WHERE idProducto=".$Producto.";";
+																									// Hacemos la consulta
+																									$resultado = $mysqli->query($VerNombreProducto);			
+																									$row = mysqli_fetch_array($resultado);
+																									$NombreProducto = $row['NombreProducto'];
+																									echo $NombreProducto;
+																								?>
+															</div>
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
-									</div>
-								</form>
-							</div>
-							<?php
-							// Recargamos la página
-							//echo "<meta http-equiv=\"refresh\" content=\"0;URL=EntradaInventario.php\">"; 
+									</form>
+								</div>
+								<?php
+								// Recargamos la página
+								//echo "<meta http-equiv=\"refresh\" content=\"0;URL=EntradaInventario.php\">"; 
+							}
 						}
 					}
 				?>

@@ -73,11 +73,7 @@ CREATE TABLE Producto(
 CREATE TABLE Inventario(
 	idInventario			INTEGER			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
 	idProducto				INTEGER			NOT NULL,
-	DetalleProducto			VARCHAR(50)		NOT NULL,
-	PrecioUnidadInventario	DECIMAL			NOT NULL,
 	CantidadInventario		INTEGER			NOT NULL,
-	idUnidadMedida			TINYINT			NOT NULL,
-	TotalInventario			DECIMAL			NOT NULL,
 	INDEX (idProducto),
 	FOREIGN KEY(idProducto)
 		REFERENCES Producto(idProducto)
