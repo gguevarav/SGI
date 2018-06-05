@@ -24,6 +24,8 @@
 		//include_once 'Seguridad/conexion.php';
 		// Incluimos el archivo que valida si hay una sesión activa
 		include_once "Seguridad/seguro.php";
+		// Primero hacemos la consulta en la tabla de persona
+		include_once "Seguridad/conexion.php";
 		// Si en la sesión activa tiene privilegios de administrador puede ver el formulario
 		if($_SESSION["PrivilegioUsuario"] == 'Administrador'){
 			// Guardamos el nombre del usuario en una variable
@@ -88,67 +90,86 @@
 				<br>
 				<br>
 				<div class="container">
-				  <div class="row text-center">
-					<div class="container-fluid">
-						<div class="row">
-							<div class="col-xs-6">
-							<h1 class="text-center">Salida de productos al inventario</h1>
-							</div>
-							<!-- Contenedor del ícono del Usuario -->
-						
-							<div class="col-xs-6 Icon">
-								<!-- Icono de usuario -->
-								<span class="glyphicon glyphicon-list-alt"></span>
-							</div>
-						</div>
-						<br>
-					<!-- Producto-->
-					<div class="row">
-						<div class="col-xs-10 col-xs-offset-1">
-							<div class="input-group input-group-lg">
-								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-asterisk"></i></span>
-								<select class="form-control" name="Producto" id="Producto">
-								<option value="" disabled selected>Producto</option>
-										<option value=""></option>
-										<option value=""></option>
-										<option value=""></option>
-								</select>
-							</div>
-						</div>
-					</div>
-					<br>
-					<!-- Cantidad de Producto -->
-					<div class="row">
-						<div class="col-xs-10 col-xs-offset-1">
-							<div class="input-group input-group-lg">
-								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-question-sign"></i></span>
-								<input type="number" class="form-control" name="Cantidad" placeholder="Cantidad" id="Cantidad" aria-describedby="sizing-addon1" required>
-							</div>
-						</div>
-					</div>
-					<br>
-					<!-- Detalle del Producto -->
-					<div class="row">
-						<div class="col-xs-10 col-xs-offset-1">
-							<div class="input-group input-group-lg">
-								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-usd"></i></span>
-								<textarea class="form-control" rows="5" id="DetalleProducto" placeholder="Detalle" aria-describedby="sizing-addon1" required></textarea>
-							</div>
-						</div>
-					</div>
-					<br>
-					<!-- Resgistrar -->
-					<div class="row">
-						<div class="col-xs-12 col-xs-offset-1">
-							<div class="input-group input-group-lg">
-								<div clss="btn-group">
-									<button type="button" class="btn btn-primary">Registrar</button>
-									<button type="button" class="btn btn-danger">Cancelar</button>
+					<div class="row text-center">
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-xs-8">
+								<h1 class="text-center">Ingreso de productos al inventario</h1>
+								</div>
+								<!-- Contenedor del ícono del Usuario -->
+								<div class="col-xs-4 Icon">
+									<!-- Icono de usuario -->
+									<span class="glyphicon glyphicon-list-alt"></span>
 								</div>
 							</div>
+							<br>
+							<div class="form-group">
+								<form name="RregistrarProduto" action="EntradaInventario.php" method="post">
+									<!-- Producto-->
+									<div class="row">
+										<div class="col-xs-9 col-xs-offset-1">
+											<div class="input-group input-group-lg">
+												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-asterisk"></i></span>
+												<select class="form-control" name="Producto" id="Producto">
+												<option value="" disabled selected>Producto</option>
+													<!-- Acá mostraremos los puestos que existen en la base de datos -->
+													<?php							
+														$VerProductos = "SELECT idProducto, NombreProducto FROM producto;";
+														// Hacemos la consulta
+														$resultado = $mysqli->query($VerProductos);			
+															while ($row = mysqli_fetch_array($resultado)){
+																?>
+																<option value="<?php echo $row['idProducto'];?>"><?php echo $row['NombreProducto'] ?></option>
+													<?php
+															}
+													?>
+												</select>
+											</div>
+										</div>
+										<!-- Button trigger modal -->
+										<div class="col-xs-1">
+											<div class="input-group input-group-lg">
+												<button type="button" class="btn btn-success btn-lg AgregarProducto" value="" data-toggle="modal" data-target="#ModalAgregarProducto">+</button>
+											</div>
+										</div>
+									</div>
+									<br>
+									<!-- Cantidad de Producto -->
+									<div class="row">
+										<div class="col-xs-10 col-xs-offset-1">
+											<div class="input-group input-group-lg">
+												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-question-sign"></i></span>
+												<input type="number" class="form-control" name="Cantidad" placeholder="Cantidad" id="Cantidad" aria-describedby="sizing-addon1" required>
+											</div>
+										</div>
+									</div>
+									<br>
+									<!-- Detalle del Producto -->
+									<div class="row">
+										<div class="col-xs-10 col-xs-offset-1">
+											<div class="input-group input-group-lg">
+												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-usd"></i></span>
+												<textarea class="form-control" rows="5" id="DetalleProducto" name="DetalleProducto" placeholder="Detalle" aria-describedby="sizing-addon1" required></textarea>
+											</div>
+										</div>
+									</div>
+									<br>
+									<!-- Resgistrar -->
+									<div class="row">
+										<div class="col-xs-12 col-xs-offset-1">
+											<div class="input-group input-group-lg">
+												<div clss="btn-group">
+													<input type="submit" name="IngresoInventario" class="btn btn-primary" value="Registrar">
+													<button type="button" class="btn btn-danger">Cancelar</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<br>
+								</form>
+							</div>
 						</div>
 					</div>
-					<br>
 				</div>
 				<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
 				<script src="js/jquery-1.11.3.min.js"></script>

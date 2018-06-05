@@ -102,18 +102,13 @@ CREATE TABLE AjusteInventario(
 CREATE TABLE RegistroEntrada(
 	idRegistroEntrada		INTEGER			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
 	FechaHoraEntrada		DATETIME		NOT NULL,
-	idUsuario				TINYINT			NOT NULL,
+	UsuarioEntrada			VARCHAR(10)		NOT NULL,
 	idProducto				INTEGER			NOT NULL,
 	CantidadEntrada			DECIMAL			NOT NULL,
-	DetalleEntrada			VARCHAR(50)		NOT NULL,
+	DetalleEntrada			VARCHAR(150)	NOT NULL,
 	INDEX (idProducto),
 	FOREIGN KEY(idProducto)
 		REFERENCES Producto(idProducto)
-		ON DELETE CASCADE
-		ON UPDATE NO ACTION,
-	INDEX (idUsuario),
-	FOREIGN KEY(idUsuario)
-		REFERENCES Usuario(idUsuario)
 		ON DELETE CASCADE
 		ON UPDATE NO ACTION
 );
@@ -121,18 +116,13 @@ CREATE TABLE RegistroEntrada(
 CREATE TABLE RegistroSalida(
 	idRegistroSalida		INTEGER			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
 	FechaHoraSalida			DATETIME		NOT NULL,
-	idUsuario				TINYINT			NOT NULL,
+	UsuarioSalida			VARCHAR(10)		NOT NULL,
 	idProducto				INTEGER			NOT NULL,
 	CantidadSalida			DECIMAL			NOT NULL,
-	DetalleEntrada			VARCHAR(50)		NOT NULL,
+	DetalleEntrada			VARCHAR(150)	NOT NULL,
 	INDEX (idProducto),
 	FOREIGN KEY(idProducto)
 		REFERENCES Producto(idProducto)
-		ON DELETE CASCADE
-		ON UPDATE NO ACTION,
-	INDEX (idUsuario),
-	FOREIGN KEY(idUsuario)
-		REFERENCES Usuario(idUsuario)
 		ON DELETE CASCADE
 		ON UPDATE NO ACTION
 );

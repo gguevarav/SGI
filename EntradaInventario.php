@@ -149,7 +149,7 @@
 										<div class="col-xs-10 col-xs-offset-1">
 											<div class="input-group input-group-lg">
 												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-usd"></i></span>
-												<textarea class="form-control" rows="5" id="DetalleProducto" placeholder="Detalle" aria-describedby="sizing-addon1" required></textarea>
+												<textarea class="form-control" rows="5" id="DetalleProducto" name="DetalleProducto" placeholder="Detalle" aria-describedby="sizing-addon1" required></textarea>
 											</div>
 										</div>
 									</div>
@@ -346,12 +346,19 @@
 						$DetalleProducto = $_POST['DetalleProducto'];
 						$FechaHora=date('Y-m-d H:i:s');
 						$Usuario=$_SESSION["Usuario"];
-						
-						//Primero revisamos que no exista la marca ya en la base de datos
-						$ConsultaExisteProducto = "SELECT NumeroInvenProd FROM producto WHERE NumeroInvenProd='".$CodigoInventario."';";
-						$ResultadoExisteProducto = $mysqli->query($ConsultaExisteProducto);			
-						$row = mysqli_fetch_array($ResultadoExisteProducto);
-						if($row['NumeroInvenProd'] != null){
+					
+						// Preparamos la consulta
+						$query = "INSERT INTO registroentrada(FechaHoraEntrada, UsuarioEntrada, idProducto, CantidadEntrada, DetalleEntrada)
+											  VALUES('".$FechaHora."', '".$Usuario."', ".$Producto.", ".$Cantidad.", '".$DetalleProducto."');";
+						// Ejecutamos la consulta
+						if(!$resultado = $mysqli->query($query)){
+						echo "Error: La ejecución de la consulta falló debido a: \n";
+						echo "Query: " . $query . "\n";
+						echo "Errno: " . $mysqli->errno . "\n";
+						echo "Error: " . $mysqli->error . "\n";
+						exit;
+						}
+						else{
 							?>
 							<div class="form-group">
 								<form name="Alerta">
@@ -360,7 +367,22 @@
 											<div class="container-fluid">
 												<div class="row">
 													<div class="col-xs-10 col-xs-offset-1">
-														<div class="alert alert-success">Este código ya existe en el inventario</div>
+														<div class="alert alert-success">Se agregó 
+																							<?php
+																								// Mostramos la cantidad que agregamos para ver de cuánto fué el ingreso del producto, también mostramos
+																								// el nombre del producto que estamos registrando
+																								$Cantidad = $_POST['Cantidad'];
+																								$Producto = $_POST['Producto']; 
+																								echo $Cantidad . " ";
+																								// Consultaremos el nombre del producto que estamos registrando
+																								$VerNombreProducto = "SELECT NombreProducto FROM Producto WHERE idProducto=".$Producto.";";
+																								// Hacemos la consulta
+																								$resultado = $mysqli->query($VerNombreProducto);			
+																								$row = mysqli_fetch_array($resultado);
+																								$NombreProducto = $row['NombreProducto'];
+																								echo $NombreProducto;
+																							?>
+														</div>
 													</div>
 												</div>
 											</div>
@@ -369,40 +391,8 @@
 								</form>
 							</div>
 							<?php
-						}
-						else{
-							// Preparamos la consulta
-							$query = "INSERT INTO producto(NombreProducto, PrecioProducto, idMarca, idUnidadMedida, NumeroInvenProd, ModeloProducto, idLinea, ColorProducto)
-												  VALUES('".$NombreProducto."', '".$Precio."', ".$Marca.", ".$UnidadMedida.", '".$CodigoInventario."', '".$Modelo."', ".$LineaProducto.", '".$ColorProducto."');";
-							// Ejecutamos la consulta
-							if(!$resultado = $mysqli->query($query)){
-							echo "Error: La ejecución de la consulta falló debido a: \n";
-							echo "Query: " . $query . "\n";
-							echo "Errno: " . $mysqli->errno . "\n";
-							echo "Error: " . $mysqli->error . "\n";
-							exit;
-							}
-							else{
-								?>
-								<div class="form-group">
-									<form name="Alerta">
-										<div class="container">
-											<div class="row text-center">
-												<div class="container-fluid">
-													<div class="row">
-														<div class="col-xs-10 col-xs-offset-1">
-															<div class="alert alert-success">Producto registrado</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</form>
-								</div>
-								<?php
-								// Recargamos la página
-								echo "<meta http-equiv=\"refresh\" content=\"0;URL=EntradaInventario.php\">"; 
-							}
+							// Recargamos la página
+							//echo "<meta http-equiv=\"refresh\" content=\"0;URL=EntradaInventario.php\">"; 
 						}
 					}
 				?>
