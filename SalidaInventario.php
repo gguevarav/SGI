@@ -94,42 +94,46 @@
 						<div class="container-fluid">
 							<div class="row">
 								<div class="col-xs-8">
-								<h1 class="text-center">Ingreso de productos al inventario</h1>
+								<h1 class="text-center">Salida de productos del inventario</h1>
 								</div>
 								<!-- Contenedor del ícono del Usuario -->
 								<div class="col-xs-4 Icon">
 									<!-- Icono de usuario -->
-									<span class="glyphicon glyphicon-list-alt"></span>
+									<span class="glyphicon glyphicon-remove"></span>
 								</div>
 							</div>
 							<br>
 							<div class="form-group">
-								<form name="RregistrarProduto" action="EntradaInventario.php" method="post">
+								<form name="SalidaInventario" action="SalidaInventario.php" method="post">
 									<!-- Producto-->
 									<div class="row">
-										<div class="col-xs-9 col-xs-offset-1">
+										<div class="col-xs-10 col-xs-offset-1">
 											<div class="input-group input-group-lg">
 												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-asterisk"></i></span>
 												<select class="form-control" name="Producto" id="Producto">
-												<option value="" disabled selected>Producto</option>
+												<option value="" disabled selected>Producto   -   Cantidad disponible</option>
 													<!-- Acá mostraremos los puestos que existen en la base de datos -->
 													<?php							
-														$VerProductos = "SELECT idProducto, NombreProducto FROM producto;";
+														$VerProductos = "SELECT * FROM inventario;";
 														// Hacemos la consulta
-														$resultado = $mysqli->query($VerProductos);			
-															while ($row = mysqli_fetch_array($resultado)){
+														$resultado = $mysqli->query($VerProductos);	
+														while ($row = mysqli_fetch_array($resultado)){
+															// Guardamos el id del Producto en una variable para su uso
+															$idProducto = $row['idProducto'];
+															// Hacemos la otra consulta para mostrar el nombre que tiene cada producto
+															$VerProducto = "SELECT NombreProducto FROM producto WHERE idProducto =".$idProducto.";";
+															$ResultadoVerProducto = $mysqli->query($VerProducto);			
+															$FilaResultante = mysqli_fetch_array($ResultadoVerProducto);
+															$NombreProducto = $FilaResultante['NombreProducto'];
+															$CantidadInventario = $row['CantidadInventario'];
+															if($CantidadInventario != 0){
 																?>
-																<option value="<?php echo $row['idProducto'];?>"><?php echo $row['NombreProducto'] ?></option>
+																<option value="<?php echo $idProducto ?>"><?php echo $NombreProducto. "   -   " . $row['CantidadInventario'] ?></option>
 													<?php
+																}
 															}
 													?>
 												</select>
-											</div>
-										</div>
-										<!-- Button trigger modal -->
-										<div class="col-xs-1">
-											<div class="input-group input-group-lg">
-												<button type="button" class="btn btn-success btn-lg AgregarProducto" value="" data-toggle="modal" data-target="#ModalAgregarProducto">+</button>
 											</div>
 										</div>
 									</div>
@@ -149,7 +153,7 @@
 										<div class="col-xs-10 col-xs-offset-1">
 											<div class="input-group input-group-lg">
 												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-usd"></i></span>
-												<textarea class="form-control" rows="5" id="DetalleProducto" name="DetalleProducto" placeholder="Detalle" aria-describedby="sizing-addon1" required></textarea>
+												<textarea class="form-control" rows="5" id="DetalleSalida" name="DetalleSalida" placeholder="Detalle" aria-describedby="sizing-addon1" required></textarea>
 											</div>
 										</div>
 									</div>
@@ -159,7 +163,7 @@
 										<div class="col-xs-12 col-xs-offset-1">
 											<div class="input-group input-group-lg">
 												<div clss="btn-group">
-													<input type="submit" name="IngresoInventario" class="btn btn-primary" value="Registrar">
+													<input type="submit" name="SalidaInventario" class="btn btn-primary" value="Dar salida">
 													<button type="button" class="btn btn-danger">Cancelar</button>
 												</div>
 											</div>
@@ -171,6 +175,112 @@
 						</div>
 					</div>
 				</div>
+				<?php
+					// Insersión de entradas al inventario
+					if (isset($_POST['SalidaInventario'])) {
+						// Guardamos la información en variables
+						$Producto = $_POST['Producto'];
+						$Cantidad = $_POST['Cantidad'];
+						$DetalleSalida = $_POST['DetalleSalida'];
+						$FechaHora=date('Y-m-d H:i:s');
+						$Usuario=$_SESSION["Usuario"];
+					
+						// Preparamos la consulta, esta insertará en la tabla de registro entrada
+						$query = "INSERT INTO registrosalida(FechaHoraSalida, UsuarioSalida, idProducto, CantidadSalida, DetalleSalida)
+											  VALUES('".$FechaHora."', '".$Usuario."', ".$Producto.", ".$Cantidad.", '".$DetalleSalida."');";
+						// Lo primero que debemos hacer para restar en la tabla de inventario es saber si ya existe el producto dentro del inventario
+						// Preparamos una consulta que nos verificará si ya existe, en caso dado que si, obtenemos el id del la fila, obtenemos la cantidad que tiene
+						// y le restamos la cantidad que estamos registrando
+						$ConsultaExisteInventario = "SELECT idInventario, idProducto, CantidadInventario FROM inventario WHERE idProducto=".$Producto.";";
+						$ResultadoExisteInventario = $mysqli->query($ConsultaExisteInventario);			
+						$row = mysqli_fetch_array($ResultadoExisteInventario);
+						if($row['idProducto'] != null){
+							// Esta es la cantidad que ya existe en la base de datos
+							$CantidadDisponible = $row['CantidadInventario'];
+							// Sumamos la disponible más lo que se desea insertar
+							$CantidadFinal = $CantidadDisponible -= $Cantidad;
+							// Línea del inventario que vamos a utilizará
+							$LineaInventario = $row['idInventario'];
+							// Consulta
+							$ActualizarCantidadInventario = "UPDATE inventario
+															 SET CantidadInventario=".$CantidadFinal."
+															 WHERE idInventario=".$LineaInventario.";";
+							// Ejecutamos la primer consulta
+							if(!$resultado = $mysqli->query($query)){
+								echo "Error: La ejecución de la consulta falló debido a: \n";
+								echo "Query: " . $query . "\n";
+								echo "Errno: " . $mysqli->errno . "\n";
+								echo "Error: " . $mysqli->error . "\n";
+								exit;
+							}
+							// Ejecutamos la segunda consulta
+							if(!$resultado1 = $mysqli->query($ActualizarCantidadInventario)){
+								echo "Error: La ejecución de la consulta falló debido a: \n";
+								echo "Query: " . $ActualizarCantidadInventario . "\n";
+								echo "Errno: " . $mysqli->errno . "\n";
+								echo "Error: " . $mysqli->error . "\n";
+								exit;
+							}
+							else{
+								?>
+								<div class="form-group">
+									<form name="Alerta">
+										<div class="container">
+											<div class="row text-center">
+												<div class="container-fluid">
+													<div class="row">
+														<div class="col-xs-10 col-xs-offset-1">
+															<div class="alert alert-success">Se le dió salida a  
+																								<?php
+																									// Mostramos la cantidad que agregamos para ver de cuánto fué el ingreso del producto, también mostramos
+																									// el nombre del producto que estamos registrando
+																									$Cantidad = $_POST['Cantidad'];
+																									$Producto = $_POST['Producto']; 
+																									echo $Cantidad . " ";
+																									// Consultaremos el nombre del producto que estamos registrando
+																									$VerNombreProducto = "SELECT NombreProducto FROM Producto WHERE idProducto=".$Producto.";";
+																									// Hacemos la consulta
+																									$resultado = $mysqli->query($VerNombreProducto);			
+																									$row = mysqli_fetch_array($resultado);
+																									$NombreProducto = $row['NombreProducto'];
+																									echo $NombreProducto;
+																								?>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+								<?php
+								// Recargamos la página
+								echo "<meta http-equiv=\"refresh\" content=\"0;URL=SalidaInventario.php\">"; 
+							}
+						}
+						else{
+								?>
+								<div class="form-group">
+									<form name="Alerta">
+										<div class="container">
+											<div class="row text-center">
+												<div class="container-fluid">
+													<div class="row">
+														<div class="col-xs-10 col-xs-offset-1">
+															<div class="alert alert-warning">Este artículo no existe en el inventario</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+								<?php
+								// Recargamos la página
+								//echo "<meta http-equiv=\"refresh\" content=\"0;URL=SalidaInventario.php\">"; 
+							}
+					}
+				?>
 				<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
 				<script src="js/jquery-1.11.3.min.js"></script>
 

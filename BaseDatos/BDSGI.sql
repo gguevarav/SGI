@@ -83,11 +83,11 @@ CREATE TABLE Inventario(
 
 CREATE TABLE AjusteInventario(
 	idAjusteInventario		INTEGER			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
-	FechaAjusteInventario	DATE			NOT NULL,
+	FechaHoraAjusteInventario	DATETIME		NOT NULL,
 	idProducto				INTEGER			NOT NULL,
 	CantidadAjusteInventario			DECIMAL			NOT NULL,
 	ComentarioAjusteInventario		TEXT			NOT NULL,
-	UsuarioAjusteInventario			INTEGER			NOT NULL,
+	UsuarioAjusteInventario			VARCHAR(10)			NOT NULL,
 	INDEX (idProducto),
 	FOREIGN KEY(idProducto)
 		REFERENCES Producto(idProducto)

@@ -18,6 +18,25 @@
 <link href="css/bootstrap.css" rel="stylesheet">
 <!-- se vincula al hoja de estilo para definir el aspecto del formulario de login-->  
 <link rel="stylesheet" type="text/css" href="css/estilo.css">
+<!-- para agregar más controles a la página -->
+<script type="text/javascript">
+	icremento =0;
+	function crear(obj) {
+		icremento++;
+		field = document.getElementById('field');
+		contenedor = document.createElement('div');
+		contenedor.id = 'div'+icremento;
+		field.appendChild(contenedor);
+		boton = document.createElement('input');
+		boton.type = 'text';
+		boton.name = 'text'+'[ ]';
+		contenedor.appendChild(boton);
+	}
+	function borrar(obj) {
+		field = document.getElementById('field');
+		field.removeChild(document.getElementById(obj));
+	}
+</script>
 
 </head>
 	<?php
@@ -116,42 +135,50 @@
 						</div>
 					</div>
 					<br>
-					<div class="row">
-						<div class="col-xs-12">
-							<table class="table">
-								<thead>
-									<tr>
-										<th scope="col">#</th>
-										<th scope="col">Producto</th>
-										<th scope="col">Cantidad</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<th scope="row">1</th>
-										<td>
-											<div class="input-group input-group-lg">
-												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-asterisk"></i></span>
-												<select class="form-control" name="Producto" id="Producto">
-													<option value="" disabled selected>Producto</option>
-															<option value=""></option>
-															<option value=""></option>
-															<option value=""></option>
-												</select>
-											</div>
-										</td>
-										<td>
-											<div class="input-group input-group-lg">
-												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-question-sign"></i></span>
-												<input type="number" class="form-control" name="Cantidad" placeholder="Cantidad" id="Cantidad" aria-describedby="sizing-addon1" required>
-											</div>
-										</td>
-									</tr>
-									</tr>
-							  </tbody>
-						</table>
+					<fieldset id="field">
+						<div class="row">
+							<div class="col-xs-11">
+								<table class="table">
+									<thead>
+										<tr>
+											<th scope="col">#</th>
+											<th scope="col">Producto</th>
+											<th scope="col">Cantidad</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<th scope="row">1</th>
+											<td>
+												<div class="input-group input-group-lg">
+													<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-asterisk"></i></span>
+													<select class="form-control" name="Producto" id="Producto">
+														<option value="" disabled selected>Producto</option>
+																<option value=""></option>
+																<option value=""></option>
+																<option value=""></option>
+													</select>
+												</div>
+											</td>
+											<td>
+												<div class="input-group input-group-lg">
+													<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-question-sign"></i></span>
+													<input type="number" class="form-control" name="Cantidad" placeholder="Cantidad" id="Cantidad" aria-describedby="sizing-addon1" required>
+												</div>
+											</td>
+										</tr>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="col-xs-1">
+								<!-- Button trigger modal -->
+								<div class="input-group input-group-lg">
+									<button type="button" class="btn btn-success btn-lg AgregarUnidadMedida" value="" data-toggle="modal" data-target="#ModalAgregarUnidadMedida" onclick="crear(this)">+</button>
+								</div>
+							</div>
 						</div>
-					</div>
+					</fieldset>
 					<!-- Resgistrar -->
 					<div class="row">
 						<div class="col-xs-12">
