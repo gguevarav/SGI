@@ -24,6 +24,8 @@
 		//include_once 'Seguridad/conexion.php';
 		// Incluimos el archivo que valida si hay una sesión activa
 		include_once "Seguridad/seguro.php";
+		// Primero hacemos la consulta en la tabla de persona
+		include_once "Seguridad/conexion.php";
 		// Si en la sesión activa tiene privilegios de administrador puede ver el formulario
 		if($_SESSION["PrivilegioUsuario"] == 'Administrador'){
 			// Guardamos el nombre del usuario en una variable
@@ -88,67 +90,322 @@
 				<br>
 				<br>
 				<div class="container">
-				  <div class="row text-center">
-					<div class="container-fluid">
-						<div class="row">
-							<div class="col-xs-6">
-							<h1 class="text-center">Ingreso de productos al inventario</h1>
-							</div>
-							<!-- Contenedor del ícono del Usuario -->
-							<div class="col-xs-6 Icon">
-								<!-- Icono de usuario -->
-								<span class="glyphicon glyphicon-list-alt"></span>
-							</div>
-						</div>
-					<br>						
-					<!-- Producto-->
-					<div class="row">
-						<div class="col-xs-10 col-xs-offset-1">
-							<div class="input-group input-group-lg">
-								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-asterisk"></i></span>
-								<select class="form-control" name="Producto" id="Producto">
-								<option value="" disabled selected>Producto</option>
-										<option value=""></option>
-										<option value=""></option>
-										<option value=""></option>
-								</select>
-							</div>
-						</div>
-					</div>
-					<br>
-					<!-- Cantidad de Producto -->
-					<div class="row">
-						<div class="col-xs-10 col-xs-offset-1">
-							<div class="input-group input-group-lg">
-								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-question-sign"></i></span>
-								<input type="number" class="form-control" name="Cantidad" placeholder="Cantidad" id="Cantidad" aria-describedby="sizing-addon1" required>
-							</div>
-						</div>
-					</div>
-					<br>
-					<!-- Detalle del Producto -->
-					<div class="row">
-						<div class="col-xs-10 col-xs-offset-1">
-							<div class="input-group input-group-lg">
-								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-usd"></i></span>
-								<textarea class="form-control" rows="5" id="DetalleProducto" placeholder="Detalle" aria-describedby="sizing-addon1" required></textarea>
-							</div>
-						</div>
-					</div>
-					<br>
-					<!-- Resgistrar -->
-					<div class="row">
-						<div class="col-xs-12 col-xs-offset-1">
-							<div class="input-group input-group-lg">
-								<div clss="btn-group">
-									<button type="button" class="btn btn-primary">Registrar</button>
-									<button type="button" class="btn btn-danger">Cancelar</button>
+					<div class="row text-center">
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-xs-8">
+								<h1 class="text-center">Ingreso de productos al inventario</h1>
+								</div>
+								<!-- Contenedor del ícono del Usuario -->
+								<div class="col-xs-4 Icon">
+									<!-- Icono de usuario -->
+									<span class="glyphicon glyphicon-list-alt"></span>
 								</div>
 							</div>
+							<br>
+							<div class="form-group">
+								<form name="RregistrarProduto" action="EntradaInventario.php" method="post">
+									<!-- Producto-->
+									<div class="row">
+										<div class="col-xs-9 col-xs-offset-1">
+											<div class="input-group input-group-lg">
+												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-asterisk"></i></span>
+												<select class="form-control" name="Producto" id="Producto">
+												<option value="" disabled selected>Producto</option>
+													<!-- Acá mostraremos los puestos que existen en la base de datos -->
+													<?php							
+														$VerProductos = "SELECT idProducto, NombreProducto FROM producto;";
+														// Hacemos la consulta
+														$resultado = $mysqli->query($VerProductos);			
+															while ($row = mysqli_fetch_array($resultado)){
+																?>
+																<option value="<?php echo $row['idProducto'];?>"><?php echo $row['NombreProducto'] ?></option>
+													<?php
+															}
+													?>
+												</select>
+											</div>
+										</div>
+										<!-- Button trigger modal -->
+										<div class="col-xs-1">
+											<div class="input-group input-group-lg">
+												<button type="button" class="btn btn-success btn-lg AgregarProducto" value="" data-toggle="modal" data-target="#ModalAgregarProducto">+</button>
+											</div>
+										</div>
+									</div>
+									<br>
+									<!-- Cantidad de Producto -->
+									<div class="row">
+										<div class="col-xs-10 col-xs-offset-1">
+											<div class="input-group input-group-lg">
+												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-question-sign"></i></span>
+												<input type="number" class="form-control" name="Cantidad" placeholder="Cantidad" id="Cantidad" aria-describedby="sizing-addon1" required>
+											</div>
+										</div>
+									</div>
+									<br>
+									<!-- Detalle del Producto -->
+									<div class="row">
+										<div class="col-xs-10 col-xs-offset-1">
+											<div class="input-group input-group-lg">
+												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-usd"></i></span>
+												<textarea class="form-control" rows="5" id="DetalleProducto" placeholder="Detalle" aria-describedby="sizing-addon1" required></textarea>
+											</div>
+										</div>
+									</div>
+									<br>
+									<!-- Resgistrar -->
+									<div class="row">
+										<div class="col-xs-12 col-xs-offset-1">
+											<div class="input-group input-group-lg">
+												<div clss="btn-group">
+													<input type="submit" name="IngresoInventario" class="btn btn-primary" value="Registrar">
+													<button type="button" class="btn btn-danger">Cancelar</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<br>
+								</form>
+							</div>
 						</div>
 					</div>
-					<br>
 				</div>
+				<!-- Modal para crear productos -->
+				<div class="modal fade slide left" id="ModalAgregarProducto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				  <div class="modal-dialog" role="document">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+
+						</button>
+						<h1 class="modal-title" id="myModalLabel">Registrar nuevo producto</h1>
+
+					  </div>
+					  <div class="modal-body">
+						<p class="lead">Ingrese los datos</p>
+						<form method="post" id="myForm">
+						  <div class="form-group">
+							<label for="codigo">Código</label>
+							<input type="text" name="CodigoInventario" id="CodigoInventario" class="form-control" placeholder="Código" value="" required/>
+						  </div>
+						  <div class="form-group">
+							<label for="Nombre">Nombre</label>
+							<input type="text" name="NombreProducto" id="NombreProducto" class="form-control" placeholder="Nombre" value="" required/>
+						  </div>
+						  <div class="form-group">
+							<label for="Marca">Marca</label>
+							<select class="form-control" name="Marca" id="Marca">
+							<option value="" disabled selected>Marca</option>
+								<!-- Acá mostraremos los puestos que existen en la base de datos -->
+								<?php							
+									$VerMarcas = "SELECT * FROM marca;";
+									// Hacemos la consulta
+									$resultado = $mysqli->query($VerMarcas);			
+										while ($row = mysqli_fetch_array($resultado)){
+											?>
+											<option value="<?php echo $row['idMarca'];?>"><?php echo $row['NombreMarca'] ?></option>
+								<?php
+										}
+								?>
+							</select>
+						  </div>
+						  <div class="form-group">
+							<label for="Modelo">Modelo</label>
+							<input type="Number" name="Modelo" id="Modelo" class="form-control" placeholder="Modelo" value="" required/>
+						  </div>
+						  <div class="form-group">
+							<label for="Linea">Linea</label>
+							<select class="form-control" name="LineaProducto" id="LineaProducto">
+							<option value="" disabled selected>Línea</option>
+								<!-- Acá mostraremos los puestos que existen en la base de datos -->
+								<?php							
+									$VerPuestos = "SELECT * FROM lineaproducto;";
+									// Hacemos la consulta
+									$resultado = $mysqli->query($VerPuestos);			
+										while ($row = mysqli_fetch_array($resultado)){
+											?>
+											<option value="<?php echo $row['idLinea'];?>"><?php echo $row['NombreLineaProducto'] ?></option>
+								<?php
+										}
+								?>
+							</select>
+						  </div>
+						  <div class="form-group">
+							<label for="UnidadMedida">Unidad de Medida</label>
+							<select class="form-control" name="UnidadMedida" id="UnidadMedida">
+							<option value="" disabled selected>Unidad de medida</option>
+								<!-- Acá mostraremos los puestos que existen en la base de datos -->
+								<?php							
+									$VerPuestos = "SELECT * FROM unidadmedida;";
+									// Hacemos la consulta
+									$resultado = $mysqli->query($VerPuestos);			
+										while ($row = mysqli_fetch_array($resultado)){
+											?>
+											<option value="<?php echo $row['idUnidadMedida'];?>"><?php echo $row['NombreUnidadMedida'] ?></option>
+								<?php
+										}
+								?>
+							</select>
+						  </div>
+						  <div class="form-group">
+							<label for="Color">Color</label>
+							<input type="text" name="ColorProducto" id="ColorProducto" class="form-control" placeholder="Color" value="" required/>
+						  </div>
+						  <div class="form-group">
+							<label for="Precio">Precio</label>
+							<input type="text" name="Precio" id="Precio" class="form-control" placeholder="Precio" value="" required/>
+						  </div>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+						<input type="submit" name="RegistrarProducto" class="btn btn-success" value="Registrar producto">
+					  </div>
+					</form>
+					</div>
+				  </div>
+				</div>
+				<!-- /Modal Agregar productos -->
+				<?php
+				// Código que recibe la información para registrar un producto
+					if (isset($_POST['RegistrarProducto'])) {
+						// Guardamos la información en variables
+						$CodigoInventario = $_POST['CodigoInventario'];
+						$NombreProducto = $_POST['NombreProducto'];
+						$Marca = $_POST['Marca'];
+						$Modelo = $_POST['Modelo'];
+						$LineaProducto = $_POST['LineaProducto'];
+						$UnidadMedida = $_POST['UnidadMedida'];
+						$ColorProducto = $_POST['ColorProducto'];
+						$Precio = $_POST['Precio'];
+						
+						//Primero revisamos que no exista la marca ya en la base de datos
+						$ConsultaExisteProducto = "SELECT NumeroInvenProd FROM producto WHERE NumeroInvenProd='".$CodigoInventario."';";
+						$ResultadoExisteProducto = $mysqli->query($ConsultaExisteProducto);			
+						$row = mysqli_fetch_array($ResultadoExisteProducto);
+						if($row['NumeroInvenProd'] != null){
+							?>
+							<div class="form-group">
+								<form name="Alerta">
+									<div class="container">
+										<div class="row text-center">
+											<div class="container-fluid">
+												<div class="row">
+													<div class="col-xs-10 col-xs-offset-1">
+														<div class="alert alert-success">Este código ya existe en el inventario</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+							<?php
+						}
+						else{
+							// Preparamos la consulta
+							$query = "INSERT INTO producto(NombreProducto, PrecioProducto, idMarca, idUnidadMedida, NumeroInvenProd, ModeloProducto, idLinea, ColorProducto)
+												  VALUES('".$NombreProducto."', '".$Precio."', ".$Marca.", ".$UnidadMedida.", '".$CodigoInventario."', '".$Modelo."', ".$LineaProducto.", '".$ColorProducto."');";
+							// Ejecutamos la consulta
+							if(!$resultado = $mysqli->query($query)){
+							echo "Error: La ejecución de la consulta falló debido a: \n";
+							echo "Query: " . $query . "\n";
+							echo "Errno: " . $mysqli->errno . "\n";
+							echo "Error: " . $mysqli->error . "\n";
+							exit;
+							}
+							else{
+								?>
+								<div class="form-group">
+									<form name="Alerta">
+										<div class="container">
+											<div class="row text-center">
+												<div class="container-fluid">
+													<div class="row">
+														<div class="col-xs-10 col-xs-offset-1">
+															<div class="alert alert-success">Producto registrado</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+								<?php
+								// Recargamos la página
+								echo "<meta http-equiv=\"refresh\" content=\"0;URL=EntradaInventario.php\">"; 
+							}
+						}
+					}
+					// Termina código de insersión de producto
+					// Insersión de entradas al inventario
+					if (isset($_POST['IngresoInventario'])) {
+						// Guardamos la información en variables
+						$Producto = $_POST['Producto'];
+						$Cantidad = $_POST['Cantidad'];
+						$DetalleProducto = $_POST['DetalleProducto'];
+						$FechaHora=date('Y-m-d H:i:s');
+						$Usuario=$_SESSION["Usuario"];
+						
+						//Primero revisamos que no exista la marca ya en la base de datos
+						$ConsultaExisteProducto = "SELECT NumeroInvenProd FROM producto WHERE NumeroInvenProd='".$CodigoInventario."';";
+						$ResultadoExisteProducto = $mysqli->query($ConsultaExisteProducto);			
+						$row = mysqli_fetch_array($ResultadoExisteProducto);
+						if($row['NumeroInvenProd'] != null){
+							?>
+							<div class="form-group">
+								<form name="Alerta">
+									<div class="container">
+										<div class="row text-center">
+											<div class="container-fluid">
+												<div class="row">
+													<div class="col-xs-10 col-xs-offset-1">
+														<div class="alert alert-success">Este código ya existe en el inventario</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+							<?php
+						}
+						else{
+							// Preparamos la consulta
+							$query = "INSERT INTO producto(NombreProducto, PrecioProducto, idMarca, idUnidadMedida, NumeroInvenProd, ModeloProducto, idLinea, ColorProducto)
+												  VALUES('".$NombreProducto."', '".$Precio."', ".$Marca.", ".$UnidadMedida.", '".$CodigoInventario."', '".$Modelo."', ".$LineaProducto.", '".$ColorProducto."');";
+							// Ejecutamos la consulta
+							if(!$resultado = $mysqli->query($query)){
+							echo "Error: La ejecución de la consulta falló debido a: \n";
+							echo "Query: " . $query . "\n";
+							echo "Errno: " . $mysqli->errno . "\n";
+							echo "Error: " . $mysqli->error . "\n";
+							exit;
+							}
+							else{
+								?>
+								<div class="form-group">
+									<form name="Alerta">
+										<div class="container">
+											<div class="row text-center">
+												<div class="container-fluid">
+													<div class="row">
+														<div class="col-xs-10 col-xs-offset-1">
+															<div class="alert alert-success">Producto registrado</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+								<?php
+								// Recargamos la página
+								echo "<meta http-equiv=\"refresh\" content=\"0;URL=EntradaInventario.php\">"; 
+							}
+						}
+					}
+				?>
 				<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
 				<script src="js/jquery-1.11.3.min.js"></script>
 

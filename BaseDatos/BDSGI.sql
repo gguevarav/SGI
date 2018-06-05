@@ -101,7 +101,7 @@ CREATE TABLE AjusteInventario(
 
 CREATE TABLE RegistroEntrada(
 	idRegistroEntrada		INTEGER			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
-	FechaEntrada			DATE			NOT NULL,
+	FechaHoraEntrada		DATETIME		NOT NULL,
 	idUsuario				TINYINT			NOT NULL,
 	idProducto				INTEGER			NOT NULL,
 	CantidadEntrada			DECIMAL			NOT NULL,
@@ -120,7 +120,7 @@ CREATE TABLE RegistroEntrada(
 
 CREATE TABLE RegistroSalida(
 	idRegistroSalida		INTEGER			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
-	FechaSalida				DATE			NOT NULL,
+	FechaHoraSalida			DATETIME		NOT NULL,
 	idUsuario				TINYINT			NOT NULL,
 	idProducto				INTEGER			NOT NULL,
 	CantidadSalida			DECIMAL			NOT NULL,
