@@ -90,101 +90,221 @@
 				<br>
 				<br>
 				<br>
-				<div class="container">
-				  <div class="row text-center">
-					<div class="container-fluid">
-						<div class="row">
-							<div class="col-xs-6">
-							<h1 class="text-center">Ingreso de productos al inventario</h1>
-							</div>
-							<!-- Contenedor del ícono del Usuario -->
-							<div class="col-xs-6 Icon">
-								<!-- Icono de usuario -->
-								<span class="glyphicon glyphicon-list-alt"></span>
-							</div>
-						</div>
-						<br>						
-					<!-- Producto-->
-					<div class="row">
-						<div class="col-xs-12">
-							<div class="input-group input-group-lg">
-								<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-asterisk"></i></span>
-								<select class="form-control" name="Persona" id="Persona">
-								<option value="" disabled selected>Responsable</option>
-										<option value=""></option>
-										<option value=""></option>
-										<option value=""></option>
-								</select>
-							</div>
-						</div>
-					</div>
-					<br>
-					<fieldset id="field">
-						<div class="row">
-							<div class="col-xs-11">
-								<table class="table">
-									<thead>
-										<tr>
-											<th scope="col">#</th>
-											<th scope="col">Producto</th>
-											<th scope="col">Cantidad</th>
-										</tr>
-									</thead>
-									<tbody id="CuerpoTabla">
-										<tr>
-											<th scope="row">1</th>
-											<td>
+				<div class="form-group">
+					<form name="CrearUsuario" action="CrearUsuario.php" method="post">
+						<div class="container">
+							<div class="row text-center">
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-xs-6">
+										<h1 class="text-center">Creación de hoja de responsabilidad</h1>
+										</div>
+										<!-- Contenedor del ícono del Usuario -->
+										<div class="col-xs-6 Icon">
+											<!-- Icono de usuario -->
+											<span class="glyphicon glyphicon-list-alt"></span>
+										</div>
+									</div>
+									<br>						
+									<!-- Producto-->
+									<div class="row">
+										<div class="col-xs-11">
+											<div class="input-group input-group-lg">
+												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-asterisk"></i></span>
+												<select class="form-control" name="Persona" id="Persona" required>
+												<option value="" disabled selected>Seleccione el responsable</option>
+														<!-- Acá mostraremos los puestos que existen en la base de datos -->
+														<?php							
+															$VerProductos = "SELECT idPersona, NombrePersona FROM persona;";
+															// Hacemos la consulta
+															$resultado = $mysqli->query($VerProductos);			
+																while ($row = mysqli_fetch_array($resultado)){
+																	?>
+																	<option value="<?php echo $row['idPersona'];?>"><?php echo $row['NombrePersona'] ?></option>
+														<?php
+																}
+														?>
+												</select>
+											</div>
+										</div>
+										<div class="col-xs-1">
+												<!-- Button trigger modal -->
 												<div class="input-group input-group-lg">
-													<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-asterisk"></i></span>
-													<select class="form-control" name="Producto1" id="Producto1">
-														<option value="" disabled selected>Producto</option>
-															<!-- Acá mostraremos los puestos que existen en la base de datos -->
-															<?php							
-																$VerProductos = "SELECT idProducto, NombreProducto FROM producto;";
-																// Hacemos la consulta
-																$resultado = $mysqli->query($VerProductos);			
-																	while ($row = mysqli_fetch_array($resultado)){
-																		?>
-																		<option value="<?php echo $row['idProducto'];?>"><?php echo $row['NombreProducto'] ?></option>
-															<?php
-																	}
-															?>
-													</select>
+													<button type="button" class="btn btn-success btn-lg AgregarPersona" value="" data-toggle="modal" data-target="#ModalRegistrarPersona">+</button>
 												</div>
-											</td>
-											<td>
+											</div>
+									</div>
+									<hr>
+									<h3 class="text-center">Seleccione los artícilos que tiene a cargo</h3>
+									<br>
+									<fieldset id="field">
+										<div class="row">
+											<div class="col-xs-11">
+												<table class="table">
+													<thead>
+														<tr>
+															<th scope="col">#</th>
+															<th scope="col">Artículo</th>
+															<th scope="col">Cantidad</th>
+														</tr>
+													</thead>
+													<tbody id="CuerpoTabla">
+														<tr>
+															<th scope="row">1</th>
+															<td>
+																<div class="input-group input-group-lg">
+																	<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-asterisk"></i></span>
+																	<select class="form-control" name="Producto1" id="Producto1" required>
+																		<option value="" disabled selected>Seleccione el artículo</option>
+																			<!-- Acá mostraremos los puestos que existen en la base de datos -->
+																			<?php							
+																				$VerProductos = "SELECT idProducto, NombreProducto FROM producto;";
+																				// Hacemos la consulta
+																				$resultado = $mysqli->query($VerProductos);			
+																					while ($row = mysqli_fetch_array($resultado)){
+																						?>
+																						<option value="<?php echo $row['idProducto'];?>"><?php echo $row['NombreProducto'] ?></option>
+																			<?php
+																					}
+																			?>
+																	</select>
+																</div>
+															</td>
+															<td>
+																<div class="input-group input-group-lg">
+																	<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-question-sign"></i></span>
+																	<input type="number" class="form-control" name="Cantidad1" placeholder="Cantidad" id="Cantidad1" aria-describedby="sizing-addon1" required>
+																</div>
+															</td>
+														</tr>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<div class="col-xs-1">
+												<!-- Button trigger modal -->
 												<div class="input-group input-group-lg">
-													<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-question-sign"></i></span>
-													<input type="number" class="form-control" name="Cantidad1" placeholder="Cantidad" id="Cantidad1" aria-describedby="sizing-addon1" required>
+													<button type="button" class="btn btn-success btn-lg AgregarUnidadMedida" value="" data-toggle="modal" data-target="#ModalAgregarUnidadMedida" onclick="crear(this)">+</button>
 												</div>
-											</td>
-										</tr>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<div class="col-xs-1">
-								<!-- Button trigger modal -->
-								<div class="input-group input-group-lg">
-									<button type="button" class="btn btn-success btn-lg AgregarUnidadMedida" value="" data-toggle="modal" data-target="#ModalAgregarUnidadMedida" onclick="crear(this)">+</button>
+											</div>
+										</div>
+									</fieldset>
+									<!-- Resgistrar -->
+									<div class="row">
+										<div class="col-xs-12">
+											<div class="input-group input-group-lg">
+												<div clss="btn-group">
+													<input type="submit" name="AgregarUsuario" class="btn btn-primary" value="Crear hoja de responsabilidad">
+													<button type="button" class="btn btn-danger">Cancelar</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<br>
 								</div>
 							</div>
 						</div>
-					</fieldset>
-					<!-- Resgistrar -->
-					<div class="row">
-						<div class="col-xs-12">
-							<div class="input-group input-group-lg">
-								<div clss="btn-group">
-									<button type="button" class="btn btn-primary">Crear hoja de responsabilidad</button>
-									<button type="button" class="btn btn-danger">Cancelar</button>
-								</div>
-							</div>
-						</div>
-					</div>
-					<br>
+					</form>
 				</div>
-	
+				<!-- Modal para crear Grupo al que pertenece -->
+				<div class="modal fade slide left" id="ModalRegistrarPersona" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				  <div class="modal-dialog" role="document">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+
+						</button>
+						<h1 class="modal-title" id="myModalLabel">Registrar nueva persona</h1>
+
+					  </div>
+					  <div class="modal-body">
+						<p class="lead">Ingrese los datos</p>
+						<form method="post" id="myForm">
+						  <div class="form-group">
+							<label for="text">Nombres</label>
+							<input type="text" name="NombrePersona" id="NombrePersona" class="form-control" placeholder="Nombres" value="" required/>
+						  </div>
+						  <div class="form-group">
+							<label for="text">Apellidos</label>
+							<input type="text" name="ApellidoPersona" id="ApellidoPersona" class="form-control" placeholder="Apellidos" value="" required/>
+						  </div>
+						  <div class="form-group">
+							<label for="text">Dirección</label>
+							<input type="text" name="DireccionPersona" id="DireccionPersona" class="form-control" placeholder="Dirección" value="" required/>
+						  </div>
+						  <div class="form-group">
+							<label for="text">DPI</label>
+							<input type="text" name="DPIPersona" id="DPIPersona" class="form-control" placeholder="DPI" value="" required/>
+						  </div>
+						  <div class="form-group">
+							<label for="tel">Teléfono</label>
+							<input type="tel" name="TelefonoPersona" id="TelefonoPersona" class="form-control" placeholder="Teléfono" value="" required/>
+						  </div>
+						  <div class="form-group">
+							<label for="date">Fecha de nacimiento</label>
+							<input type="date" name="FechaNacPersona" id="FechaNacPersona" class="form-control" placeholder="Fecha de nacimiento" value="" required/>
+						  </div>
+						  <div class="form-group">
+							<label for="email">Correo</label>
+							<input type="text" name="CorreoPersona" id="CorreoPersona" class="form-control" placeholder="Correo" value="" required/>
+						  </div>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+						<input type="submit" name="GuardarPersona" class="btn btn-success" value="Registrar">
+					  </div>
+					  </form>
+					</div>
+				  </div>
+				</div>			
+				<!-- /.modal -->
+				<?php
+					// Código que recibe la información para agregar un nuevo Puesto
+					if (isset($_POST['GuardarPersona'])) {
+						// Guardamos la información en variables
+						$NombrePersona = $_POST['NombrePersona'];
+						$ApellidoPersona = $_POST['ApellidoPersona'];
+						$DireccionPersona = $_POST['DireccionPersona'];
+						$DPIPersona = $_POST['DPIPersona'];
+						$TelefonoPersona = $_POST['TelefonoPersona'];
+						$FechaNacPersona = $_POST['FechaNacPersona'];
+						$CorreoPersona = $_POST['CorreoPersona'];
+						
+						// Preparamos la consulta
+						$query = "INSERT INTO persona(NombrePersona, ApellidoPersona, DireccionPersona, DPIPersona, TelefonoPersona, FechaNacPersona, CorreoPersona)
+											  VALUES('".$NombrePersona."', '".$ApellidoPersona."', '".$DireccionPersona."', '".$DPIPersona."', '".$TelefonoPersona."', '".$FechaNacPersona."', '".$CorreoPersona."');";
+						// Ejecutamos la consulta
+						if(!$resultado = $mysqli->query($query)){
+    					echo "Error: La ejecución de la consulta falló debido a: \n";
+    					echo "Query: " . $query . "\n";
+    					echo "Errno: " . $mysqli->errno . "\n";
+    					echo "Error: " . $mysqli->error . "\n";
+    					exit;
+						}
+						else{
+							?>
+    						<div class="form-group">
+								<form name="Alerta">
+									<div class="container">
+										<div class="row text-center">
+											<div class="container-fluid">
+												<div class="row">
+													<div class="col-xs-10 col-xs-offset-1">
+														<div class="alert alert-success">Persona Registrada</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+							<?php
+							// Recargamos la página
+    						echo "<meta http-equiv=\"refresh\" content=\"0;URL=CrearHojaResponsabilidad.php\">"; 
+    					}
+					}
+					// Termina código para agregar puesto
+				?>
 				<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
 				<script src="js/jquery-1.11.3.min.js"></script>
 
