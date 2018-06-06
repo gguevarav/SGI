@@ -21,7 +21,6 @@
 
 </head>
 	<?php
-		//include_once 'Seguridad/conexion.php';
 		// Incluimos el archivo que valida si hay una sesión activa
 		include_once "Seguridad/seguro.php";
 		// Primero hacemos la consulta en la tabla de persona

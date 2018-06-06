@@ -18,31 +18,15 @@
 <link href="css/bootstrap.css" rel="stylesheet">
 <!-- se vincula al hoja de estilo para definir el aspecto del formulario de login-->  
 <link rel="stylesheet" type="text/css" href="css/estilo.css">
-<!-- para agregar más controles a la página -->
-<script type="text/javascript">
-	icremento =0;
-	function crear(obj) {
-		icremento++;
-		field = document.getElementById('field');
-		contenedor = document.createElement('div');
-		contenedor.id = 'div'+icremento;
-		field.appendChild(contenedor);
-		boton = document.createElement('input');
-		boton.type = 'text';
-		boton.name = 'text'+'[ ]';
-		contenedor.appendChild(boton);
-	}
-	function borrar(obj) {
-		field = document.getElementById('field');
-		field.removeChild(document.getElementById(obj));
-	}
-</script>
+<!-- Incluimos el script que contiene los datos  --> 
+<script src="js/CopiaElementos.js"></script>
 
 </head>
 	<?php
-		//include_once 'Seguridad/conexion.php';
 		// Incluimos el archivo que valida si hay una sesión activa
 		include_once "Seguridad/seguro.php";
+		// Primero hacemos la consulta en la tabla de persona
+		include_once "Seguridad/conexion.php";
 		// Si en la sesión activa tiene privilegios de administrador puede ver el formulario
 		if($_SESSION["PrivilegioUsuario"] == 'Administrador'){
 			// Guardamos el nombre del usuario en una variable
@@ -146,24 +130,32 @@
 											<th scope="col">Cantidad</th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody id="CuerpoTabla">
 										<tr>
 											<th scope="row">1</th>
 											<td>
 												<div class="input-group input-group-lg">
 													<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-asterisk"></i></span>
-													<select class="form-control" name="Producto" id="Producto">
+													<select class="form-control" name="Producto1" id="Producto1">
 														<option value="" disabled selected>Producto</option>
-																<option value=""></option>
-																<option value=""></option>
-																<option value=""></option>
+															<!-- Acá mostraremos los puestos que existen en la base de datos -->
+															<?php							
+																$VerProductos = "SELECT idProducto, NombreProducto FROM producto;";
+																// Hacemos la consulta
+																$resultado = $mysqli->query($VerProductos);			
+																	while ($row = mysqli_fetch_array($resultado)){
+																		?>
+																		<option value="<?php echo $row['idProducto'];?>"><?php echo $row['NombreProducto'] ?></option>
+															<?php
+																	}
+															?>
 													</select>
 												</div>
 											</td>
 											<td>
 												<div class="input-group input-group-lg">
 													<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-question-sign"></i></span>
-													<input type="number" class="form-control" name="Cantidad" placeholder="Cantidad" id="Cantidad" aria-describedby="sizing-addon1" required>
+													<input type="number" class="form-control" name="Cantidad1" placeholder="Cantidad" id="Cantidad1" aria-describedby="sizing-addon1" required>
 												</div>
 											</td>
 										</tr>

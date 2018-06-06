@@ -17,8 +17,7 @@
 <!-- Bootstrap -->
 <link href="css/bootstrap.css" rel="stylesheet">
 <!-- se vincula al hoja de estilo para definir el aspecto del formulario de login-->  
-<link rel="stylesheet" type="text/css" href="css/estilo.css">
-
+<link rel="stylesheet" type="text/css" href="css/estilo.css">s
 </head>
 	<?php
 		//include_once 'Seguridad/conexion.php';
