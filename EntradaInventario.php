@@ -46,7 +46,7 @@
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="#">Entrada de inventario</a></li>
 									<li><a href="SalidaInventario.php">Salida de inventario</a></li>
-									<li><a href="Inventario.php">Salida de inventario</a></li>
+									<li><a href="Inventario.php">Ver inventario</a></li>
 								</ul>
 							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Productos<span class="caret"></span></a>
