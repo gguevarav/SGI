@@ -44,6 +44,7 @@
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="EntradaInventario.php">Entrada de inventario</a></li>
 									<li><a href="SalidaInventario.php">Salida de inventario</a></li>
+									<li><a href="Inventario.php">Salida de inventario</a></li>
 								</ul>
 							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Productos<span class="caret"></span></a>
@@ -70,7 +71,7 @@
 									<li><a href="Usuario.php">Ver usuarios</a></li>
 								</ul>
 							</li>
-					  </ul>
+						</ul>
 					  <ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
 							<!-- Acá mostramos el nombre del usuario -->

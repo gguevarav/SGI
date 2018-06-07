@@ -115,7 +115,7 @@ CREATE TABLE RegistroSalida(
 	UsuarioSalida			VARCHAR(10)		NOT NULL,
 	idProducto				INTEGER			NOT NULL,
 	CantidadSalida			DECIMAL			NOT NULL,
-	DetalleEntrada			VARCHAR(150)	NOT NULL,
+	DetalleSalida			VARCHAR(150)	NOT NULL,
 	INDEX (idProducto),
 	FOREIGN KEY(idProducto)
 		REFERENCES Producto(idProducto)
