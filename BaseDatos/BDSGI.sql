@@ -123,30 +123,12 @@ CREATE TABLE RegistroSalida(
 		ON UPDATE NO ACTION
 );
 
-CREATE TABLE DetalleProdHojasRespons(
-	idDetalleProdHojasRespons	INTEGER			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
-	idProducto				INTEGER			NOT NULL,
-	NombreProducto			INTEGER			NOT NULL,
-	CantidadDetalleProdHojasRespons			DECIMAL				NOT NULL,
-	INDEX (idProducto),
-	FOREIGN KEY(idProducto)
-		REFERENCES Producto(idProducto)
-		ON DELETE CASCADE
-		ON UPDATE NO ACTION
-);
-
 CREATE TABLE HojaResponsabilidad(
 	idHojaResponsabilidad	INTEGER			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
-	FechaHojaRespons		DATE			NOT NULL,
+	FechaHoraHojaRespons		DATETIME			NOT NULL,
 	idPersonaEntrega		INTEGER			NOT NULL,
-	idDetalleProdHojasRespons	INTEGER			NOT NULL,
 	ObservacionHojaRespons	TEXT			NOT NULL,
 	idPersonaRecibe				INTEGER			NOT NULL,
-	INDEX (idDetalleProdHojasRespons),
-	FOREIGN KEY(idDetalleProdHojasRespons)
-		REFERENCES DetalleProdHojasRespons(idDetalleProdHojasRespons)
-		ON DELETE CASCADE
-		ON UPDATE NO ACTION,
 	INDEX (idPersonaEntrega),
 	FOREIGN KEY(idPersonaEntrega)
 		REFERENCES Persona(idPersona)
@@ -155,6 +137,23 @@ CREATE TABLE HojaResponsabilidad(
 	INDEX (idPersonaRecibe),
 	FOREIGN KEY(idPersonaRecibe)
 		REFERENCES Persona(idPersona)
+		ON DELETE CASCADE
+		ON UPDATE NO ACTION
+);
+
+CREATE TABLE DetalleProdHojasRespons(
+	idDetalleProdHojasRespons	INTEGER			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
+	idHojaResponsabilidad	INTEGER			NOT NULL,
+	idProducto				INTEGER			NOT NULL,
+	CantidadDetalleProdHojasRespons			DECIMAL				NOT NULL,
+	INDEX (idHojaResponsabilidad),
+	FOREIGN KEY(idHojaResponsabilidad)
+		REFERENCES HojaResponsabilidad(idHojaResponsabilidad)
+		ON DELETE CASCADE
+		ON UPDATE NO ACTION,
+	INDEX (idProducto),
+	FOREIGN KEY(idProducto)
+		REFERENCES Producto(idProducto)
 		ON DELETE CASCADE
 		ON UPDATE NO ACTION
 );

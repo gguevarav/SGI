@@ -91,7 +91,7 @@
 				<br>
 				<br>
 				<div class="form-group">
-					<form name="CrearUsuario" action="CrearUsuario.php" method="post">
+					<form name="CrearUsuario" action="CrearHojaResponsabilidad.php" method="post">
 						<div class="container">
 							<div class="row text-center">
 								<div class="container-fluid">
@@ -110,7 +110,7 @@
 									<div class="row">
 										<div class="col-xs-11">
 											<div class="input-group input-group-lg">
-												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-asterisk"></i></span>
+												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i></span>
 												<select class="form-control" name="Persona" id="Persona" required>
 												<option value="" disabled selected>Seleccione el responsable</option>
 														<!-- Acá mostraremos los puestos que existen en la base de datos -->
@@ -134,6 +134,17 @@
 												</div>
 											</div>
 									</div>
+									<br>
+									<!-- Detalle del Producto -->
+									<div class="row">
+										<div class="col-xs-12">
+											<div class="input-group input-group-lg">
+												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-pencil"></i></span>
+												<textarea class="form-control" rows="5" id="ObservacionHojaRespons" name="ObservacionHojaRespons" placeholder="Observaciones" aria-describedby="sizing-addon1"></textarea>
+											</div>
+										</div>
+									</div>
+									<br>
 									<hr>
 									<h3 class="text-center">Seleccione los artícilos que tiene a cargo</h3>
 									<br>
@@ -194,7 +205,7 @@
 										<div class="col-xs-12">
 											<div class="input-group input-group-lg">
 												<div clss="btn-group">
-													<input type="submit" name="AgregarUsuario" class="btn btn-primary" value="Crear hoja de responsabilidad">
+													<input type="submit" name="CrearHoja" class="btn btn-primary" value="Crear hoja de responsabilidad">
 													<button type="button" class="btn btn-danger">Cancelar</button>
 												</div>
 											</div>
@@ -304,6 +315,49 @@
     					}
 					}
 					// Termina código para agregar puesto
+					if (isset($_POST['CrearHoja'])) {
+						// Primero insertaremos los datos principales en la tabla principal
+						$FechaHojaResponsabilidad = date('Y-m-d H:i:s');
+						$idPersonaEntrega = $idUsuario2;
+						$ObservacionHojaRespons = $_POST['ObservacionHojaRespons'];
+						$idPersonaRecibe = $_POST['Persona'];
+						
+						$ConsultaInsersionInfomacionHoja = "INSERT INTO hojaresponsabilidad (FechaHoraHojaRespons, idPersonaEntrega, ObservacionHojaRespons, idPersonaRecibe)
+																					 VALUES('".$FechaHojaResponsabilidad."', ".$idPersonaEntrega.", '".$ObservacionHojaRespons."', ".$idPersonaRecibe.");";
+																					 
+						// Ejecutamos la primer consulta
+						if(!$ResultadoInsersionInformacionHoja = $mysqli->query($ConsultaInsersionInfomacionHoja)){
+							echo "Error: La ejecución de la consulta falló debido a: \n";
+							echo "Query: " . $ConsultaInsersionInfomacionHoja . "\n";
+							echo "Errno: " . $mysqli->errno . "\n";
+							echo "Error: " . $mysqli->error . "\n";
+							exit;
+						}
+						else{
+							$idHojaResponsabilidad = mysqli_insert_id($mysqli);
+							// Contador que nos almacenará la cantidad de líneas que tenemos que ingresar
+							$Contador = 1;
+							while ($post = each($_POST)){
+								//echo $post[0] . " = " . $post[1];
+								// Si el nombre del primer POST contiene la palabra producto al principio seguido de un número
+								if ($post[0] == "Producto".$Contador){
+									$Cantidad = $_POST['Cantidad'.$Contador];
+									// Si contiene la palabra inicial producto seguido de un número insertamos e valor en la tabla de datalle de hojas de responsabilidad
+									$ConsultaInsersionInfomacionDetalleHoja = "INSERT INTO detalleprodhojasrespons (idHojaResponsabilidad, idProducto, CantidadDetalleProdHojasRespons)
+																					 VALUES(".$idHojaResponsabilidad.", ".$post[1].", ".$Cantidad.");";
+									if(!$ResultadoInsersionInfomacionDetalleHoja = $mysqli->query($ConsultaInsersionInfomacionDetalleHoja)){
+										echo "Error: La ejecución de la consulta falló debido a: \n";
+										echo "Query: " . $ConsultaInsersionInfomacionDetalleHoja . "\n";
+										echo "Errno: " . $mysqli->errno . "\n";
+										echo "Error: " . $mysqli->error . "\n";
+										exit;
+									}
+									// Sumamos uno al contador
+									$Contador++;
+								}
+							}
+						}
+					}
 				?>
 				<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
 				<script src="js/jquery-1.11.3.min.js"></script>
