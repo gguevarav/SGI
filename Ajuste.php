@@ -52,16 +52,19 @@
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Productos<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="RegistroProducto.php">Registrar Producto</a></li>
+									<li><a href="Producto.php">Lista de Productos</a></li>
 								</ul>
 							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hojas de Reponsabilidad<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="CrearHojaResponsabilidad.php">Crear hoja de responsabilidad</a></li>
+									<li><a href="HojaResponsabilidad.php">Lista hojas de responsabilidad</a></li>
 								</ul>
 							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ajuste<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="#">Ajuste de inventario</a></li>
+									<li><a href="ListaAjuste.php">Lista de Ajuste de inventario</a></li>
 								</ul>
 							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestión de usuarios<span class="caret"></span></a>

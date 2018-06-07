@@ -149,7 +149,7 @@
 									</div>
 									<br>
 									<hr>
-									<h3 class="text-center">Seleccione los artícilos que tiene a cargo</h3>
+									<h3 class="text-center">Seleccione los artículos que tiene a cargo</h3>
 									<br>
 									<fieldset id="field">
 										<div class="row">
