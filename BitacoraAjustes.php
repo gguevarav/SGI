@@ -1,7 +1,5 @@
 <!--
-	Módulo de creación de Usuarios
-	Martes, 08 de mayo del 2018
-	09:02 PM
+	Bitácora de ajustes
 	Gemis Daniel Guevara Villeda
 	UMG - Morales Izabal
 -->
@@ -24,13 +22,12 @@
 		// Incluimos el archivo que valida si hay una sesión activa
 		include_once "Seguridad/seguro.php";
 		// Primero hacemos la consulta en la tabla de persona
-		include_once "Seguridad/conexion.php";
+		include_once "Seguridad/conexion.php";	
 		// Si en la sesión activa tiene privilegios de administrador puede ver el formulario
 		if($_SESSION["PrivilegioUsuario"] == 'Administrador'){
 			// Guardamos el nombre del usuario en una variable
 			$NombreUsuario =$_SESSION["NombreUsuario"];
 			$idUsuario2 =$_SESSION["idUsuario"];
-			$idHojaRespons = 8;
 		?>
 			<body>
 				<nav class="navbar navbar-default navbar-fixed-top">
@@ -59,7 +56,6 @@
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ajuste<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="Ajuste.php">Ajuste de inventario</a></li>
-									<li><a href="#">Lista de Ajuste de inventario</a></li>
 								</ul>
 							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hojas de Reponsabilidad<span class="caret"></span></a>
@@ -72,7 +68,7 @@
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="BitacoraEntradas.php">Bitácora de entradas de inventario</a></li>
 									<li><a href="BitacoraSalidas.php">Bitácora de salidas de inventario</a></li>
-									<li><a href="BitacoraAjustes.php">Bitácora de ajustes de inventario</a></li>
+									<li><a href="#">Bitácora de ajustes de inventario</a></li>
 								</ul>
 							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestión de usuarios<span class="caret"></span></a>
@@ -106,7 +102,7 @@
 								<div class="container-fluid">
 									<div class="row">
 										<div class="col-xs-6 ">
-										<h1 class="text-center">Hojas de responsabilidad registradas</h1>
+										<h1 class="text-center">Bitácora de ajustes en el inventario</h1>
 										</div>
 										<!-- Contenedor del ícono del Usuario -->
 										<div class="col-xs-6 Icon">
@@ -122,53 +118,38 @@
 												<!-- Contenido -->
 												<tr>
 													<th>#</th>
-													<th>Fecha de generación</th>
-													<th>Entregado por</th>
-													<th>Recibido por</th>
-													<th>Observaciones</th>
-													<th>Detalle</th>
+													<th>Fecha y hora</th>
+													<th>Artículo</th>
+													<th>Cantidad</th>
+													<th>Comentario</th>
+													<th>Realizado por</th>
 												</tr>
 											</thead>
 											<!-- Cuerpo de la tabla -->
 											<tbody>
 												<!-- Contenido de la tabla -->
 													<!-- Acá mostraremos los usuarios y seleccionaremos el que deseamos eliminar -->
-													<?php
-														$VerHojasResponsabilidad = "SELECT * FROM hojaresponsabilidad";
+													<?php							
+														$VerProductos = "SELECT * FROM ajusteinventario";
 														// Hacemos la consulta
-														$resultado = $mysqli->query($VerHojasResponsabilidad);
+														$resultado = $mysqli->query($VerProductos);
 															while ($row = mysqli_fetch_array($resultado)){
 																?>
 																<tr>
-																<td><span id="idHojaResponsabilidad<?php echo $row['idHojaResponsabilidad'];?>"><?php echo $row['idHojaResponsabilidad'] ?></span></td>
-																<td><span id="FechaGenerada<?php echo $row['idHojaResponsabilidad'];?>"><?php echo $row['FechaHoraHojaRespons'] ?></span></td>
-																<td><span id="EntregadoPor<?php echo $row['idHojaResponsabilidad'];?>"><!-- Acá mostraremos el nombre de la persona a partir del id que se tiene en la tabla -->
+																<td><span id="idAjusteInventario<?php echo $row['idAjusteInventario'];?>"><?php echo $row['idAjusteInventario'] ?></span></td>
+																<td><span id="FechaHoraAjuste<?php echo $row['idAjusteInventario'];?>"><?php echo $row['FechaHoraAjusteInventario'] ?></span></td>
+																<td><span id="Producto<?php echo $row['idAjusteInventario'];?>"><!-- Acá mostraremos el nombre del producto a partir del id que se tiene en la tabla -->
 																																		<?php							
-																																			$VerNombrePersona = "SELECT NombrePersona, ApellidoPersona FROM persona WHERE idPersona=".$row['idPersonaEntrega'].";";
+																																			$VerNombreProducto = "SELECT NombreProducto FROM producto WHERE idProducto=".$row['idProducto'].";";
 																																			// Hacemos la consulta
-																																			$ResultadoVerPersona = $mysqli->query($VerNombrePersona);
-																																			$FilaResultado = $ResultadoVerPersona->fetch_assoc();
-																																			$NombrePersona = $FilaResultado['NombrePersona'] . " " . $FilaResultado['ApellidoPersona'];
-																																			echo $NombrePersona;
+																																			$ResultadoVerProducto = $mysqli->query($VerNombreProducto);
+																																			$FilaResultado = $ResultadoVerProducto->fetch_assoc();
+																																			$NombreProducto = $FilaResultado['NombreProducto'];
+																																			echo $NombreProducto;
 																																		?></span></td>
-																<td><span id="RecibidoPor<?php echo $row['idHojaResponsabilidad'];?>"><!-- Acá mostraremos el nombre de la persona a partir del id que se tiene en la tabla -->
-																																		<?php							
-																																			$VerNombrePersona = "SELECT NombrePersona, ApellidoPersona FROM persona WHERE idPersona=".$row['idPersonaRecibe'].";";
-																																			// Hacemos la consulta
-																																			$ResultadoVerPersona = $mysqli->query($VerNombrePersona);
-																																			$FilaResultado = $ResultadoVerPersona->fetch_assoc();
-																																			$NombrePersona = $FilaResultado['NombrePersona'] . " " . $FilaResultado['ApellidoPersona'];
-																																			echo $NombrePersona;
-																																		?></span></td>
-																<td><span id="Observaciones<?php echo $row['idHojaResponsabilidad'];?>"><?php echo $row['ObservacionHojaRespons'] ?></span></td>
-																<td>
-																	<!-- Ver detalles de hoja  -->
-																	<div>
-																		<div class="input-group input-group-lg">
-																			<button type="button" class="btn btn-success DetalleHojaResponsabilidad" value="<?php	$row['idHojaResponsabilidad']; ?>"><span class="glyphicon glyphicon-list-alt">Ver detalles</span></button>
-																		</div>
-																	</div>
-																</td>
+																<td><span id="Cantidad<?php echo $row['idAjusteInventario'];?>"><?php echo $row['CantidadAjusteInventario'] ?></span></td>
+																<td><span id="Comentario<?php echo $row['idAjusteInventario'];?>"><?php echo $row['ComentarioAjusteInventario'] ?></span></td>
+																<td><span id="Usuario<?php echo $row['idAjusteInventario'];?>"><?php echo $row['UsuarioAjusteInventario'] ?></span></td>
 																</tr>
 													<?php
 															}
@@ -181,71 +162,13 @@
 						</div>
 					</div>
 				</div>
-				<!-- Edit Modal-->
-					<div class="modal fade" id="frmVerDetalle" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-									<center><h1 class="modal-title" id="myModalLabel">Detalle de artículos</h1></center>
-								</div>
-								<form method="post" action="Usuario.php" id="myForm">
-								<input type="text" name="idHojaResponsabilidad" style="width:350px; visibility:hidden;" class="form-control" id="idHojaResponsabilidad">
-								<div class="table-responsive">          
-									<table class="table">
-										<!-- Título -->
-										<thead>
-											<!-- Contenido -->
-											<tr>
-												<th>#</th>
-												<th>Artículo</th>
-												<th>Cantidad</th>
-											</tr>
-										</thead>
-										<!-- Cuerpo de la tabla -->
-										<tbody>
-											<!-- Contenido de la tabla -->
-												<!-- Acá mostraremos los usuarios y seleccionaremos el que deseamos eliminar -->
-												<?php
-													$VerHojasResponsabilidad = "SELECT idDetalleProdHojasRespons, idProducto, CantidadDetalleProdHojasRespons FROM detalleprodhojasrespons WHERE idHojaResponsabilidad=".$idHojaRespons.";";
-													// Hacemos la consulta
-													$resultado = $mysqli->query($VerHojasResponsabilidad);
-														while ($row = mysqli_fetch_array($resultado)){
-															?>
-															<tr>
-															<td><span id="idDetalleProdHojasRespons<?php echo $row['idDetalleProdHojasRespons'];?>"><?php echo $row['idDetalleProdHojasRespons'] ?></span></td>
-															<td><span id="EntregadoPor<?php echo $row['idDetalleProdHojasRespons'];?>"><!-- Acá mostraremos el nombre de la persona a partir del id que se tiene en la tabla -->
-																																	<?php							
-																																		$VerNombreProducto = "SELECT NombreProducto FROM producto WHERE idProducto=".$row['idProducto'].";";
-																																		// Hacemos la consulta
-																																		$ResultadoVerProducto = $mysqli->query($VerNombreProducto);
-																																		$FilaResultado = $ResultadoVerProducto->fetch_assoc();
-																																		$NombreProducto = $FilaResultado['NombreProducto'];
-																																		echo $NombreProducto;
-																																	?></span></td>
-															<td><span id="Cantidad<?php echo $row['idDetalleProdHojasRespons'];?>"><?php echo $row['CantidadDetalleProdHojasRespons'] ?></span></td>
-															</tr>
-												<?php
-														}
-												?>
-										</tbody>
-									</table>
-								</div>	
-								<div class="modal-footer">
-									<button type="button" class="btn btn-success" data-dismiss="modal">Cerrar</button>
-								</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				<!-- /.modal -->
 				<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
 				<script src="js/jquery-1.11.3.min.js"></script>
 
 				<!-- Include all compiled plugins (below), or include individual files as needed --> 
 				<script src="js/bootstrap.js"></script>
 				<!-- Incluimos el script que nos dará el nombre de la persona para mostrarlo en el modal -->
-				<script src="js/Modal.js"></script>
+				<script src="js/custom.js"></script>
 				<!-- Pie de página, se utilizará el mismo para todos. -->
 				<footer>
 					<hr>

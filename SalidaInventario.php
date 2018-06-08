@@ -46,7 +46,7 @@
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Inventario<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="EntradaInventario.php">Entrada de inventario</a></li>
-									<li><a href="#">Salida de inventario</a></li>
+									<li><a href="SalidaInventario.php">Salida de inventario</a></li>
 									<li><a href="Inventario.php">Ver inventario</a></li>
 								</ul>
 							</li>
@@ -56,16 +56,23 @@
 									<li><a href="Producto.php">Lista de Productos</a></li>
 								</ul>
 							</li>
+							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ajuste<span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="Ajuste.php">Ajuste de inventario</a></li>
+									<li><a href="#">Lista de Ajuste de inventario</a></li>
+								</ul>
+							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hojas de Reponsabilidad<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="CrearHojaResponsabilidad.php">Crear hoja de responsabilidad</a></li>
 									<li><a href="HojaResponsabilidad.php">Lista hojas de responsabilidad</a></li>
 								</ul>
 							</li>
-							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ajuste<span class="caret"></span></a>
+							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Bitácoras<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
-									<li><a href="Ajuste.php">Ajuste de inventario</a></li>
-									<li><a href="ListaAjuste.php">Lista de Ajuste de inventario</a></li>
+									<li><a href="BitacoraEntradas.php">Bitácora de entradas de inventario</a></li>
+									<li><a href="BitacoraSalidas.php">Bitácora de salidas de inventario</a></li>
+									<li><a href="BitacoraAjustes.php">Bitácora de ajustes de inventario</a></li>
 								</ul>
 							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestión de usuarios<span class="caret"></span></a>
@@ -78,9 +85,9 @@
 					  <ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
 							<!-- Acá mostramos el nombre del usuario -->
-							<a href="#" class="dropdown-toggle negrita" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $NombreUsuario; ?></a>
-							<!-- <span class="caret"></span> Agrega un indicador de flecha abajo -->
+							<a href="#" class="dropdown-toggle negrita" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
 							<ul class="dropdown-menu">
+								<li><a href="#"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i><?php echo $NombreUsuario; ?></a></li>
 								<li><a href="Seguridad/logout.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Cerrar Sesión</a></li>
 							</ul>
 						</li>
