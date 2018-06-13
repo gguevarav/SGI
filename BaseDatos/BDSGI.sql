@@ -13,7 +13,7 @@ CREATE OR REPLACE TABLE Persona(
 	TelefonoPersona			VARCHAR(20),
 	FechaNacPersona			DATE			NOT NULL,
 	CorreoPersona			VARCHAR(50)
-);
+)ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_spanish_ci;
 
 CREATE TABLE Usuario(
 	idUsuario				TINYINT			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
@@ -26,27 +26,27 @@ CREATE TABLE Usuario(
         REFERENCES Persona(idPersona)
         ON DELETE CASCADE
         ON UPDATE NO ACTION
-);
+)ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_spanish_ci;
 
 CREATE TABLE UnidadMedida(
 	idUnidadMedida			TINYINT			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
 	NombreUnidadMedida		VARCHAR(20)
-);
+)ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_spanish_ci;
 
 CREATE TABLE TipoEntrada(
 	idTipoEntrada			TINYINT			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
 	NombreTipoEntrada		VARCHAR(20)
-);
+)ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_spanish_ci;
 
 CREATE TABLE LineaProducto(
 	idLinea					INTEGER			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
 	NombreLineaProducto		VARCHAR(25)
-);
+)ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_spanish_ci;
 
 CREATE TABLE Marca(
 	idMarca					TINYINT			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
 	NombreMarca				VARCHAR(20)
-);
+)ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_spanish_ci;
 
 CREATE TABLE Producto(
 	idProducto				INTEGER			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
@@ -74,7 +74,7 @@ CREATE TABLE Producto(
 		REFERENCES LineaProducto(idLinea)
 		ON DELETE CASCADE
 		ON UPDATE NO ACTION
-);
+)ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_spanish_ci;
 
 CREATE TABLE Inventario(
 	idInventario			INTEGER			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
@@ -85,7 +85,7 @@ CREATE TABLE Inventario(
 		REFERENCES Producto(idProducto)
 		ON DELETE CASCADE
 		ON UPDATE NO ACTION
-);
+)ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_spanish_ci;
 
 CREATE TABLE AjusteInventario(
 	idAjusteInventario		INTEGER			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
@@ -99,7 +99,7 @@ CREATE TABLE AjusteInventario(
 		REFERENCES Producto(idProducto)
 		ON DELETE CASCADE
 		ON UPDATE NO ACTION
-);
+)ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_spanish_ci;
 
 CREATE TABLE RegistroEntrada(
 	idRegistroEntrada		INTEGER			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
@@ -119,7 +119,7 @@ CREATE TABLE RegistroEntrada(
 		REFERENCES TipoEntrada(idTipoEntrada)
 		ON DELETE CASCADE
 		ON UPDATE NO ACTION
-);
+)ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_spanish_ci;
 
 CREATE TABLE RegistroSalida(
 	idRegistroSalida		INTEGER			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
@@ -133,7 +133,7 @@ CREATE TABLE RegistroSalida(
 		REFERENCES Producto(idProducto)
 		ON DELETE CASCADE
 		ON UPDATE NO ACTION
-);
+)ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_spanish_ci;
 
 CREATE TABLE HojaResponsabilidad(
 	idHojaResponsabilidad	INTEGER			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
@@ -151,7 +151,7 @@ CREATE TABLE HojaResponsabilidad(
 		REFERENCES Persona(idPersona)
 		ON DELETE CASCADE
 		ON UPDATE NO ACTION
-);
+)ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_spanish_ci;
 
 CREATE TABLE DetalleProdHojasRespons(
 	idDetalleProdHojasRespons	INTEGER			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
@@ -168,4 +168,16 @@ CREATE TABLE DetalleProdHojasRespons(
 		REFERENCES Producto(idProducto)
 		ON DELETE CASCADE
 		ON UPDATE NO ACTION
-);
+)ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_spanish_ci;
+
+CREATE TABLE Kardex(
+	idKardex				INTEGER			NOT NULL			PRIMARY KEY				AUTO_INCREMENT,
+	FechaKardex				TIMESTAMP		NOT NULL			DEFAULT CURRENT_TIMESTAMP,
+	idProducto				INTEGER			NOT NULL,
+	DebeKardex				INTEGER,
+	HaberKardex				INTEGER,
+	FOREIGN KEY(idProducto)
+		REFERENCES Producto(idProducto)
+		ON DELETE CASCADE
+		ON UPDATE NO ACTION
+)ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_spanish_ci;

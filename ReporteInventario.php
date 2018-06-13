@@ -8,12 +8,13 @@
 		function Header()
 		{
 			$this->Image('imagenes/logo.png',5 , 5, 30);
+			$this->Image('imagenes/LogoPrincipal.png',170 , 5, 30);
 			$this->SetFont('Arial', 'B', 15);
-			$this->Cell(25);
+			$this->Cell(35);
 			$this->Write(5, utf8_decode('Estación de bomberos voluntarios de la 73 Cia'));
 			$this->Ln();
 			$this->Ln();
-			$this->Cell(30);
+			$this->Cell(75);
 			$this->Write(5, utf8_decode('Morales Izabal'));
 			$this->Ln();
 			$this->Ln();

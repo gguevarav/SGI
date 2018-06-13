@@ -8,26 +8,20 @@
 		function Header()
 		{
 			$this->Image('imagenes/logo.png',5 , 5, 30);
+			$this->Image('imagenes/LogoPrincipal.png',170 , 5, 30);
 			$this->SetFont('Arial', 'B', 15);
-			$this->Cell(30);
+			$this->Cell(35);
 			$this->Write(5, utf8_decode('Estación de bomberos voluntarios de la 73 Cia'));
 			$this->Ln();
 			$this->Ln();
-			$this->Cell(30);
+			$this->Cell(75);
 			$this->Write(5, utf8_decode('Morales Izabal'));
-			$this->Ln();
-			$this->Ln();
-			$this->Ln();
-			$this->SetFont('Arial', 'B', 20);
-			$this->Cell(40);
-			$this->Write(5, utf8_decode('Sistema de Gestión de Inventarios'));
-			$this->Ln();
 			$this->Ln();
 			$this->Ln();
 			$this->SetFont('Arial', 'B', 20);
 			$this->Cell(60);
 			$this->Write(5, 'Reporte de Productos');
-			$this->Ln(20);
+			$this->Ln(10);
 		}
 		
 		function Footer()

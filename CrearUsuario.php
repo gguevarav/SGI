@@ -76,6 +76,7 @@
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="ReporteProductos.php" target="_blank">Reporte de productos</a></li>
 									<li><a href="ReporteInventario.php" target="_blank">Reporte de inventario</a></li>
+									<li><a href="Kardex.php" target="_blank">Kardex</a></li>
 								</ul>
 							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestión de usuarios<span class="caret"></span></a>

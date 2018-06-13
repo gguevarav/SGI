@@ -73,12 +73,14 @@
 									<li><a href="BitacoraEntradas.php">Bitácora de entradas de inventario</a></li>
 									<li><a href="BitacoraSalidas.php">Bitácora de salidas de inventario</a></li>
 									<li><a href="BitacoraAjustes.php">Bitácora de ajustes de inventario</a></li>
+									<li><a href="Kardex.php" target="_blank">Kardex</a></li>
 								</ul>
 							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reportes<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="ReporteProductos.php" target="_blank">Reporte de productos</a></li>
 									<li><a href="ReporteInventario.php" target="_blank">Reporte de inventario</a></li>
+									<li><a href="Kardex.php" target="_blank">Kardex</a></li>
 								</ul>
 							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestión de usuarios<span class="caret"></span></a>
@@ -205,6 +207,8 @@
 						// Preparamos la consulta, esta insertará en la tabla de registro entrada
 						$query = "INSERT INTO registrosalida(FechaHoraSalida, UsuarioSalida, idProducto, CantidadSalida, DetalleSalida)
 											  VALUES('".$FechaHora."', '".$Usuario."', ".$Producto.", ".$Cantidad.", '".$DetalleSalida."');";
+						$queryKardex = "INSERT INTO kardex(idProducto, DebeKardex)
+											  VALUES(".$Producto.", ".$Cantidad.");";
 						// Lo primero que debemos hacer para restar en la tabla de inventario es saber si ya existe el producto dentro del inventario
 						// Preparamos una consulta que nos verificará si ya existe, en caso dado que si, obtenemos el id del la fila, obtenemos la cantidad que tiene
 						// y le restamos la cantidad que estamos registrando
@@ -236,6 +240,14 @@
 								if(!$resultado1 = $mysqli->query($ActualizarCantidadInventario)){
 									echo "Error: La ejecución de la consulta falló debido a: \n";
 									echo "Query: " . $ActualizarCantidadInventario . "\n";
+									echo "Errno: " . $mysqli->errno . "\n";
+									echo "Error: " . $mysqli->error . "\n";
+									exit;
+								}
+								// Guardamos lo realizado en el kardex
+								if(!$resultado2 = $mysqli->query($queryKardex)){
+									echo "Error: La ejecución de la consulta falló debido a: \n";
+									echo "Query: " . $queryKardex . "\n";
 									echo "Errno: " . $mysqli->errno . "\n";
 									echo "Error: " . $mysqli->error . "\n";
 									exit;

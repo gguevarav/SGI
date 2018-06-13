@@ -78,6 +78,7 @@
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="ReporteProductos.php" target="_blank">Reporte de productos</a></li>
 									<li><a href="ReporteInventario.php" target="_blank">Reporte de inventario</a></li>
+									<li><a href="Kardex.php" target="_blank">Kardex</a></li>
 								</ul>
 							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestión de usuarios<span class="caret"></span></a>
@@ -389,11 +390,13 @@
 						// Preparamos la consulta, esta insertará en la tabla de registro entrada
 						$query = "INSERT INTO registroentrada(FechaHoraEntrada, UsuarioEntrada, idProducto, CantidadEntrada, DetalleEntrada, idTipoEntrada)
 											  VALUES('".$FechaHora."', '".$Usuario."', ".$Producto.", ".$Cantidad.", '".$DetalleProducto."', ".$TipoEntrada.");";
+						$queryKardex = "INSERT INTO kardex(idProducto, HaberKardex)
+											  VALUES(".$Producto.", ".$Cantidad.");";
 						// Lo primero que debemos hacer para insertar en la tabla de inventario es saber si ya existe el producto dentro del inventario
 						// Preparamos una consulta que nos verificará si ya existe, en caso dado que si, obtenemos el id del la fila, obtenemos la cantidad que tiene
 						// y le adicionamos la cantidad que estamos registrando
 						$ConsultaExisteInventario = "SELECT idInventario, idProducto, CantidadInventario FROM inventario WHERE idProducto=".$Producto.";";
-						$ResultadoExisteInventario = $mysqli->query($ConsultaExisteInventario);			
+						$ResultadoExisteInventario = $mysqli->query($ConsultaExisteInventario);						
 						$row = mysqli_fetch_array($ResultadoExisteInventario);
 						if($row['idProducto'] != null){
 							// Esta es la cantidad que ya existe en la base de datos
@@ -414,6 +417,14 @@
 								echo "Error: " . $mysqli->error . "\n";
 								exit;
 							}
+							// Guardamos lo realizado en el kardex
+							if(!$resultado2 = $mysqli->query($queryKardex)){
+								echo "Error: La ejecución de la consulta falló debido a: \n";
+								echo "Query: " . $queryKardex . "\n";
+								echo "Errno: " . $mysqli->errno . "\n";
+								echo "Error: " . $mysqli->error . "\n";
+								exit;
+							}
 						}
 						else{
 							// Preparamos la consulta, esta insertará en la tabla de inventario
@@ -430,6 +441,14 @@
 							if(!$resultado2 = $mysqli->query($query2)){
 								echo "Error: La ejecución de la consulta falló debido a: \n";
 								echo "Query: " . $query2 . "\n";
+								echo "Errno: " . $mysqli->errno . "\n";
+								echo "Error: " . $mysqli->error . "\n";
+								exit;
+							}
+							// Guardamos lo realizado en el kardex
+							if(!$resultado3 = $mysqli->query($queryKardex)){
+								echo "Error: La ejecución de la consulta falló debido a: \n";
+								echo "Query: " . $queryKardex . "\n";
 								echo "Errno: " . $mysqli->errno . "\n";
 								echo "Error: " . $mysqli->error . "\n";
 								exit;

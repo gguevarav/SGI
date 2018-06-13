@@ -78,6 +78,7 @@
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="ReporteProductos.php" target="_blank">Reporte de productos</a></li>
 									<li><a href="ReporteInventario.php" target="_blank">Reporte de inventario</a></li>
+									<li><a href="Kardex.php" target="_blank">Kardex</a></li>
 								</ul>
 							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestión de usuarios<span class="caret"></span></a>
@@ -110,7 +111,7 @@
 							<div class="row text-center">
 								<div class="container-fluid">
 									<div class="row">
-										<div class="col-xs-6 ">
+										<div class="col-xs-5 ">
 										<h1 class="text-center">Inventario actual</h1>
 										</div>
 										<!-- Contenedor del ícono del Usuario -->
@@ -118,10 +119,19 @@
 											<!-- Icono de usuario -->
 											<span class="glyphicon glyphicon-user"></span>
 										</div>
-										<div class="col-xs-1">
-											<div class="input-group input-group-lg">
-												<a class="btn btn-success btn-lg" href="ReporteInventario.php" target="_blank"><span class="glyphicon glyphicon-print"></span></a>
-											</div>
+										<div class="form-group">
+											<form name="Exportar" action="Inventario.php" method="post">
+												<div class="col-xs-1">
+													<div class="input-group input-group-lg">
+														<a class="btn btn-success btn-lg" href="ReporteInventario.php" target="_blank"><span class="glyphicon glyphicon-print"></span></a>
+													</div>
+												</div>
+												<div class="col-xs-1">
+													<div class="input-group input-group-lg">
+														<input type="submit" name="Exportar" class="btn btn-success" value="Exportar a excel">
+													</div>
+												</div>
+											</form>
 										</div>
 									</div>
 									<br>
@@ -319,6 +329,31 @@
 							</div>
     						<?php
     					}
+					}
+					if(isset($_POST["Exportar"])) {
+						$query = "SELECT * FROM producto;";
+						$resultado = $mysqli->query($query);
+						$Productos = array();
+						while ($rows = mysqli_fetch_array($resultado)){
+						$Productos[] = $rows;
+						}
+						if(!empty($Productos)) {
+							$filename = "libros.xls";
+							header("Content-Type: application/vnd.ms-excel");
+							header("Content-Disposition: attachment; filename=".$filename);	 
+							$mostrar_columnas = false;
+							foreach($Productos as $producto) {
+								if(!$mostrar_columnas) {
+									echo implode("\t", array_keys($producto)) . "\n";
+									$mostrar_columnas = true;
+								}
+								echo implode("\t", array_values($producto)) . "\n";
+							}
+						}
+						else{
+							echo 'No hay datos a exportar';
+						}
+						exit;
 					}
 				?>
 				<!-- Edit Modal-->
