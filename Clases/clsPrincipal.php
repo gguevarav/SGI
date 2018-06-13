@@ -38,7 +38,7 @@
             $server = "localhost";
             $usuario = "root";
             $pass = "";
-            $BD = "GeekyTheoryBD";
+            $BD = "bdbomberos";
             //variable que guarda la conexión de la base de datos
             $conexion = mysqli_connect($server, $usuario, $pass, $BD); 
             //Comprobamos si la conexión ha tenido exito

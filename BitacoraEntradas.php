@@ -128,6 +128,7 @@
 													<th>Artículo</th>
 													<th>Cantidad</th>
 													<th>Comentario</th>
+													<th>Razón entrada inventario</th>
 													<th>Realizado por</th>
 												</tr>
 											</thead>
@@ -155,6 +156,15 @@
 																																		?></span></td>
 																<td><span id="CantidadEntrada<?php echo $row['idRegistroEntrada'];?>"><?php echo $row['CantidadEntrada'] ?></span></td>
 																<td><span id="DetalleEntrada<?php echo $row['idRegistroEntrada'];?>"><?php echo $row['DetalleEntrada'] ?></span></td>
+																<td><span id="RazonEntrada<?php echo $row['idRegistroEntrada'];?>"><!-- Acá mostraremos el nombre del producto a partir del id que se tiene en la tabla -->
+																																<?php							
+																																	$VerNombreTipoEntrada = "SELECT NombreTipoEntrada FROM tipoentrada WHERE idTipoEntrada=".$row['idTipoEntrada'].";";
+																																	// Hacemos la consulta
+																																	$ResultadoVerEntrada = $mysqli->query($VerNombreTipoEntrada);
+																																	$FilaResultadoEntrada = $ResultadoVerEntrada->fetch_assoc();
+																																	$NombreEntrada = $FilaResultadoEntrada['NombreTipoEntrada'];
+																																	echo $NombreEntrada;
+																																?></span></td>
 																<td><span id="UsuarioEntrada<?php echo $row['idRegistroEntrada'];?>"><?php echo $row['UsuarioEntrada'] ?></span></td>
 																</tr>
 													<?php

@@ -33,6 +33,11 @@ CREATE TABLE UnidadMedida(
 	NombreUnidadMedida		VARCHAR(20)
 );
 
+CREATE TABLE TipoEntrada(
+	idTipoEntrada			TINYINT			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
+	NombreTipoEntrada		VARCHAR(20)
+);
+
 CREATE TABLE LineaProducto(
 	idLinea					INTEGER			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
 	NombreLineaProducto		VARCHAR(25)
@@ -46,13 +51,14 @@ CREATE TABLE Marca(
 CREATE TABLE Producto(
 	idProducto				INTEGER			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
 	NombreProducto			VARCHAR(100)	NOT NULL,
-	PrecioProducto			DECIMAL			NOT NULL,
+	PrecioProducto			DECIMAL(10,2)			NOT NULL,
 	idMarca					TINYINT,
 	idUnidadMedida			TINYINT,
 	NumeroInvenProd			VARCHAR(20),
 	ModeloProducto			INTEGER,
 	idLinea					INTEGER,
 	ColorProducto			VARCHAR(15),
+	EstadoProducto			VARCHAR(20),
 	INDEX (idMarca),
 	FOREIGN KEY(idMarca)
 		REFERENCES Marca(idMarca)
@@ -85,7 +91,7 @@ CREATE TABLE AjusteInventario(
 	idAjusteInventario		INTEGER			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
 	FechaHoraAjusteInventario	DATETIME		NOT NULL,
 	idProducto				INTEGER			NOT NULL,
-	CantidadAjusteInventario			DECIMAL			NOT NULL,
+	CantidadAjusteInventario			DECIMAL(10,2)			NOT NULL,
 	ComentarioAjusteInventario		TEXT			NOT NULL,
 	UsuarioAjusteInventario			VARCHAR(10)			NOT NULL,
 	INDEX (idProducto),
@@ -100,11 +106,17 @@ CREATE TABLE RegistroEntrada(
 	FechaHoraEntrada		DATETIME		NOT NULL,
 	UsuarioEntrada			VARCHAR(10)		NOT NULL,
 	idProducto				INTEGER			NOT NULL,
-	CantidadEntrada			DECIMAL			NOT NULL,
+	CantidadEntrada			DECIMAL(10,2)			NOT NULL,
 	DetalleEntrada			VARCHAR(150)	NOT NULL,
+	idTipoEntrada			TINYINT			NOT NULL,
 	INDEX (idProducto),
 	FOREIGN KEY(idProducto)
 		REFERENCES Producto(idProducto)
+		ON DELETE CASCADE
+		ON UPDATE NO ACTION,
+	INDEX (idTipoEntrada),
+	FOREIGN KEY(idTipoEntrada)
+		REFERENCES TipoEntrada(idTipoEntrada)
 		ON DELETE CASCADE
 		ON UPDATE NO ACTION
 );
@@ -114,7 +126,7 @@ CREATE TABLE RegistroSalida(
 	FechaHoraSalida			DATETIME		NOT NULL,
 	UsuarioSalida			VARCHAR(10)		NOT NULL,
 	idProducto				INTEGER			NOT NULL,
-	CantidadSalida			DECIMAL			NOT NULL,
+	CantidadSalida			DECIMAL(10,2)			NOT NULL,
 	DetalleSalida			VARCHAR(150)	NOT NULL,
 	INDEX (idProducto),
 	FOREIGN KEY(idProducto)
@@ -145,7 +157,7 @@ CREATE TABLE DetalleProdHojasRespons(
 	idDetalleProdHojasRespons	INTEGER			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
 	idHojaResponsabilidad	INTEGER			NOT NULL,
 	idProducto				INTEGER			NOT NULL,
-	CantidadDetalleProdHojasRespons			DECIMAL				NOT NULL,
+	CantidadDetalleProdHojasRespons			DECIMAL(10,2)				NOT NULL,
 	INDEX (idHojaResponsabilidad),
 	FOREIGN KEY(idHojaResponsabilidad)
 		REFERENCES HojaResponsabilidad(idHojaResponsabilidad)

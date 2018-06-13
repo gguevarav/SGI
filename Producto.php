@@ -23,6 +23,8 @@
 	<?php
 		// Incluimos el archivo que valida si hay una sesión activa
 		include_once "Seguridad/seguro.php";
+		// Primero hacemos la consulta en la tabla de persona
+		include_once "Seguridad/conexion.php";								
 		// Si en la sesión activa tiene privilegios de administrador puede ver el formulario
 		if($_SESSION["PrivilegioUsuario"] == 'Administrador'){
 			// Guardamos el nombre del usuario en una variable
@@ -104,104 +106,423 @@
 				<br>
 				<br>
 				<div class="form-group">
-						<div class="container">
-							<div class="row text-center">
-								<div class="container-fluid">
-									<div class="row">
-										<div class="col-xs-6 ">
+					<div class="container">
+						<div class="row text-center">
+							<div class="container-fluid">
+								<div class="row">
+									<div class="col-xs-6 ">
 										<h1 class="text-center">Productos registrados</h1>
-										</div>
-										<!-- Contenedor del ícono del Usuario -->
-										<div class="col-xs-6 Icon">
-											<!-- Icono de usuario -->
-											<span class="glyphicon glyphicon-user"></span>
-										</div>
 									</div>
-									<br>
-									<div class="table-responsive">          
-										<table class="table">
-											<!-- Título -->
-											<thead>
-												<!-- Contenido -->
-												<tr>
-													<th>#</th>
-													<th>Nombre</th>
-													<th>Marca</th>
-													<th>Modelo</th>
-													<th>Línea</th>
-													<th>Medida</th>
-													<th>Color</th>
-													<th>Precio</th>
-												</tr>
-											</thead>
-											<!-- Cuerpo de la tabla -->
-											<tbody>
-												<!-- Contenido de la tabla -->
-													<!-- Acá mostraremos los usuarios y seleccionaremos el que deseamos eliminar -->
-													<?php
-														// Primero hacemos la consulta en la tabla de persona
-														include_once "Seguridad/conexion.php";								
-														$VerProductos = "SELECT * FROM producto";
-														// Hacemos la consulta
-														$resultado = $mysqli->query($VerProductos);
-															while ($row = mysqli_fetch_array($resultado)){
-																// Obtenemos el nombre de usuario y privilegio de cada persona
-															// Primero haremos la consulta para mostrar el nombre del proveedor a partir del ID
-															$VerMarca = "SELECT NombreMarca FROM Marca WHERE idMarca='".$row['idMarca']."'";
-															// Ejecutamos la consulta
-															$ResultadoConsultaMarca = $mysqli->query($VerMarca);
-															// Guardamos la consulta en un array
-															$ResultadoConsulta = $ResultadoConsultaMarca->fetch_assoc();
-															// Nombre del banco
-															$NombreMarca = $ResultadoConsulta['NombreMarca'];
-															$VerLineaProducto = "SELECT NombreLineaProducto FROM lineaproducto WHERE idLinea='".$row['idLinea']."'";
-															// Ejecutamos la consulta
-															$ResultadoConsultaLineaProducto = $mysqli->query($VerLineaProducto);
-															// Guardamos la consulta en un array
-															$ResultadoConsulta = $ResultadoConsultaLineaProducto->fetch_assoc();
-															// Nombre del banco
-															$NombreLineaProducto = $ResultadoConsulta['NombreLineaProducto'];
-															$VerMedida = "SELECT NombreUnidadMedida FROM unidadmedida WHERE idUnidadMedida='".$row['idUnidadMedida']."'";
-															// Ejecutamos la consulta
-															$ResultadoConsultaMedida = $mysqli->query($VerMedida);
-															// Guardamos la consulta en un array
-															$ResultadoConsulta = $ResultadoConsultaMedida->fetch_assoc();
-															// Nombre del banco
-															$NombreUnidadMedida = $ResultadoConsulta['NombreUnidadMedida'];
-																?>
-																<tr>
-																<td><span id="idProducto<?php echo $row['idProducto'];?>"><?php echo $row['idProducto'] ?></span></td>
-																<td><span id="NombreProducto<?php echo $row['idProducto'];?>"><?php echo $row['NombreProducto'] ?></span></td>
-																<td><span id="idMarca<?php echo $row['idProducto'];?>"><?php echo $NombreMarca ?></span></td>
-																<td><span id="ModeloProducto<?php echo $row['idProducto'];?>"><?php echo $row['ModeloProducto'] ?></span></td>
-																<td><span id="NombreLineaProducto<?php echo $row['idProducto'];?>"><?php echo $NombreLineaProducto ?></span></td>
-																<td><span id="NombreUnidadMedida<?php echo $row['idProducto'];?>"><?php echo $NombreUnidadMedida ?></span></td>
-																<td><span id="ColorProducto<?php echo $row['idProducto'];?>"><?php echo $row['ColorProducto'] ?></span></td>
-																<td><span id="PrecioProducto<?php echo $row['idProducto'];?>"><?php echo $row['PrecioProducto'] ?></span></td>
-																<td>
-																</tr>
-													<?php
-															}
-													?>
-											</tbody>
-										</table>
-									</div>								
+									<!-- Contenedor del ícono del Usuario -->
+									<div class="col-xs-6 Icon">
+										<!-- Icono de usuario -->
+										<span class="glyphicon glyphicon-user"></span>
+									</div>
 								</div>
+								<br>
+								<div class="table-responsive">          
+									<table class="table">
+										<!-- Título -->
+										<thead>
+											<!-- Contenido -->
+											<tr>
+												<th>#</th>
+												<th>Código</th>´
+												<th>Nombre</th>´
+												<th>Marca</th>
+												<th>Modelo</th>
+												<th>Línea</th>
+												<th>UM</th>
+												<th>Color</th>
+												<th>Precio</th>
+												<th>Estado del producto</th>
+												<th>Editar</th>
+												<th>Habilitar/Deshaibilitar</th>
+											</tr>
+										</thead>
+										<!-- Cuerpo de la tabla -->
+										<tbody>
+											<!-- Contenido de la tabla -->
+												<!-- Acá mostraremos los usuarios y seleccionaremos el que deseamos eliminar -->
+												<?php
+													$VerProductos = "SELECT * FROM producto";
+													// Hacemos la consulta
+													$resultado = $mysqli->query($VerProductos);
+													while ($row = mysqli_fetch_array($resultado)){
+														?>
+														<tr>
+															<td><span id="idProducto<?php echo $row['idProducto'];?>"><?php echo $row['idProducto'] ?></span></td>
+															<td><span id="CodigoProducto<?php echo $row['idProducto'];?>"><?php echo $row['NumeroInvenProd'] ?></span></td>
+															<td><span id="NombreProducto<?php echo $row['idProducto'];?>"><?php echo $row['NombreProducto'] ?></span></td>
+															<td><span id="idMarca<?php echo $row['idProducto'];?>"><!-- Acá mostraremos el nombre de la persona a partir del id que se tiene en la tabla -->
+																													<?php							
+																														$VerMarca = "SELECT NombreMarca FROM Marca WHERE idMarca='".$row['idMarca']."';";
+																														// Hacemos la consulta
+																														$ResultadoConsultaMarca = $mysqli->query($VerMarca);
+																														$FilaResultadoMarca = $ResultadoConsultaMarca->fetch_assoc();
+																														$NombreMarca = $FilaResultadoMarca['NombreMarca'];
+																														echo $NombreMarca;
+																													?></span></td>
+															<td><span id="ModeloProducto<?php echo $row['idProducto'];?>"><?php echo $row['ModeloProducto'] ?></span></td>
+															<td><span id="NombreLineaProducto<?php echo $row['idProducto'];?>"><!-- Acá mostraremos el nombre de la persona a partir del id que se tiene en la tabla -->
+																																<?php							
+																																	$VerLineaProducto = "SELECT NombreLineaProducto FROM lineaproducto WHERE idLinea='".$row['idLinea']."';";
+																																	// Hacemos la consulta
+																																	$ResultadoConsultaLineaProducto = $mysqli->query($VerLineaProducto);
+																																	$FilaResultadoLinea = $ResultadoConsultaLineaProducto->fetch_assoc();
+																																	$NombreLinea = $FilaResultadoLinea['NombreLineaProducto'];
+																																	echo $NombreLinea;
+																																?></span></td>
+															<td><span id="NombreUnidadMedida<?php echo $row['idProducto'];?>"><!-- Acá mostraremos el nombre de la persona a partir del id que se tiene en la tabla -->
+																																<?php							
+																																	$VerMedida = "SELECT NombreUnidadMedida FROM unidadmedida WHERE idUnidadMedida='".$row['idUnidadMedida']."';";
+																																	// Hacemos la consulta
+																																	$ResultadoConsultaMedida = $mysqli->query($VerMedida);
+																																	$FilaResultadoMedida = $ResultadoConsultaMedida->fetch_assoc();
+																																	$NombreMedida = $FilaResultadoMedida['NombreUnidadMedida'];
+																																	echo $NombreMedida;
+																																?></span></td>
+															<td><span id="ColorProducto<?php echo $row['idProducto'];?>"><?php echo $row['ColorProducto'] ?></span></td>
+															<td><span id="PrecioProducto<?php echo $row['idProducto'];?>"><?php echo $row['PrecioProducto'] ?></span></td>
+															<td><span id="EstadoProducto<?php echo $row['idProducto'];?>"><?php echo $row['EstadoProducto'] ?></span></td>
+															<td>
+															<?php
+																if($row['EstadoProducto'] == 'Habilitado'){
+																?>
+																	<!-- Edición activada-->
+																	<div>
+																		<div class="input-group input-group-lg">
+																			<button type="button" class="btn btn-success EditarProducto" value="<?php echo $row['idProducto']; ?>"><span class="glyphicon glyphicon-edit"></span></button>
+																		</div>
+																	</div>
+																<?php
+																}
+																else if($row['EstadoProducto'] == 'Deshabilitado'){
+																?>
+																	<!-- Edición desactivada-->
+																	<div>
+																		<div class="input-group input-group-lg">
+																			<button type="button" class="btn btn-success EditarProductoDesac" disabled="true"><span class="glyphicon glyphicon-edit"></span></button>
+																		</div>
+																	</div>
+																<?php
+																}
+																?>
+															</td>
+															<?php
+																if($row['EstadoProducto'] == 'Habilitado'){
+																?>
+																	<td>
+																		<!-- Deshabilitación -->
+																		<div>
+																			<div class="input-group input-group-lg">
+																				<button type="button" class="btn btn-warning DeshabilitarProducto"  value="<?php echo $row['idProducto']; ?>"><span class="glyphicon glyphicon-minus"></span></button>
+																			</div>
+																		</div>
+																	</td>
+																<?php
+																}
+																else if($row['EstadoProducto'] == 'Deshabilitado'){
+																?>
+																	<td>
+																		<!-- Habilitación -->
+																		<div>
+																			<div class="input-group input-group-lg">
+																				<button type="button" class="btn btn-success HabilitarProducto"  value="<?php echo $row['idProducto']; ?>"><span class="glyphicon glyphicon-check"></span></button>
+																			</div>
+																		</div>
+																	</td>
+																<?php
+																}
+															?>
+														</tr>
+												<?php
+														}
+												?>
+										</tbody>
+									</table>
+								</div>								
 							</div>
 						</div>
 					</div>
 				</div>
-				<?php
-				?>
-					
+				<!-- Edit Modal-->
+					<div class="modal fade" id="ModalDeshabilitar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<center><h1 class="modal-title" id="myModalLabel">Deshabilitar producto</h1></center>
+								</div>
+								<form method="post" action="Producto.php" id="myForm">
+								<div class="modal-body text-center">
+									<p class="lead">¿Está seguro que desea deshabilitar al siguiente producto?</p>
+									<div class="form-group input-group">
+										<input type="text" name="idProductoDeshabilitar" style="width:350px; visibility:hidden;" class="form-control" id="idProductoDeshabilitar">
+										<br>
+										<label id="NombreProductoDeshabilitar"></label>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+									<input type="submit" name="DeshabilitarProd" class="btn btn-warning" value="Deshabilitar producto">
+								</div>
+								</form>
+							</div>
+						</div>
+					</div>
 				<!-- /.modal -->
+				<!-- Edit Modal-->
+					<div class="modal fade" id="ModalHabilitar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<center><h1 class="modal-title" id="myModalLabel">Habilitar producto</h1></center>
+								</div>
+								<form method="post" action="Producto.php" id="myForm">
+								<div class="modal-body text-center">
+									<p class="lead">¿Está seguro que desea habilitar al siguiente producto?</p>
+									<div class="form-group input-group">
+										<input type="text" name="idProductoHabilitar" style="width:350px; visibility:hidden;" class="form-control" id="idProductoHabilitar">
+										<br>
+										<label id="NombreProductoHabilitar"></label>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+									<input type="submit" name="HabilitarProd" class="btn btn-success" value="Habilitar producto">
+								</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				<!-- /.modal -->
+				<!-- Edit Modal-->
+					<div class="modal fade" id="ModalEditarProducto" tabindex="-2" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<center><h4 class="modal-title" id="myModalLabel">Editar producto</h4></center>
+								</div>
+								<form method="post" action="Producto.php" id="frmEdit">
+									<div class="modal-body">
+									<div class="container-fluid">
+											<div class="form-group input-group">
+												<span class="input-group-addon" style="width:150px;">ID</span>
+												<input type="text" style="width:350px;" class="form-control" name="idEditar" id="idEditar">
+											</div>
+											<div class="form-group input-group">
+												<span class="input-group-addon" style="width:150px;">Nombre producto</span>
+												<input type="text" style="width:350px;" class="form-control" name="NombreProducto" id="NombreProducto">
+											</div>
+											<div class="form-group input-group">
+												<span class="input-group-addon" style="width:150px;">Marca</span>
+												<select class="form-control" name="Marca" id="Marca">
+												<option value="" disabled selected>Marca</option>
+													<!-- Acá mostraremos los puestos que existen en la base de datos -->
+													<?php							
+														$VerMarcas = "SELECT * FROM marca;";
+														// Hacemos la consulta
+														$resultado = $mysqli->query($VerMarcas);			
+															while ($row = mysqli_fetch_array($resultado)){
+																?>
+																<option value="<?php echo $row['idMarca'];?>"><?php echo $row['NombreMarca'] ?></option>
+													<?php
+															}
+													?>
+												</select>
+											</div>
+											<div class="form-group input-group">
+												<span class="input-group-addon" style="width:150px;">Modelo</span>
+												<input type="number" style="width:350px;" class="form-control" name="ModeloProducto" id="ModeloProducto">
+											</div>
+											<div class="form-group input-group">
+												<span class="input-group-addon" style="width:150px;">Línea</span>
+												<select class="form-control" name="LineaProducto" id="LineaProducto">
+												<option value="" disabled selected>Línea</option>
+													<!-- Acá mostraremos los puestos que existen en la base de datos -->
+													<?php							
+														$VerPuestos = "SELECT * FROM lineaproducto;";
+														// Hacemos la consulta
+														$resultado = $mysqli->query($VerPuestos);			
+															while ($row = mysqli_fetch_array($resultado)){
+																?>
+																<option value="<?php echo $row['idLinea'];?>"><?php echo $row['NombreLineaProducto'] ?></option>
+													<?php
+															}
+													?>
+												</select>
+											</div>
+											<div class="form-group input-group">
+												<span class="input-group-addon" style="width:150px;">Unidad de Medida</span>
+												<select class="form-control" name="UnidadMedida" id="UnidadMedida">
+												<option value="" disabled selected>Unidad de medida</option>
+													<!-- Acá mostraremos los puestos que existen en la base de datos -->
+													<?php							
+														$VerPuestos = "SELECT * FROM unidadmedida;";
+														// Hacemos la consulta
+														$resultado = $mysqli->query($VerPuestos);			
+															while ($row = mysqli_fetch_array($resultado)){
+																?>
+																<option value="<?php echo $row['idUnidadMedida'];?>"><?php echo $row['NombreUnidadMedida'] ?></option>
+													<?php
+															}
+													?>
+												</select>
+											</div>
+											<div class="form-group input-group">
+												<span class="input-group-addon" style="width:150px;">Color</span>
+												<input type="text" style="width:350px;" class="form-control" name="ColorProducto" id="ColorProducto">
+											</div>
+											<div class="form-group input-group">
+												<span class="input-group-addon" style="width:150px;">Precio</span>
+												<input type="number" style="width:350px;" class="form-control" name="PrecioProducto" id="PrecioProducto">
+											</div>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+										<input type="submit" name="EditarProducto" class="btn btn-success" value="Editar Usuario">
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				<!-- /.modal -->
+				<?php
+					// Código que recibe la información del formulario modal (Deshabilitar)
+					if (isset($_POST['DeshabilitarProd'])) {
+						// Guardamos el id en una variable
+						$idProducto = $_POST['idProductoDeshabilitar'];
+						// Preparamos la consulta
+						$query = "UPDATE producto SET EstadoProducto = 'Deshabilitado' WHERE idProducto=".$idProducto.";";
+						// Ejecutamos la consulta
+						if(!$resultado = $mysqli->query($query)){
+							echo "Error: La ejecución de la consulta falló debido a: \n";
+							echo "Query: " . $query . "\n";
+							echo "Errno: " . $mysqli->errno . "\n";
+							echo "Error: " . $mysqli->error . "\n";
+							exit;
+						}
+						else{
+    						?>
+    						<div class="form-group">
+									<form name="Alerta">
+										<div class="container">
+											<div class="row text-center">
+												<div class="container-fluid">
+													<div class="row">
+														<div class="col-xs-10 col-xs-offset-1">
+															<div class="alert alert-success">Producto deshabilitado</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+    						<?php
+							// Recargamos la página
+    						echo "<meta http-equiv=\"refresh\" content=\"0;URL=Producto.php\">"; 
+    					}
+					}
+					// Código que recibe la información del formulario modal (Habilitar)
+					if (isset($_POST['HabilitarProd'])) {
+						// Guardamos el id en una variable
+						$idProducto = $_POST['idProductoHabilitar'];
+						// Preparamos la consulta
+						$query = "UPDATE producto SET EstadoProducto = 'Habilitado' WHERE idProducto=".$idProducto.";";
+						// Ejecutamos la consulta
+						if(!$resultado = $mysqli->query($query)){
+							echo "Error: La ejecución de la consulta falló debido a: \n";
+							echo "Query: " . $query . "\n";
+							echo "Errno: " . $mysqli->errno . "\n";
+							echo "Error: " . $mysqli->error . "\n";
+							exit;
+						}
+						else{
+    						?>
+    						<div class="form-group">
+									<form name="Alerta">
+										<div class="container">
+											<div class="row text-center">
+												<div class="container-fluid">
+													<div class="row">
+														<div class="col-xs-10 col-xs-offset-1">
+															<div class="alert alert-success">Producto habilitado</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+    						<?php
+							// Recargamos la página
+    						echo "<meta http-equiv=\"refresh\" content=\"0;URL=Producto.php\">"; 
+    					}
+					}
+					// Código que recibe la información del formulario modal (Editar)
+					if (isset($_POST['EditarProducto'])) {
+						// Guardamos la info en variables
+						$idProducto = $_POST['idEditar'];
+						$NombreProducto = $_POST['NombreProducto'];
+						$Marca = $_POST['Marca'];
+						$ModeloProducto = $_POST['ModeloProducto'];
+						$LineaProducto = $_POST['LineaProducto'];
+						$UnidadMedida = $_POST['UnidadMedida'];
+						$ColorProducto = $_POST['ColorProducto'];
+						$PrecioProducto = $_POST['PrecioProducto'];
+						
+						// Preparamos la consulta
+						$query = "UPDATE producto SET NombreProducto = '".$NombreProducto."',
+													  idMarca = ".$Marca.",
+													  ModeloProducto = '".$ModeloProducto."',
+													  idLinea = ".$LineaProducto.",
+													  idUnidadMedida = ".$UnidadMedida.",
+													  ColorProducto = '".$ColorProducto."',
+													  PrecioProducto = '".$PrecioProducto."'
+												WHERE idProducto=".$idProducto.";";
+						// Ejecutamos la consulta
+						if(!$resultado = $mysqli->query($query)){
+							echo "Error: La ejecución de la consulta falló debido a: \n";
+							echo "Query: " . $query . "\n";
+							echo "Errno: " . $mysqli->errno . "\n";
+							echo "Error: " . $mysqli->error . "\n";
+							exit;
+						}
+						else{
+    						?>
+    						<div class="form-group">
+									<form name="Alerta">
+										<div class="container">
+											<div class="row text-center">
+												<div class="container-fluid">
+													<div class="row">
+														<div class="col-xs-10 col-xs-offset-1">
+															<div class="alert alert-success">Producto editado correctamente</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+    						<?php
+							// Recargamos la página
+    						echo "<meta http-equiv=\"refresh\" content=\"0;URL=Producto.php\">"; 
+    					}
+					}
+				?>
 				<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
 				<script src="js/jquery-1.11.3.min.js"></script>
 
 				<!-- Include all compiled plugins (below), or include individual files as needed --> 
 				<script src="js/bootstrap.js"></script>
 				<!-- Incluimos el script que nos dará el nombre de la persona para mostrarlo en el modal -->
-				<script src="js/custom.js"></script>
+				<script src="js/Modal.js"></script>
 				<!-- Pie de página, se utilizará el mismo para todos. -->
 				<footer>
 					<hr>

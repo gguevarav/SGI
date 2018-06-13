@@ -214,29 +214,68 @@
 						if($row['idProducto'] != null){
 							// Esta es la cantidad que ya existe en la base de datos
 							$CantidadDisponible = $row['CantidadInventario'];
-							// Sumamos la disponible más lo que se desea insertar
-							$CantidadFinal = $CantidadDisponible -= $Cantidad;
-							// Línea del inventario que vamos a utilizará
-							$LineaInventario = $row['idInventario'];
-							// Consulta
-							$ActualizarCantidadInventario = "UPDATE inventario
-															 SET CantidadInventario=".$CantidadFinal."
-															 WHERE idInventario=".$LineaInventario.";";
-							// Ejecutamos la primer consulta
-							if(!$resultado = $mysqli->query($query)){
-								echo "Error: La ejecución de la consulta falló debido a: \n";
-								echo "Query: " . $query . "\n";
-								echo "Errno: " . $mysqli->errno . "\n";
-								echo "Error: " . $mysqli->error . "\n";
-								exit;
-							}
-							// Ejecutamos la segunda consulta
-							if(!$resultado1 = $mysqli->query($ActualizarCantidadInventario)){
-								echo "Error: La ejecución de la consulta falló debido a: \n";
-								echo "Query: " . $ActualizarCantidadInventario . "\n";
-								echo "Errno: " . $mysqli->errno . "\n";
-								echo "Error: " . $mysqli->error . "\n";
-								exit;
+							// Verificamos si la cantidad que se le dará salida es mayor o igual a la disponible en el inventario
+							if($CantidadDisponible >= $Cantidad){
+								// Sumamos la disponible más lo que se desea insertar
+								$CantidadFinal = $CantidadDisponible -= $Cantidad;
+								// Línea del inventario que vamos a utilizará
+								$LineaInventario = $row['idInventario'];
+								// Consulta
+								$ActualizarCantidadInventario = "UPDATE inventario
+																 SET CantidadInventario=".$CantidadFinal."
+																 WHERE idInventario=".$LineaInventario.";";
+								// Ejecutamos la primer consulta
+								if(!$resultado = $mysqli->query($query)){
+									echo "Error: La ejecución de la consulta falló debido a: \n";
+									echo "Query: " . $query . "\n";
+									echo "Errno: " . $mysqli->errno . "\n";
+									echo "Error: " . $mysqli->error . "\n";
+									exit;
+								}
+								// Ejecutamos la segunda consulta
+								if(!$resultado1 = $mysqli->query($ActualizarCantidadInventario)){
+									echo "Error: La ejecución de la consulta falló debido a: \n";
+									echo "Query: " . $ActualizarCantidadInventario . "\n";
+									echo "Errno: " . $mysqli->errno . "\n";
+									echo "Error: " . $mysqli->error . "\n";
+									exit;
+								}
+								else{
+									?>
+									<div class="form-group">
+										<form name="Alerta">
+											<div class="container">
+												<div class="row text-center">
+													<div class="container-fluid">
+														<div class="row">
+															<div class="col-xs-10 col-xs-offset-1">
+																<div class="alert alert-success">Se le dió salida a  
+																									<?php
+																										// Mostramos la cantidad que agregamos para ver de cuánto fué el ingreso del producto, también mostramos
+																										// el nombre del producto que estamos registrando
+																										$Cantidad = $_POST['Cantidad'];
+																										$Producto = $_POST['Producto']; 
+																										echo $Cantidad . " ";
+																										// Consultaremos el nombre del producto que estamos registrando
+																										$VerNombreProducto = "SELECT NombreProducto FROM Producto WHERE idProducto=".$Producto.";";
+																										// Hacemos la consulta
+																										$resultado = $mysqli->query($VerNombreProducto);			
+																										$row = mysqli_fetch_array($resultado);
+																										$NombreProducto = $row['NombreProducto'];
+																										echo $NombreProducto;
+																									?>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
+									<?php
+									// Recargamos la página
+									echo "<meta http-equiv=\"refresh\" content=\"0;URL=SalidaInventario.php\">"; 
+								}
 							}
 							else{
 								?>
@@ -247,22 +286,7 @@
 												<div class="container-fluid">
 													<div class="row">
 														<div class="col-xs-10 col-xs-offset-1">
-															<div class="alert alert-success">Se le dió salida a  
-																								<?php
-																									// Mostramos la cantidad que agregamos para ver de cuánto fué el ingreso del producto, también mostramos
-																									// el nombre del producto que estamos registrando
-																									$Cantidad = $_POST['Cantidad'];
-																									$Producto = $_POST['Producto']; 
-																									echo $Cantidad . " ";
-																									// Consultaremos el nombre del producto que estamos registrando
-																									$VerNombreProducto = "SELECT NombreProducto FROM Producto WHERE idProducto=".$Producto.";";
-																									// Hacemos la consulta
-																									$resultado = $mysqli->query($VerNombreProducto);			
-																									$row = mysqli_fetch_array($resultado);
-																									$NombreProducto = $row['NombreProducto'];
-																									echo $NombreProducto;
-																								?>
-															</div>
+															<div class="alert alert-warning">No puede dar salida a esta cantidad</div>
 														</div>
 													</div>
 												</div>
@@ -271,8 +295,6 @@
 									</form>
 								</div>
 								<?php
-								// Recargamos la página
-								echo "<meta http-equiv=\"refresh\" content=\"0;URL=SalidaInventario.php\">"; 
 							}
 						}
 						else{

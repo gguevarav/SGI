@@ -418,8 +418,8 @@
 						}
 						else{
 							// Preparamos la consulta
-							$query = "INSERT INTO producto(NombreProducto, PrecioProducto, idMarca, idUnidadMedida, NumeroInvenProd, ModeloProducto, idLinea, ColorProducto)
-												  VALUES('".$NombreProducto."', '".$Precio."', ".$Marca.", ".$UnidadMedida.", '".$CodigoInventario."', '".$Modelo."', ".$LineaProducto.", '".$ColorProducto."');";
+							$query = "INSERT INTO producto(NombreProducto, PrecioProducto, idMarca, idUnidadMedida, NumeroInvenProd, ModeloProducto, idLinea, ColorProducto, EstadoProducto)
+												  VALUES('".$NombreProducto."', '".$Precio."', ".$Marca.", ".$UnidadMedida.", '".$CodigoInventario."', '".$Modelo."', ".$LineaProducto.", '".$ColorProducto."', 'Habilitado')";
 							// Ejecutamos la consulta
 							if(!$resultado = $mysqli->query($query)){
 							echo "Error: La ejecución de la consulta falló debido a: \n";

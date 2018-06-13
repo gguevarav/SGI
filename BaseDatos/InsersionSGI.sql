@@ -18,11 +18,8 @@ INSERT INTO Persona (NombrePersona, ApellidoPersona, DireccionPersona,
 INSERT INTO Usuario (NombreUsuario, ContraseniaUsuario, idPersona, PrivilegioUsuario)
               VALUES('gguevara', 'e60c177bc95bb0d56e2f95ac372bde51', 1, 'Administrador');
 
-INSERT INTO lineaproducto(NombreProducto)
-				   VALUES(' ');
+INSERT INTO tipoentrada(NombreTipoEntrada)
+				   VALUES('Donación');
 				   
-INSERT INTO marca(NombreMarca)
-				   VALUES(' ');
-				   
-INSERT INTO unidadmedida(NombreUnidadMedida)
-				   VALUES(' ');
+INSERT INTO tipoentrada(NombreTipoEntrada)
+				   VALUES('Compra');

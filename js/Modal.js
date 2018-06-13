@@ -8,7 +8,7 @@ $(document).ready(function(){
 	});
 });
 
-// Eliminación de 
+// Eliminación de usuario
  $(document).ready(function(){
 	$(document).on('click', '.EliminarUsuario', function(){
  		var id=$(this).val();
@@ -22,7 +22,7 @@ $(document).ready(function(){
  	});
  });
 
-// Edición
+// Edición usuario
 $(document).ready(function(){
 	$(document).on('click', '.EditarUsuario', function(){
 		var id=$(this).val();
@@ -46,5 +46,55 @@ $(document).ready(function(){
 		$('#FechaNacEditar').val(FechaNacUsuario);
 		$('#CorreoEditar').val(CorreoUsuario);
 		$('#PrivilegioEditar').val(PrivilegioUsuario);
+	});
+});
+
+// Eliminación de producto
+ $(document).ready(function(){
+	$(document).on('click', '.DeshabilitarProducto', function(){
+ 		var id=$(this).val();
+		var Nombre=$('#NombreProducto'+id).text();
+		var Producto=$('#idProducto'+id).text();
+ 	
+		$('#ModalDeshabilitar').modal('show');
+		document.querySelector('#NombreProductoDeshabilitar').innerText = Nombre;
+		$('#idProductoDeshabilitar').val(id);
+ 	});
+ });
+ 
+ // Eliminación de producto
+ $(document).ready(function(){
+	$(document).on('click', '.HabilitarProducto', function(){
+ 		var id=$(this).val();
+		var Nombre=$('#NombreProducto'+id).text();
+		var Producto=$('#idProducto'+id).text();
+ 	
+		$('#ModalHabilitar').modal('show');
+		document.querySelector('#NombreProductoHabilitar').innerText = Nombre;
+		$('#idProductoHabilitar').val(id);
+ 	});
+ });
+ 
+ // Edición usuario
+$(document).ready(function(){
+	$(document).on('click', '.EditarProducto', function(){
+		var id=$(this).val();
+		var NombreProducto=$('#NombreProducto'+id).text();
+		var idMarca=$('#idMarca'+id).text();
+		var ModeloProducto=$('#ModeloProducto'+id).text();
+		var NombreLineaProducto=$('#NombreLineaProducto'+id).text();
+		var NombreUnidadMedida=$('#NombreUnidadMedida'+id).text();
+		var ColorProducto=$('#ColorProducto'+id).text();
+		var PrecioProducto=$('#PrecioProducto'+id).text();
+	
+		$('#ModalEditarProducto').modal('show');
+		$('#idEditar').val(id);
+		$('#NombreProducto').val(NombreProducto);
+		//$('#Marca').val(idMarca);
+		$('#ModeloProducto').val(ModeloProducto);
+		//$('#LineaProducto').val(NombreLineaProducto);
+		//$('#UnidadMedida').val(NombreUnidadMedida);
+		$('#ColorProducto').val(ColorProducto);
+		$('#PrecioProducto').val(PrecioProducto);
 	});
 });

@@ -120,7 +120,7 @@
 										</div>
 										<div class="col-xs-1">
 											<div class="input-group input-group-lg">
-												<button type="button" class="btn btn-success Imprimir btn-lg" value=""><span class="glyphicon glyphicon-print"></span></button>
+												<a class="btn btn-success btn-lg" href="ReporteInventario.php" target="_blank"><span class="glyphicon glyphicon-print"></span></a>
 											</div>
 										</div>
 									</div>

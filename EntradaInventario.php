@@ -130,7 +130,7 @@
 												<option value="" disabled selected>Producto</option>
 													<!-- Acá mostraremos los puestos que existen en la base de datos -->
 													<?php							
-														$VerProductos = "SELECT idProducto, NombreProducto FROM producto;";
+														$VerProductos = "SELECT idProducto, NombreProducto FROM producto WHERE EstadoProducto='Habilitado';";
 														// Hacemos la consulta
 														$resultado = $mysqli->query($VerProductos);			
 															while ($row = mysqli_fetch_array($resultado)){
@@ -156,6 +156,28 @@
 											<div class="input-group input-group-lg">
 												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-question-sign"></i></span>
 												<input type="number" class="form-control" name="Cantidad" placeholder="Cantidad" id="Cantidad" aria-describedby="sizing-addon1" required>
+											</div>
+										</div>
+									</div>
+									<br>
+									<div class="row">
+										<div class="col-xs-10 col-xs-offset-1">
+											<div class="input-group input-group-lg">
+												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-asterisk"></i></span>
+												<select class="form-control" name="TipoEntrada" id="TipoEntrada">
+												<option value="" disabled selected>Tipo de entrada</option>
+													<!-- Acá mostraremos los puestos que existen en la base de datos -->
+													<?php							
+														$VerTipoDonacion = "SELECT * FROM tipoentrada;";
+														// Hacemos la consulta
+														$resultadoDonacion = $mysqli->query($VerTipoDonacion);			
+															while ($row = mysqli_fetch_array($resultadoDonacion)){
+																?>
+																<option value="<?php echo $row['idTipoEntrada'];?>"><?php echo $row['NombreTipoEntrada'] ?></option>
+													<?php
+															}
+													?>
+												</select>
 											</div>
 										</div>
 									</div>
@@ -360,12 +382,13 @@
 						$Producto = $_POST['Producto'];
 						$Cantidad = $_POST['Cantidad'];
 						$DetalleProducto = $_POST['DetalleProducto'];
+						$TipoEntrada = $_POST['TipoEntrada'];
 						$FechaHora=date('Y-m-d H:i:s');
 						$Usuario=$_SESSION["Usuario"];
 					
 						// Preparamos la consulta, esta insertará en la tabla de registro entrada
-						$query = "INSERT INTO registroentrada(FechaHoraEntrada, UsuarioEntrada, idProducto, CantidadEntrada, DetalleEntrada)
-											  VALUES('".$FechaHora."', '".$Usuario."', ".$Producto.", ".$Cantidad.", '".$DetalleProducto."');";
+						$query = "INSERT INTO registroentrada(FechaHoraEntrada, UsuarioEntrada, idProducto, CantidadEntrada, DetalleEntrada, idTipoEntrada)
+											  VALUES('".$FechaHora."', '".$Usuario."', ".$Producto.", ".$Cantidad.", '".$DetalleProducto."', ".$TipoEntrada.");";
 						// Lo primero que debemos hacer para insertar en la tabla de inventario es saber si ya existe el producto dentro del inventario
 						// Preparamos una consulta que nos verificará si ya existe, en caso dado que si, obtenemos el id del la fila, obtenemos la cantidad que tiene
 						// y le adicionamos la cantidad que estamos registrando

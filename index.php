@@ -33,23 +33,24 @@
 			//Creamos un objeto de la clase randomTable
 			$rand = new RandomTable();
 			//insertamos un valor aleatorio
-			$rand->insertRandom();
+			//$rand->insertRandom();
 			//obtenemos toda la información de la tabla random
-			$rawdata = $rand->getAllInfo();
+			//$rawdata2 = $rand->getAllInfo();
+			// Obtendremos toda la información de la tabla de salidas
+			$sql = 'SELECT FechaHoraSalida, CantidadSalida FROM registrosalida;';
+			$rawdata = $rand->getArraySQL($sql);
 
-			//nos creamos dos arrays para almacenar el tiempo y el valor numérico
-			$valoresArray;
-			$timeArray;
+			// Almacenaremos los valores en un array para las fechas y otro para los valores
 			//en un bucle for obtenemos en cada iteración el valor númerico y 
 			//el TIMESTAMP del tiempo y lo almacenamos en los arrays 
-			for($i = 0 ;$i<count($rawdata);$i++){
-				$valoresArray[$i]= $rawdata[$i][1];
-				//OBTENEMOS EL TIMESTAMP
-				$time= $rawdata[$i][2];
+			//Adaptar el tiempo
+			for($i=0;$i<count($rawdata);$i++){
+				$time = $rawdata[$i]["FechaHoraSalida"];
 				$date = new DateTime($time);
-				//ALMACENAMOS EL TIMESTAMP EN EL ARRAY
-				$timeArray[$i] = $date->getTimestamp()*1000;
+				$rawdata[$i]["FechaHoraSalida"]=$date->getTimestamp()*1000;
 			}
+			//en un bucle for obtenemos en cada iteración el valor númerico y 
+			//el TIMESTAMP del tiempo y lo almacenamos en los arrays 
 		?>
 			<body ondragstart="return false;" ondrop="return false;">
 				<nav class="navbar navbar-default navbar-fixed-top">
@@ -134,20 +135,20 @@
 										<div class="col-xs-12 col-md-12"><div id="ContenedorChart1"></div></div>
 									</div>
 									<div class="row">
-										<div class="col-xs-12 col-md-12"><div id="ContenedorChart2"></div></div>
+										<div class="col-xs-12 col-md-12"><div id=""></div></div>
 									</div>
 								</div>
 							</div>
 							<div class="text-center">
-								<div class="col-xs-2 col-md-2"><img src="imagenes/logo.png" class="img-responsive center-block"></div>
+								<div class="col-xs-2 col-md-2"><img src="imagenes/LogoPrincipal.png" class="img-responsive center-block"></div>
 							</div>
 							<div class="text-center">
 								<div class="col-xs-5 col-md-5">
 									<div class="row">
-										<div class="col-xs-12 col-md-12"><div id="ContenedorChart3"></div></div>
+										<div class="col-xs-12 col-md-12"><div id=""></div></div>
 									</div>
 									<div class="row">
-										<div class="col-xs-12 col-md-12"><div id="ContenedorChart4"></div></div>
+										<div class="col-xs-12 col-md-12"><div id=""></div></div>
 									</div>
 								</div>
 							</div>
@@ -172,178 +173,77 @@
 				<script src="js/bootstrap.js"></script>
 				<script src="jquery/jquery.js"></script>
 					<!-- Importo el archivo Javascript de Highcharts directamente desde su servidor -->
+				<script src="Highchart/code/highcharts.js"></script>
 				<script src="Highchart/code/highstock.js"></script>
 				<script src="Highchart/code/modules/exporting.js"></script>
-				<script>
-					chartCPU = new Highcharts.StockChart({
-						chart: {
-							renderTo: 'ContenedorChart1'
-							//defaultSeriesType: 'spline'
-							
-						},
-						rangeSelector : {
-							enabled: false
-						},
-						title: {
-							text: 'Gráfica'
-						},
-						xAxis: {
-							type: 'datetime'
-							//tickPixelInterval: 150,
-							//maxZoom: 20 * 1000
-						},
-						yAxis: {
-							minPadding: 0.2,
-							maxPadding: 0.2,
-							title: {
-								text: 'Valores',
-								margin: 10
-							}
-						},
-						series: [{
-							name: 'Valor',
-							data: (function() {
-									// generate an array of random data
-									var data = [];
-									<?php
-										for($i = 0 ;$i<count($rawdata);$i++){
-									?>
-									data.push([<?php echo $timeArray[$i];?>,<?php echo $valoresArray[$i];?>]);
-									<?php } ?>
+				<script type='text/javascript'>
+					$(function () {
+						$(document).ready(function() {
+							Highcharts.setOptions({
+								global: {
+									useUTC: false
+								}
+							});
+						
+							var chart;
+							$('#ContenedorChart1').highcharts({
+								chart: {
+									type: 'spline',
+									animation: Highcharts.svg, // don't animate in old IE
+									marginRight: 10,
+									events: {
+										load: function() {
+											
+										}
+									}
+								},
+								title: {
+									text: 'Salida de Productos por día'
+								},
+								xAxis: {
+									type: 'datetime',
+									tickPixelInterval: 150
+								},
+								yAxis: {
+									title: {
+										text: 'Value'
+									},
+									plotLines: [{
+										value: 0,
+										width: 1,
+										color: '#808080'
+									}]
+								},
+								tooltip: {
+									formatter: function() {
+											return '<b>'+ this.series.name +'</b><br/>'+
+											Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+
+											Highcharts.numberFormat(this.y, 2);
+									}
+								},
+								legend: {
+									enabled: true
+								},
+								exporting: {
+									enabled: true
+								},
+								series: [{
+									name: 'Productos',
+									data: (function() {
+									   var data = [];
+										<?php
+											for($i = 0 ;$i<count($rawdata);$i++){
+										?>
+										data.push([<?php echo strtotime($rawdata[$i]["FechaHoraSalida"]);?>,<?php echo $rawdata[$i]["CantidadSalida"];?>]);
+										<?php } ?>
 									return data;
-								})()
-						}],
-						credits: {
-								enabled: false
-						}
+									})()
+								}]
+							});
+						});
+						
 					});
-					chartCPU = new Highcharts.StockChart({
-						chart: {
-							renderTo: 'ContenedorChart2'
-							//defaultSeriesType: 'spline'
-							
-						},
-						rangeSelector : {
-							enabled: false
-						},
-						title: {
-							text: 'Gráfica'
-						},
-						xAxis: {
-							type: 'datetime'
-							//tickPixelInterval: 150,
-							//maxZoom: 20 * 1000
-						},
-						yAxis: {
-							minPadding: 0.2,
-							maxPadding: 0.2,
-							title: {
-								text: 'Valores',
-								margin: 10
-							}
-						},
-						series: [{
-							name: 'Valor',
-							data: (function() {
-									// generate an array of random data
-									var data = [];
-									<?php
-										for($i = 0 ;$i<count($rawdata);$i++){
-									?>
-									data.push([<?php echo $timeArray[$i];?>,<?php echo $valoresArray[$i];?>]);
-									<?php } ?>
-									return data;
-								})()
-						}],
-						credits: {
-								enabled: false
-						}
-					});
-					chartCPU = new Highcharts.StockChart({
-						chart: {
-							renderTo: 'ContenedorChart3'
-							//defaultSeriesType: 'spline'
-							
-						},
-						rangeSelector : {
-							enabled: false
-						},
-						title: {
-							text: 'Gráfica'
-						},
-						xAxis: {
-							type: 'datetime'
-							//tickPixelInterval: 150,
-							//maxZoom: 20 * 1000
-						},
-						yAxis: {
-							minPadding: 0.2,
-							maxPadding: 0.2,
-							title: {
-								text: 'Valores',
-								margin: 10
-							}
-						},
-						series: [{
-							name: 'Valor',
-							data: (function() {
-									// generate an array of random data
-									var data = [];
-									<?php
-										for($i = 0 ;$i<count($rawdata);$i++){
-									?>
-									data.push([<?php echo $timeArray[$i];?>,<?php echo $valoresArray[$i];?>]);
-									<?php } ?>
-									return data;
-								})()
-						}],
-						credits: {
-								enabled: false
-						}
-					});
-					chartCPU = new Highcharts.StockChart({
-						chart: {
-							renderTo: 'ContenedorChart4'
-							//defaultSeriesType: 'spline'
-							
-						},
-						rangeSelector : {
-							enabled: false
-						},
-						title: {
-							text: 'Gráfica'
-						},
-						xAxis: {
-							type: 'datetime'
-							//tickPixelInterval: 150,
-							//maxZoom: 20 * 1000
-						},
-						yAxis: {
-							minPadding: 0.2,
-							maxPadding: 0.2,
-							title: {
-								text: 'Valores',
-								margin: 10
-							}
-						},
-						series: [{
-							name: 'Valor',
-							data: (function() {
-									// generate an array of random data
-									var data = [];
-									<?php
-										for($i = 0 ;$i<count($rawdata);$i++){
-									?>
-									data.push([<?php echo $timeArray[$i];?>,<?php echo $valoresArray[$i];?>]);
-									<?php } ?>
-									return data;
-								})()
-						}],
-						credits: {
-								enabled: false
-						}
-					});
-				</script>  
+					</script>
 			</body>
 	<?php
 		// De lo contrario lo redirigimos al inicio de sesión
