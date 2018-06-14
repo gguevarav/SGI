@@ -50,14 +50,17 @@ CREATE TABLE Marca(
 
 CREATE TABLE Producto(
 	idProducto				INTEGER			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
-	NombreProducto			VARCHAR(100)	NOT NULL,
-	PrecioProducto			DECIMAL(10,2)			NOT NULL,
+	SerieProducto			VARCHAR(30),
+	NombreProducto			VARCHAR(200)	NOT NULL,
+	ChasisProducto			VARCHAR(30),
+	MotorProducto			VARCHAR(30),
 	idMarca					TINYINT,
 	idUnidadMedida			TINYINT,
 	NumeroInvenProd			VARCHAR(20),
-	ModeloProducto			INTEGER,
+	ModeloProducto			VARCHAR(20),
 	idLinea					INTEGER,
 	ColorProducto			VARCHAR(15),
+	PrecioProducto			DECIMAL(10,2),
 	EstadoProducto			VARCHAR(20),
 	INDEX (idMarca),
 	FOREIGN KEY(idMarca)

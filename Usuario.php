@@ -70,13 +70,13 @@
 									<li><a href="BitacoraEntradas.php">Bitácora de entradas de inventario</a></li>
 									<li><a href="BitacoraSalidas.php">Bitácora de salidas de inventario</a></li>
 									<li><a href="BitacoraAjustes.php">Bitácora de ajustes de inventario</a></li>
-									<li><a href="Kardex.php" target="_blank">Kardex</a></li>
 								</ul>
 							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reportes<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="ReporteProductos.php" target="_blank">Reporte de productos</a></li>
 									<li><a href="ReporteInventario.php" target="_blank">Reporte de inventario</a></li>
+									<li><a href="ReporteInventarioFisico.php" target="_blank">Reporte de inventario fisico</a></li>
 									<li><a href="Kardex.php" target="_blank">Kardex</a></li>
 								</ul>
 							</li>

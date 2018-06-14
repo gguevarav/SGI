@@ -99,6 +99,7 @@
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="ReporteProductos.php" target="_blank">Reporte de productos</a></li>
 									<li><a href="ReporteInventario.php" target="_blank">Reporte de inventario</a></li>
+									<li><a href="ReporteInventarioFisico.php" target="_blank">Reporte de inventario fisico</a></li>
 									<li><a href="Kardex.php" target="_blank">Kardex</a></li>
 								</ul>
 							</li>
@@ -133,7 +134,7 @@
 							<div class="text-center">
 								<div class="col-xs-5 col-md-5">
 									<div class="row">
-										<div class="col-xs-12 col-md-12"><div id="ContenedorChart1"></div></div>
+										<div class="col-xs-12 col-md-12"><canvas id="ContenedorChart1"></canvas></div>
 									</div>
 									<div class="row">
 										<div class="col-xs-12 col-md-12"><div id=""></div></div>
@@ -174,77 +175,46 @@
 				<script src="js/bootstrap.js"></script>
 				<script src="jquery/jquery.js"></script>
 					<!-- Importo el archivo Javascript de Highcharts directamente desde su servidor -->
-				<script src="Highchart/code/highcharts.js"></script>
-				<script src="Highchart/code/highstock.js"></script>
-				<script src="Highchart/code/modules/exporting.js"></script>
-				<script type='text/javascript'>
-					$(function () {
-						$(document).ready(function() {
-							Highcharts.setOptions({
-								global: {
-									useUTC: false
+				<script src="Chart.js/Chart.min.js"></script>
+				<script>
+				var ctx = document.getElementById("ContenedorChart1").getContext('2d');
+				var myChart = new Chart(ctx, {
+					type: 'bar',
+					data: {
+						labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+						datasets: [{
+							label: '# of Votes',
+							data: [12, 19, 3, 5, 2, 3],
+							backgroundColor: [
+								'rgba(255, 99, 132, 0.2)',
+								'rgba(54, 162, 235, 0.2)',
+								'rgba(255, 206, 86, 0.2)',
+								'rgba(75, 192, 192, 0.2)',
+								'rgba(153, 102, 255, 0.2)',
+								'rgba(255, 159, 64, 0.2)'
+							],
+							borderColor: [
+								'rgba(255,99,132,1)',
+								'rgba(54, 162, 235, 1)',
+								'rgba(255, 206, 86, 1)',
+								'rgba(75, 192, 192, 1)',
+								'rgba(153, 102, 255, 1)',
+								'rgba(255, 159, 64, 1)'
+							],
+							borderWidth: 1
+						}]
+					},
+					options: {
+						scales: {
+							yAxes: [{
+								ticks: {
+									beginAtZero:true
 								}
-							});
-						
-							var chart;
-							$('#ContenedorChart1').highcharts({
-								chart: {
-									type: 'spline',
-									animation: Highcharts.svg, // don't animate in old IE
-									marginRight: 10,
-									events: {
-										load: function() {
-											
-										}
-									}
-								},
-								title: {
-									text: 'Salida de Productos por día'
-								},
-								xAxis: {
-									type: 'datetime',
-									tickPixelInterval: 150
-								},
-								yAxis: {
-									title: {
-										text: 'Value'
-									},
-									plotLines: [{
-										value: 0,
-										width: 1,
-										color: '#808080'
-									}]
-								},
-								tooltip: {
-									formatter: function() {
-											return '<b>'+ this.series.name +'</b><br/>'+
-											Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+
-											Highcharts.numberFormat(this.y, 2);
-									}
-								},
-								legend: {
-									enabled: true
-								},
-								exporting: {
-									enabled: true
-								},
-								series: [{
-									name: 'Productos',
-									data: (function() {
-									   var data = [];
-										<?php
-											for($i = 0 ;$i<count($rawdata);$i++){
-										?>
-										data.push([<?php echo strtotime($rawdata[$i]["FechaHoraSalida"]);?>,<?php echo $rawdata[$i]["CantidadSalida"];?>]);
-										<?php } ?>
-									return data;
-									})()
-								}]
-							});
-						});
-						
-					});
-					</script>
+							}]
+						}
+					}
+				});
+				</script>
 			</body>
 	<?php
 		// De lo contrario lo redirigimos al inicio de sesión
