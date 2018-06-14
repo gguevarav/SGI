@@ -29,28 +29,147 @@
 		if($_SESSION["PrivilegioUsuario"] == 'Administrador'){// Guardamos el nombre del usuario en una variable
 			$NombreUsuario =$_SESSION["NombreUsuario"];
 			$idUsuario2 =$_SESSION["idUsuario"];
-
-			//Creamos un objeto de la clase randomTable
-			$rand = new RandomTable();
-			//insertamos un valor aleatorio
-			//$rand->insertRandom();
-			//obtenemos toda la información de la tabla random
-			//$rawdata2 = $rand->getAllInfo();
-			// Obtendremos toda la información de la tabla de salidas
-			$sql = 'SELECT FechaHoraSalida, CantidadSalida FROM registrosalida;';
-			$rawdata = $rand->getArraySQL($sql);
-
-			// Almacenaremos los valores en un array para las fechas y otro para los valores
-			//en un bucle for obtenemos en cada iteración el valor númerico y 
-			//el TIMESTAMP del tiempo y lo almacenamos en los arrays 
-			//Adaptar el tiempo
-			for($i=0;$i<count($rawdata);$i++){
-				$time = $rawdata[$i]["FechaHoraSalida"];
-				$date = new DateTime($time);
-				$rawdata[$i]["FechaHoraSalida"]=$date->getTimestamp()*1000;
+			
+			$sql1 = 'SELECT FechaHoraSalida, CantidadSalida FROM registrosalida;';
+			$sql2 = 'SELECT FechaHoraEntrada, CantidadEntrada FROM registroentrada;';
+			$sql3 = 'select idProducto, sum(CantidadInventario) as suma from inventario GROUP by idProducto';
+			$sql4 = 'SELECT producto.NombreProducto, SUM(inventario.CantidadInventario)
+					 FROM producto LEFT JOIN inventario ON producto.idProducto = inventario.idProducto
+					 GROUP BY producto.idProducto;';
+			
+			// Guardamos las cantidades en variables
+			$CantidadEneroSalida = 0;
+			$CantidadFebreroSalida = 0;
+			$CantidadMarzoSalida = 0;
+			$CantidadAbrilSalida = 0;
+			$CantidadMayoSalida = 0;
+			$CantidadJunioSalida = 0;
+			$CantidadJulioSalida = 0;
+			$CantidadAgostoSalida = 0;
+			$CantidadSeptiembreSalida = 0;
+			$CantidadOctubreSalida = 0;
+			$CantidadNoviembreSalida = 0;
+			$CantidadDiciembreSalida = 0;
+			$MesSalidas;			
+			// Hacemos la consulta para mostrar las cantidades de salidas
+			$resultado = $mysqli->query($sql1);			
+			while ($row = mysqli_fetch_array($resultado)){
+				$MesSalidas = date("n", strtotime($row['FechaHoraSalida']));
+				switch($MesSalidas){
+					case 1:
+						$CantidadEneroSalida += $row['CantidadSalida'];
+						break;
+					case 2:
+						$CantidadFebreroSalida += $row['CantidadSalida'];
+						break;
+					case 3:
+						$CantidadMarzoSalida += $row['CantidadSalida'];
+						break;
+					case 4:
+						$CantidadAbrilSalida += $row['CantidadSalida'];
+						break;
+					case 5:
+						$CantidadMayoSalida += $row['CantidadSalida'];
+						break;
+					case 6:
+						$CantidadJunioSalida += $row['CantidadSalida'];
+						break;
+					case 7:
+						$CantidadJulioSalida += $row['CantidadSalida'];
+						break;
+					case 8:
+						$CantidadAgostoSalida += $row['CantidadSalida'];
+						break;
+					case 9:
+						$CantidadSeptiembreSalida += $row['CantidadSalida'];
+						break;
+					case 10:
+						$CantidadOctubreSalida += $row['CantidadSalida'];
+						break;
+					case 11:
+						$CantidadNoviembreSalida += $row['CantidadSalida'];
+						break;
+					case 12:
+						$CantidadDiciembreSalida += $row['CantidadSalida'];
+						break;
+				}
 			}
-			//en un bucle for obtenemos en cada iteración el valor númerico y 
-			//el TIMESTAMP del tiempo y lo almacenamos en los arrays 
+			// Guardamos las cantidades en variables
+			$CantidadEneroEntrada = 0;
+			$CantidadFebreroEntrada = 0;
+			$CantidadMarzoEntrada = 0;
+			$CantidadAbrilEntrada = 0;
+			$CantidadMayoEntrada = 0;
+			$CantidadJunioEntrada = 0;
+			$CantidadJulioEntrada = 0;
+			$CantidadAgostoEntrada = 0;
+			$CantidadSeptiembreEntrada = 0;
+			$CantidadOctubreEntrada = 0;
+			$CantidadNoviembreEntrada = 0;
+			$CantidadDiciembreEntrada = 0;
+			$MesEntradas;
+			// Hacemos la consulta para mostrar las cantidades de Entradas
+			$resultado2 = $mysqli->query($sql2);			
+			while ($row2 = mysqli_fetch_array($resultado2)){
+				$MesEntradas = date("n", strtotime($row2['FechaHoraEntrada']));
+				switch($MesEntradas){
+					case 1:
+						$CantidadEneroEntrada += $row2['CantidadEntrada'];
+						break;
+					case 2:
+						$CantidadFebreroEntrada += $row2['CantidadEntrada'];
+						break;
+					case 3:
+						$CantidadMarzoEntrada += $row2['CantidadEntrada'];
+						break;
+					case 4:
+						$CantidadAbrilEntrada += $row2['CantidadEntrada'];
+						break;
+					case 5:
+						$CantidadMayoEntrada += $row2['CantidadEntrada'];
+						break;
+					case 6:
+						$CantidadJunioEntrada += $row2['CantidadEntrada'];
+						break;
+					case 7:
+						$CantidadJulioEntrada += $row2['CantidadEntrada'];
+						break;
+					case 8:
+						$CantidadAgostoEntrada += $row2['CantidadEntrada'];
+						break;
+					case 9:
+						$CantidadSeptiembreEntrada += $row2['CantidadEntrada'];
+						break;
+					case 10:
+						$CantidadOctubreEntrada += $row2['CantidadEntrada'];
+						break;
+					case 11:
+						$CantidadNoviembreEntrada += $row2['CantidadEntrada'];
+						break;
+					case 12:
+						$CantidadDiciembreEntrada += $row2['CantidadEntrada'];
+						break;
+				}
+			}
+			// Guardamos las cantidades en variables (5)
+			$NombreTop5_1;
+			$Top5_1;
+			// Hacemos la consulta para mostrar las cantidades de Entradas
+			$resultado3 = $mysqli->query($sql3);
+			$Contador = 0;
+			while ($row3 = mysqli_fetch_array($resultado3)){
+				$VerNombreProducto = "SELECT NombreProducto FROM producto WHERE idProducto=".$row3['idProducto'].";";
+				// Hacemos la consulta
+				$ResultadoVerProducto = $mysqli->query($VerNombreProducto);
+				$FilaResultado = $ResultadoVerProducto->fetch_assoc();
+				$NombreTop5_1[$Contador] = $FilaResultado['NombreProducto'];
+				$Top5_1[$Contador] = $row3['suma'];
+				// Aumentamos al contador
+				$Contador++;
+				if($Contador == 6){
+					break;
+				}
+			}
 		?>
 			<body ondragstart="return false;" ondrop="return false;">
 				<nav class="navbar navbar-default navbar-fixed-top">
@@ -137,7 +256,7 @@
 										<div class="col-xs-12 col-md-12"><canvas id="ContenedorChart1"></canvas></div>
 									</div>
 									<div class="row">
-										<div class="col-xs-12 col-md-12"><div id=""></div></div>
+										<div class="col-xs-12 col-md-12"><canvas id="ContenedorChart2"></canvas></div>
 									</div>
 								</div>
 							</div>
@@ -147,11 +266,13 @@
 							<div class="text-center">
 								<div class="col-xs-5 col-md-5">
 									<div class="row">
-										<div class="col-xs-12 col-md-12"><div id=""></div></div>
+										<div class="col-xs-12 col-md-12"><canvas id="ContenedorChart3" height="40vh" width="80vw" style="vertical-align: middle;"></canvas></div>
 									</div>
+									<!--
 									<div class="row">
-										<div class="col-xs-12 col-md-12"><div id=""></div></div>
+										<div class="col-xs-12 col-md-12"><canvas id="" height="40vh" width="80vw"></canvas></div>
 									</div>
+									-->
 								</div>
 							</div>
 						</div>
@@ -177,43 +298,184 @@
 					<!-- Importo el archivo Javascript de Highcharts directamente desde su servidor -->
 				<script src="Chart.js/Chart.min.js"></script>
 				<script>
-				var ctx = document.getElementById("ContenedorChart1").getContext('2d');
-				var myChart = new Chart(ctx, {
-					type: 'bar',
-					data: {
-						labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-						datasets: [{
-							label: '# of Votes',
-							data: [12, 19, 3, 5, 2, 3],
-							backgroundColor: [
-								'rgba(255, 99, 132, 0.2)',
-								'rgba(54, 162, 235, 0.2)',
-								'rgba(255, 206, 86, 0.2)',
-								'rgba(75, 192, 192, 0.2)',
-								'rgba(153, 102, 255, 0.2)',
-								'rgba(255, 159, 64, 0.2)'
-							],
-							borderColor: [
-								'rgba(255,99,132,1)',
-								'rgba(54, 162, 235, 1)',
-								'rgba(255, 206, 86, 1)',
-								'rgba(75, 192, 192, 1)',
-								'rgba(153, 102, 255, 1)',
-								'rgba(255, 159, 64, 1)'
-							],
-							borderWidth: 1
-						}]
-					},
-					options: {
-						scales: {
-							yAxes: [{
-								ticks: {
-									beginAtZero:true
-								}
+					// Primer gráfica
+					var ctx = document.getElementById("ContenedorChart1").getContext('2d');
+					var myChart = new Chart(ctx, {
+						type: 'bar',
+						data: {
+							labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+							datasets: [{
+								label: '# of Votes',
+								data: [<?php echo $CantidadEneroSalida ; ?>, <?php echo $CantidadFebreroSalida; ?>,
+								       <?php echo $CantidadMarzoSalida ; ?>, <?php echo $CantidadAbrilSalida ; ?>,
+									   <?php echo $CantidadMayoSalida ; ?>, <?php echo $CantidadJunioSalida ; ?>,
+									   <?php echo $CantidadJulioSalida ; ?>, <?php echo $CantidadAgostoSalida ; ?>,
+									   <?php echo $CantidadSeptiembreSalida ; ?>, <?php echo $CantidadOctubreSalida ; ?>,
+									   <?php echo $CantidadNoviembreSalida ; ?>, <?php echo $CantidadDiciembreSalida ; ?>],
+								backgroundColor: [
+									'rgba(255, 99, 132, 0.2)',
+									'rgba(54, 162, 235, 0.2)',
+									'rgba(255, 206, 86, 0.2)',
+									'rgba(75, 192, 192, 0.2)',
+									'rgba(153, 102, 255, 0.2)',
+									'rgba(255, 159, 64, 0.2)',
+									'rgba(255, 99, 132, 0.2)',
+									'rgba(54, 162, 235, 0.2)',
+									'rgba(255, 206, 86, 0.2)',
+									'rgba(75, 192, 192, 0.2)',
+									'rgba(153, 102, 255, 0.2)',
+									'rgba(255, 159, 64, 0.2)'
+								],
+								borderColor: [
+									'rgba(255,99,132,1)',
+									'rgba(54, 162, 235, 1)',
+									'rgba(255, 206, 86, 1)',
+									'rgba(75, 192, 192, 1)',
+									'rgba(153, 102, 255, 1)',
+									'rgba(255, 159, 64, 1)',
+									'rgba(255,99,132,1)',
+									'rgba(54, 162, 235, 1)',
+									'rgba(255, 206, 86, 1)',
+									'rgba(75, 192, 192, 1)',
+									'rgba(153, 102, 255, 1)',
+									'rgba(255, 159, 64, 1)'
+								],
+								borderWidth: 1
 							}]
+						},
+						options: {
+							scales: {
+								yAxes: [{
+									ticks: {
+										beginAtZero:true
+									}
+								}]
+							},
+							title: {
+								display: true,
+								text: 'Salida de productos por mes'
+							}
 						}
-					}
-				});
+					});
+					// Segunda gráfica
+					var ctx = document.getElementById("ContenedorChart2").getContext('2d');
+					var myChart = new Chart(ctx, {
+						type: 'line',
+						data: {
+							labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+							datasets: [{
+								label: '# of Votes',
+								data: [<?php echo $CantidadEneroEntrada ; ?>, <?php echo $CantidadFebreroEntrada; ?>,
+								       <?php echo $CantidadMarzoEntrada ; ?>, <?php echo $CantidadAbrilEntrada ; ?>,
+									   <?php echo $CantidadMayoEntrada ; ?>, <?php echo $CantidadJunioEntrada ; ?>,
+									   <?php echo $CantidadJulioEntrada ; ?>, <?php echo $CantidadAgostoEntrada ; ?>,
+									   <?php echo $CantidadSeptiembreEntrada ; ?>, <?php echo $CantidadOctubreEntrada ; ?>,
+									   <?php echo $CantidadNoviembreEntrada ; ?>, <?php echo $CantidadDiciembreEntrada ; ?>],
+								backgroundColor: ['rgba(54, 162, 235, 0.2)'],
+								borderColor: ['rgba(54, 162, 235, 1)'],
+								borderWidth: 1
+							}]
+						},
+						options: {
+							scales: {
+								yAxes: [{
+									ticks: {
+										beginAtZero:true
+									}
+								}]
+							},
+							title: {
+								display: true,
+								text: 'Entrada de productos por mes'
+							}
+						}
+					});
+					// Tercera gráfica
+					var ctx = document.getElementById("ContenedorChart3").getContext('2d');
+					var myChart = new Chart(ctx, {
+						type: 'doughnut',
+						data: {
+							labels: [<?php echo "'".$NombreTop5_1[0]."'"; ?>, <?php echo "'".$NombreTop5_1[1]."'"; ?>,
+									 <?php echo "'".$NombreTop5_1[2]."'"; ?>, <?php echo "'".$NombreTop5_1[3]."'"; ?>,
+									 <?php echo "'".$NombreTop5_1[4]."'"; ?>],
+							datasets: [{
+								label: '# of Votes',
+								data: [<?php echo $Top5_1[0]; ?>, <?php echo $Top5_1[1]; ?>,
+									 <?php echo $Top5_1[2]; ?>, <?php echo $Top5_1[3]; ?>,
+									 <?php echo $Top5_1[4]; ?>],
+								backgroundColor: [
+									'rgba(255, 99, 132, 0.2)',
+									'rgba(54, 162, 235, 0.2)',
+									'rgba(255, 206, 86, 0.2)',
+									'rgba(75, 192, 192, 0.2)',
+									'rgba(255, 159, 64, 0.2)'
+								],
+								borderColor: [
+									'rgba(255,99,132,1)',
+									'rgba(54, 162, 235, 1)',
+									'rgba(255, 206, 86, 1)',
+									'rgba(75, 192, 192, 1)',
+									'rgba(255, 159, 64, 1)'
+								],
+								borderWidth: 1
+							}]
+						},
+						options: {
+							scales: {
+								yAxes: [{
+									ticks: {
+										beginAtZero:true
+									}
+								}]
+							},
+							title: {
+								display: true,
+								text: 'Top 5 de existencia de productos'
+							}
+						}
+					});
+					// Cuarta gráfica
+					var ctx = document.getElementById("ContenedorChart4").getContext('2d');
+					var myChart = new Chart(ctx, {
+						type: 'doughnut',
+						data: {
+							labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+							datasets: [{
+								label: '# of Votes',
+								data: [12, 19, 3, 5, 2, 3],
+								backgroundColor: [
+									'rgba(255, 99, 132, 0.2)',
+									'rgba(54, 162, 235, 0.2)',
+									'rgba(255, 206, 86, 0.2)',
+									'rgba(75, 192, 192, 0.2)',
+									'rgba(153, 102, 255, 0.2)',
+									'rgba(255, 159, 64, 0.2)'
+								],
+								borderColor: [
+									'rgba(255,99,132,1)',
+									'rgba(54, 162, 235, 1)',
+									'rgba(255, 206, 86, 1)',
+									'rgba(75, 192, 192, 1)',
+									'rgba(153, 102, 255, 1)',
+									'rgba(255, 159, 64, 1)'
+								],
+								borderWidth: 1
+							}]
+						},
+						options: {
+							scales: {
+								yAxes: [{
+									ticks: {
+										beginAtZero:true
+									}
+								}]
+							},
+							title: {
+								display: true,
+								text: 'Otros'
+							}
+						}
+					});
 				</script>
 			</body>
 	<?php
