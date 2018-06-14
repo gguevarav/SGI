@@ -21,10 +21,9 @@
 
 </head>
 	<?php
-		//include_once 'Seguridad/conexion.php';
+		include_once 'Seguridad/conexion.php';
 		// Incluimos el archivo que valida si hay una sesión activa
 		include_once "Seguridad/seguro.php";
-		include_once "Clases/clsPrincipal.php";
 		// Si en la sesión activa tiene privilegios de administrador puede ver el formulario
 		if($_SESSION["PrivilegioUsuario"] == 'Administrador'){// Guardamos el nombre del usuario en una variable
 			$NombreUsuario =$_SESSION["NombreUsuario"];
@@ -32,7 +31,7 @@
 			
 			$sql1 = 'SELECT FechaHoraSalida, CantidadSalida FROM registrosalida;';
 			$sql2 = 'SELECT FechaHoraEntrada, CantidadEntrada FROM registroentrada;';
-			$sql3 = 'select idProducto, sum(CantidadInventario) as suma from inventario GROUP by idProducto';
+			$sql3 = 'select idProducto, sum(CantidadInventario) as suma from inventario GROUP by idProducto ORDER by suma desc';
 			$sql4 = 'SELECT producto.NombreProducto, SUM(inventario.CantidadInventario)
 					 FROM producto LEFT JOIN inventario ON producto.idProducto = inventario.idProducto
 					 GROUP BY producto.idProducto;';
@@ -235,6 +234,13 @@
 							<a href="#" class="dropdown-toggle negrita" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
 							<ul class="dropdown-menu">
 								<li><a href="#"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i><?php echo $NombreUsuario; ?></a></li>
+								<?php
+									if($_SESSION["PrivilegioUsuario"] == 'Administrador'){
+									?>
+										<li><a href="Administrador.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Módulo adminstrador</a></li>
+								<?php
+									}
+									?>
 								<li><a href="Seguridad/logout.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Cerrar Sesión</a></li>
 							</ul>
 						</li>
@@ -251,7 +257,7 @@
 					<div class="dashboard">
 						<div class="row">
 							<div class="text-center">
-								<div class="col-xs-5 col-md-5">
+								<div class="col-xs-12 col-md-5">
 									<div class="row">
 										<div class="col-xs-12 col-md-12"><canvas id="ContenedorChart1"></canvas></div>
 									</div>
@@ -261,12 +267,12 @@
 								</div>
 							</div>
 							<div class="text-center">
-								<div class="col-xs-2 col-md-2"><img src="imagenes/LogoPrincipal.png" class="img-responsive center-block"></div>
+								<div class="col-md-2"><img src="imagenes/LogoPrincipal.png" class="img-responsive center-block"></div>
 							</div>
 							<div class="text-center">
-								<div class="col-xs-5 col-md-5">
+								<div class="col-xs-12 col-md-5">
 									<div class="row">
-										<div class="col-xs-12 col-md-12"><canvas id="ContenedorChart3" height="40vh" width="80vw" style="vertical-align: middle;"></canvas></div>
+										<div class="col-xs-12 col-md-12"><canvas id="ContenedorChart3" height="40vh" width="40vw"></canvas></div>
 									</div>
 									<!--
 									<div class="row">
@@ -277,21 +283,20 @@
 							</div>
 						</div>
 					</div>
-				  <!-- Pie de página, se utilizará el mismo para todos. -->
+				<!-- Pie de página, se utilizará el mismo para todos. -->
 				<footer>
 					<hr>
 					<div class="row">
 						<div class="text-center col-md-6 col-md-offset-3">
-							<h4>SGI</h4>
-							<p>Copyright &copy; 2018 &middot; All Rights Reserved &middot; <a href="http://www.umg.edu.gt/" >www.umg.edu.gt</a></p>
+							<h4>Sistema de gestión de inventario</h4>
+							<p>Copyright &copy; 2018 &middot; All Rights Reserved &middot; <a href="http://www.umg.edu.gt/" >Gemis Daniel Guevara Villeda - Gustavo Rodolfo Arriaza</a></p>
 						</div>
 					</div>
 					<hr>
-				</footer>
+				</footer> 
 				</div>
 				<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
 				<script src="js/jquery-1.11.3.min.js"></script>
-
 				<!-- Include all compiled plugins (below), or include individual files as needed --> 
 				<script src="js/bootstrap.js"></script>
 				<script src="jquery/jquery.js"></script>
@@ -305,7 +310,7 @@
 						data: {
 							labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
 							datasets: [{
-								label: '# of Votes',
+								label: 'Cantidad de salidas',
 								data: [<?php echo $CantidadEneroSalida ; ?>, <?php echo $CantidadFebreroSalida; ?>,
 								       <?php echo $CantidadMarzoSalida ; ?>, <?php echo $CantidadAbrilSalida ; ?>,
 									   <?php echo $CantidadMayoSalida ; ?>, <?php echo $CantidadJunioSalida ; ?>,
@@ -364,7 +369,7 @@
 						data: {
 							labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
 							datasets: [{
-								label: '# of Votes',
+								label: 'Cantidad de entradas',
 								data: [<?php echo $CantidadEneroEntrada ; ?>, <?php echo $CantidadFebreroEntrada; ?>,
 								       <?php echo $CantidadMarzoEntrada ; ?>, <?php echo $CantidadAbrilEntrada ; ?>,
 									   <?php echo $CantidadMayoEntrada ; ?>, <?php echo $CantidadJunioEntrada ; ?>,
@@ -387,6 +392,14 @@
 							title: {
 								display: true,
 								text: 'Entrada de productos por mes'
+							},
+							legend: {
+								display: true,
+								position: 'top',
+								labels: {
+								  boxWidth: 80,
+								  fontColor: 'black'
+								}
 							}
 						}
 					});
@@ -399,7 +412,6 @@
 									 <?php echo "'".$NombreTop5_1[2]."'"; ?>, <?php echo "'".$NombreTop5_1[3]."'"; ?>,
 									 <?php echo "'".$NombreTop5_1[4]."'"; ?>],
 							datasets: [{
-								label: '# of Votes',
 								data: [<?php echo $Top5_1[0]; ?>, <?php echo $Top5_1[1]; ?>,
 									 <?php echo $Top5_1[2]; ?>, <?php echo $Top5_1[3]; ?>,
 									 <?php echo $Top5_1[4]; ?>],
@@ -421,13 +433,6 @@
 							}]
 						},
 						options: {
-							scales: {
-								yAxes: [{
-									ticks: {
-										beginAtZero:true
-									}
-								}]
-							},
 							title: {
 								display: true,
 								text: 'Top 5 de existencia de productos'
@@ -441,7 +446,6 @@
 						data: {
 							labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
 							datasets: [{
-								label: '# of Votes',
 								data: [12, 19, 3, 5, 2, 3],
 								backgroundColor: [
 									'rgba(255, 99, 132, 0.2)',

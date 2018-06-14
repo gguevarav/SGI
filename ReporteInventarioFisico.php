@@ -19,8 +19,8 @@
 			$this->Ln();
 			$this->Ln();
 			$this->SetFont('Arial', 'B', 20);
-			$this->Cell(60);
-			$this->Write(5, 'Reporte de Inventario');
+			$this->Cell(50);
+			$this->Write(5, utf8_decode('Reporte de Inventario Físico'));
 			$this->Ln(10);
 		}
 		

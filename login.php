@@ -21,23 +21,16 @@
 			<!-- se vincula al hoja de estilo para definir el aspecto del formulario de login-->
 			<link rel="stylesheet" type="text/css" href="css/estilo.css">
 		</head>
-    <?php
-  		//include_once 'Seguridad/conexion.php';
-  		// Incluimos el archivo que valida si hay una sesión activa
-  		include_once "Clases/clsPrincipal.php";
-  		// Si en la sesión activa tiene privilegios de administrador puede ver el formulario
-  		if(SesionValida::is_session_started() !== TRUE){
-  		?>
         <body>
     		<!-- Contenedor del ícono del Usuario -->
     		<div id="Contenedor">
     			<div class="IconoInicio">
     				<div class="row TextoInicioP">
-    					<div class="col-xs-6 TextoInicio">
+    					<div class="col-xs-7 TextoInicio">
     					<h2 class="text-center">Inicie sesión</h2>
     					</div>
     					<!-- Contenedor del ícono del Usuario -->
-    					<div class="col-xs-6">
+    					<div class="col-xs-4">
     					<!-- Icono de usuario -->
     					<span class="glyphicon glyphicon-user"></span>
     					</div>
@@ -63,11 +56,24 @@
     		</div>
     		<?php
     			include_once "Seguridad/conexion.php";
-				include_once "Clases/clsPrincipal.php";
     			if (isset($_POST['enviar'])) {
 					if ($_POST['usuario'] == '' or $_POST['password'] == '') {
 						?>
-						<div class="alert alert-warning"> Los campos no pueden ir vacios </div>
+						<div class="form-group">
+							<form name="Alerta">
+								<div class="container">
+									<div class="row text-center">
+										<div class="container-fluid">
+											<div class="row">
+												<div class="col-xs-10 col-xs-offset-1">
+													<div class="alert alert-warning">Los campos no pueden ir vacíos</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
 						<?php
 						//echo "<script languaje='javascript'>
 						//	alert('Los campos no pueden ir vacios');
@@ -92,7 +98,21 @@
 						else{
 							if ($resultado->num_rows == 0) {
 							?>
-							<div class="alert alert-danger"> Usuario no Registrado </div>
+							<div class="form-group">
+								<form name="Alerta">
+									<div class="container">
+										<div class="row text-center">
+											<div class="container-fluid">
+												<div class="row">
+													<div class="col-xs-10 col-xs-offset-1">
+														<div class="alert alert-danger">Usuario no registrado</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
 							<?php
 							//echo "Usuario no registrado";
 							exit;
@@ -102,39 +122,64 @@
 								if($ResultadoConsulta['NOmbreUsuario'] = $Usuario){
 									if($ResultadoConsulta['ContraseniaUsuario'] == $password){
 										$idPersona = $ResultadoConsulta['idPersona'];
-										if(SesionValida::is_session_started() !== TRUE){
-											$query = "SELECT * FROM persona WHERE idPersona='".$idPersona."'";
-											if(!$resultado = $mysqli->query($query)){
-												echo "Error: La ejecución de la consulta falló debido a: \n";
-												echo "Query: " . $query . "\n";
-												echo "Errno: " . $mysqli->errno . "\n";
-												echo "Error: " . $mysqli->error . "\n";
-												exit;
-											}
-											else{
-												$ResultadoConsultaPersona = $resultado->fetch_assoc();
-												session_start();
-												$_SESSION['NombreUsuario'] = $ResultadoConsultaPersona['NombrePersona'] . " " . $ResultadoConsultaPersona['ApellidoPersona'];
-												$_SESSION['Usuario'] = $ResultadoConsulta['NombreUsuario'];
-												$_SESSION['ContrasenaUsuario'] = $password;
-												$_SESSION['idUsuario'] = $ResultadoConsulta['idUsuario'];
-												$_SESSION['PrivilegioUsuario'] = $ResultadoConsulta['PrivilegioUsuario'];
-												header("location:index.php");
-											}
+										$query = "SELECT * FROM persona WHERE idPersona='".$idPersona."'";
+										if(!$resultado = $mysqli->query($query)){
+											echo "Error: La ejecución de la consulta falló debido a: \n";
+											echo "Query: " . $query . "\n";
+											echo "Errno: " . $mysqli->errno . "\n";
+											echo "Error: " . $mysqli->error . "\n";
+											exit;
 										}
 										else{
-											?>
-											<div class="alert alert-warning"> Contraseña erronea </div>
-											<?php
-											//echo "Contraseña Erronea";
+											$ResultadoConsultaPersona = $resultado->fetch_assoc();
+											session_start();
+											$_SESSION['NombreUsuario'] = $ResultadoConsultaPersona['NombrePersona'] . " " . $ResultadoConsultaPersona['ApellidoPersona'];
+											$_SESSION['Usuario'] = $ResultadoConsulta['NombreUsuario'];
+											$_SESSION['ContrasenaUsuario'] = $password;
+											$_SESSION['idUsuario'] = $ResultadoConsulta['idUsuario'];
+											$_SESSION['PrivilegioUsuario'] = $ResultadoConsulta['PrivilegioUsuario'];
+											header("location:index.php");
 										}
 									}
 									else{
 										?>
-										<div class="alert alert-warning"> Usuario erroneo </div>
+										<div class="form-group">
+											<form name="Alerta">
+												<div class="container">
+													<div class="row text-center">
+														<div class="container-fluid">
+															<div class="row">
+																<div class="col-xs-10 col-xs-offset-1">
+																	<div class="alert alert-warning">Contraseña erronea</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</form>
+										</div>
 										<?php
-											echo "Usuario erroneo";
+										//echo "Contraseña Erronea";
 									}
+								}
+								else{
+									?>
+									<div class="form-group">
+											<form name="Alerta">
+												<div class="container">
+													<div class="row text-center">
+														<div class="container-fluid">
+															<div class="row">
+																<div class="col-xs-10 col-xs-offset-1">
+																	<div class="alert alert-danger">Usuario erroneo</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</form>
+										</div>
+									<?php
 								}
 							}
 						}
@@ -142,13 +187,4 @@
 				}
     		?>
         </body>
-        <?php
-      		// De lo contrario lo redirigimos al a página antererior
-      			}
-      			else{
-              //$desde = $_SERVER['HTTP_REFERER'];
-      				//header("Location: ".$desde);
-              header("Location:index.php");
-      			}
-      		?>
 </html>

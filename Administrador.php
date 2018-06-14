@@ -1,5 +1,5 @@
 <!--
-	Módulo de Bitácora de entradas al inventario
+	Módulo de creación de usuarios
 	Gemis Daniel Guevara Villeda
 	Gustavo Rodolfo Arriaza
 	UMG - Morales Izabal
@@ -59,6 +59,7 @@
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ajuste<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="Ajuste.php">Ajuste de inventario</a></li>
+									<li><a href="#">Lista de Ajuste de inventario</a></li>
 								</ul>
 							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hojas de Reponsabilidad<span class="caret"></span></a>
@@ -84,7 +85,7 @@
 							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestión de usuarios<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
-									<li><a href="CrearUsuario.php">Crear usuario</li>
+									<li><a href="#">Crear usuario</li>
 									<li><a href="Usuario.php">Ver usuarios</a></li>
 								</ul>
 							</li>
@@ -114,89 +115,178 @@
 				<br>
 				<br>
 				<br>
-				<div class="form-group">
-						<div class="container">
-							<div class="row text-center">
-								<div class="container-fluid">
+				<div class="container">
+					<div class="row text-center">
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-xs-6 ">
+								<h1 class="text-center">Módulo Administrador</h1>
+								</div>
+								<!-- Contenedor del ícono del Usuario -->
+								<div class="col-xs-6 Icon">
+									<!-- Icono de usuario -->
+									<span class="glyphicon glyphicon-user"></span>
+								</div>
+							</div>
+							<br>
+							<div class="form-group">
+								<form name="CambioPassword" action="Administrador.php" method="post">
 									<div class="row">
-										<div class="col-xs-6 ">
-										<h1 class="text-center">Bitácora de entradas en el inventario</h1>
-										</div>
-										<!-- Contenedor del ícono del Usuario -->
-										<div class="col-xs-6 Icon">
-											<!-- Icono de usuario -->
-											<span class="glyphicon glyphicon-user"></span>
+										<div class="col-xs-12 ">
+										<h1 class="text-center">Cambio de contraseña</h1>
 										</div>
 									</div>
 									<br>
-									<div class="table-responsive">          
-										<table class="table">
-											<!-- Título -->
-											<thead>
-												<!-- Contenido -->
-												<tr>
-													<th>#</th>
-													<th>Fecha y hora</th>
-													<th>Artículo</th>
-													<th>Cantidad</th>
-													<th>Comentario</th>
-													<th>Razón entrada inventario</th>
-													<th>Realizado por</th>
-												</tr>
-											</thead>
-											<!-- Cuerpo de la tabla -->
-											<tbody>
-												<!-- Contenido de la tabla -->
-													<!-- Acá mostraremos los usuarios y seleccionaremos el que deseamos eliminar -->
+									<!-- Nombre de usuario -->
+									<div class="row">
+										<div class="col-xs-10 col-xs-offset-1">
+											<div class="input-group input-group-lg">
+												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i></span>
+												<select class="form-control" name="NombreUsuario" id="NombreUsuario" required>
+												<option value="" disabled selected>Usuario</option>
+													<!-- Acá mostraremos los puestos que existen en la base de datos -->
 													<?php							
-														$VerProductos = "SELECT * FROM registroentrada";
+														$VerUsuarios = "SELECT * FROM usuario;";
 														// Hacemos la consulta
-														$resultado = $mysqli->query($VerProductos);
+														$resultado = $mysqli->query($VerUsuarios);			
 															while ($row = mysqli_fetch_array($resultado)){
 																?>
-																<tr>
-																<td><span id="idRegistroEntrada<?php echo $row['idRegistroEntrada'];?>"><?php echo $row['idRegistroEntrada'] ?></span></td>
-																<td><span id="FechaHoraEntrada<?php echo $row['idRegistroEntrada'];?>"><?php echo $row['FechaHoraEntrada'] ?></span></td>
-																<td><span id="Producto<?php echo $row['idRegistroEntrada'];?>"><!-- Acá mostraremos el nombre del producto a partir del id que se tiene en la tabla -->
-																																		<?php							
-																																			$VerNombreProducto = "SELECT NombreProducto FROM producto WHERE idProducto=".$row['idProducto'].";";
-																																			// Hacemos la consulta
-																																			$ResultadoVerProducto = $mysqli->query($VerNombreProducto);
-																																			$FilaResultado = $ResultadoVerProducto->fetch_assoc();
-																																			$NombreProducto = $FilaResultado['NombreProducto'];
-																																			echo $NombreProducto;
-																																		?></span></td>
-																<td><span id="CantidadEntrada<?php echo $row['idRegistroEntrada'];?>"><?php echo $row['CantidadEntrada'] ?></span></td>
-																<td><span id="DetalleEntrada<?php echo $row['idRegistroEntrada'];?>"><?php echo $row['DetalleEntrada'] ?></span></td>
-																<td><span id="RazonEntrada<?php echo $row['idRegistroEntrada'];?>"><!-- Acá mostraremos el nombre del producto a partir del id que se tiene en la tabla -->
-																																<?php							
-																																	$VerNombreTipoEntrada = "SELECT NombreTipoEntrada FROM tipoentrada WHERE idTipoEntrada=".$row['idTipoEntrada'].";";
-																																	// Hacemos la consulta
-																																	$ResultadoVerEntrada = $mysqli->query($VerNombreTipoEntrada);
-																																	$FilaResultadoEntrada = $ResultadoVerEntrada->fetch_assoc();
-																																	$NombreEntrada = $FilaResultadoEntrada['NombreTipoEntrada'];
-																																	echo $NombreEntrada;
-																																?></span></td>
-																<td><span id="UsuarioEntrada<?php echo $row['idRegistroEntrada'];?>"><?php echo $row['UsuarioEntrada'] ?></span></td>
-																</tr>
+																<option value="<?php echo $row['idUsuario'];?>"><?php echo $row['NombreUsuario'] ?></option>
 													<?php
 															}
 													?>
-											</tbody>
-										</table>
-									</div>								
-								</div>
+												</select>
+											</div>
+										</div>
+									</div>
+									<br>
+									<!-- Contraseña de usuario -->
+									<div class="row">
+										<div class="col-xs-10 col-xs-offset-1">
+											<div class="input-group input-group-lg">
+												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i></span>
+												<input type="password" class="form-control" name="ContraseniaUsuario" placeholder="Contraseña" id="ContraseniaUsuario" aria-describedby="sizing-addon1" required>
+											</div>
+										</div>
+									</div>
+									<br>
+									<!-- reContraseña de usuario -->
+									<div class="row">
+										<div class="col-xs-10 col-xs-offset-1">
+											<div class="input-group input-group-lg">
+												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i></span>
+												<input type="password" class="form-control" name="ReContraseniaUsuario" placeholder="Ingrese nuevamente la contraseña" id="ReContraseniaUsuario" aria-describedby="sizing-addon1" required>
+											</div>
+										</div>
+									</div>
+									<br>
+									<!-- Resgistrar -->
+									<div class="row">
+										<div class="col-xs-12 col-xs-offset-1">
+											<div class="input-group input-group-lg">
+												<div clss="btn-group">
+													<button type="submit" class="btn btn-primary" id="CambiarPassword" name="CambiarPassword">Cambiar</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<br>
+								</form>
+							</div>
+							<div class="form-group">
+								<form name="CrearTipoEntrada" action="Administrador.php" method="post">
+									<div class="row">
+										<div class="col-xs-12 ">
+										<h1 class="text-center">Crear tipo de entrada al inventario</h1>
+										</div>
+									</div>
+									<br>
+									<!-- Nombre del usuario -->
+									<div class="row">
+										<div class="col-xs-10 col-xs-offset-1">
+											<div class="input-group input-group-lg">
+												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i></span>
+												<input type="text" class="form-control" name="NombreEntrada" placeholder="Nombre de tipo de entrada" id="NombreEntrada" aria-describedby="sizing-addon1" required>
+											</div>
+										</div>
+									</div>
+									<br>
+									<!-- Resgistrar -->
+									<div class="row">
+										<div class="col-xs-12 col-xs-offset-1">
+											<div class="input-group input-group-lg">
+												<div clss="btn-group">
+													<button type="submit" class="btn btn-primary" id="RegistroEntrada" name="RegistroEntrada">Registrar</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<br>
+								</form>
 							</div>
 						</div>
 					</div>
 				</div>
+				
+				<?php
+					if (isset($_POST['CambiarPassword'])) {
+						// Obtenemos los valores de todos los campos y los almacenamos en variables
+						$idUsuario=$_POST['NombreUsuario'];
+						$PasswordUsuario=$_POST['ContraseniaUsuario'];
+						$RePasswordUsuario=$_POST['ReContraseniaUsuario'];
+						
+						if($PasswordUsuario != $RePasswordUsuario){
+							?>
+								<div class="form-group">
+									<form name="Alerta">
+										<div class="container">
+											<div class="row text-center">
+												<div class="container-fluid">
+													<div class="row">
+														<div class="col-xs-10 col-xs-offset-1">
+															<div class="alert alert-success">Las contraseñas no coinciden</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							<?php
+						}
+						else{
+							$ContraseniaEncriptada = md5($PasswordUsuario);
+							// Creamos la consulta para la insersión de los datos
+							$CambiarContrasenia = "UPDATE usuario SET ContraseniaUsuario='".$ContraseniaEncriptada."' WHERE idUsuario=".$idUsuario.";";
+																	
+							if(!$resultado1 = $mysqli->query($CambiarContrasenia)){
+								echo "Error: La ejecución de la consulta falló debido a: \n";
+								echo "Query: " . $CambiarContrasenia . "\n";
+								echo "Error: " . $mysqli->errno . "\n";
+								exit;
+							}
+						}
+					}
+					if (isset($_POST['RegistroEntrada'])) {
+						// Obtenemos los valores de todos los campos y los almacenamos en variables
+						$NombreTipoEntrada=$_POST['NombreEntrada'];
+						
+						// Creamos la consulta para la insersión de los datos
+						$InsertarTipoEntrada = "INSERT into tipoentrada (NombreTipoEntrada)
+																 VALUES('".$NombreTipoEntrada."');";
+																
+						if(!$resultado2 = $mysqli->query($InsertarTipoEntrada)){
+							echo "Error: La ejecución de la consulta falló debido a: \n";
+							echo "Query: " . $InsertarTipoEntrada . "\n";
+							echo "Error: " . $mysqli->errno . "\n";
+							exit;
+						}
+					}
+				?>
 				<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
 				<script src="js/jquery-1.11.3.min.js"></script>
-
 				<!-- Include all compiled plugins (below), or include individual files as needed --> 
 				<script src="js/bootstrap.js"></script>
-				<!-- Incluimos el script que nos dará el nombre de la persona para mostrarlo en el modal -->
-				<script src="js/custom.js"></script>
 				<!-- Pie de página, se utilizará el mismo para todos. -->
 				<footer>
 					<hr>

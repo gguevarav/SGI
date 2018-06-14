@@ -1,8 +1,7 @@
 <!--
 	Módulo de registro de productos
-	Lunes, 14 de mayo del 2018
-	10:27 PM
 	Gemis Daniel Guevara Villeda
+	Gustavo Rodolfo Arriaza
 	UMG - Morales Izabal
 -->
 <!DOCTYPE html>
@@ -18,15 +17,15 @@
 <link href="css/bootstrap.css" rel="stylesheet">
 <!-- se vincula al hoja de estilo para definir el aspecto del formulario de login-->  
 <link rel="stylesheet" type="text/css" href="css/estilo.css">
+<!-- Incluimos el script que contiene los datos  --> 
+<script src="js/CopiaElementos.js"></script>
+
 </head>
 	<?php
-		//include_once 'Seguridad/conexion.php';
 		// Incluimos el archivo que valida si hay una sesión activa
 		include_once "Seguridad/seguro.php";
 		// Primero hacemos la consulta en la tabla de persona
 		include_once "Seguridad/conexion.php";
-		// Incluimos la clase que contiene las funciones
-		include_once "Clases/clsPrincipal.php";
 		// Si en la sesión activa tiene privilegios de administrador puede ver el formulario
 		if($_SESSION["PrivilegioUsuario"] == 'Administrador'){
 			// Guardamos el nombre del usuario en una variable
@@ -53,14 +52,13 @@
 							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Productos<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
-									<li><a href="RegistroProducto.php">Registrar Producto</a></li>
+									<li><a href="#">Registrar Producto</a></li>
 									<li><a href="Producto.php">Lista de Productos</a></li>
 								</ul>
 							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ajuste<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="Ajuste.php">Ajuste de inventario</a></li>
-									<li><a href="#">Lista de Ajuste de inventario</a></li>
 								</ul>
 							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hojas de Reponsabilidad<span class="caret"></span></a>
@@ -97,6 +95,13 @@
 							<a href="#" class="dropdown-toggle negrita" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
 							<ul class="dropdown-menu">
 								<li><a href="#"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i><?php echo $NombreUsuario; ?></a></li>
+								<?php
+									if($_SESSION["PrivilegioUsuario"] == 'Administrador'){
+									?>
+										<li><a href="Administrador.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Módulo adminstrador</a></li>
+								<?php
+									}
+									?>
 								<li><a href="Seguridad/logout.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Cerrar Sesión</a></li>
 							</ul>
 						</li>
@@ -267,7 +272,6 @@
 											<div class="input-group input-group-lg">
 												<div clss="btn-group">
 													<input type="submit" name="RegistrarProducto" class="btn btn-primary" value="Registrar">
-													<button type="button" class="btn btn-danger">Cancelar</button>
 												</div>
 											</div>
 										</div>
@@ -653,8 +657,8 @@
 					<hr>
 					<div class="row">
 						<div class="text-center col-md-6 col-md-offset-3">
-							<h4>SGI</h4>
-							<p>Copyright &copy; 2018 &middot; All Rights Reserved &middot; <a href="http://www.umg.edu.gt/" >www.umg.edu.gt</a></p>
+							<h4>Sistema de gestión de inventario</h4>
+							<p>Copyright &copy; 2018 &middot; All Rights Reserved &middot; <a href="https://www.umg.edu.gt/" >Gemis Daniel Guevara Villeda - Gustavo Rodolfo Arriaza</a></p>
 						</div>
 					</div>
 					<hr>

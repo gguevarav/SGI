@@ -1,8 +1,7 @@
 <!--
-	Módulo de ingreso de datos al inventario
-	Lunes, 14 de mayo del 2018
-	11:59 PM
+	Módulo de Creación de hojas de responsabilidad
 	Gemis Daniel Guevara Villeda
+	Gustavo Rodolfo Arriaza
 	UMG - Morales Izabal
 -->
 <!DOCTYPE html>
@@ -60,12 +59,11 @@
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ajuste<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="Ajuste.php">Ajuste de inventario</a></li>
-									<li><a href="#">Lista de Ajuste de inventario</a></li>
 								</ul>
 							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hojas de Reponsabilidad<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
-									<li><a href="CrearHojaResponsabilidad.php">Crear hoja de responsabilidad</a></li>
+									<li><a href="#">Crear hoja de responsabilidad</a></li>
 									<li><a href="HojaResponsabilidad.php">Lista hojas de responsabilidad</a></li>
 								</ul>
 							</li>
@@ -97,6 +95,13 @@
 							<a href="#" class="dropdown-toggle negrita" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
 							<ul class="dropdown-menu">
 								<li><a href="#"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i><?php echo $NombreUsuario; ?></a></li>
+								<?php
+									if($_SESSION["PrivilegioUsuario"] == 'Administrador'){
+									?>
+										<li><a href="Administrador.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Módulo adminstrador</a></li>
+								<?php
+									}
+									?>
 								<li><a href="Seguridad/logout.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Cerrar Sesión</a></li>
 							</ul>
 						</li>
@@ -225,7 +230,6 @@
 											<div class="input-group input-group-lg">
 												<div clss="btn-group">
 													<input type="submit" name="CrearHoja" class="btn btn-primary" value="Crear hoja de responsabilidad">
-													<button type="button" class="btn btn-danger">Cancelar</button>
 												</div>
 											</div>
 										</div>
@@ -380,7 +384,6 @@
 				?>
 				<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
 				<script src="js/jquery-1.11.3.min.js"></script>
-
 				<!-- Include all compiled plugins (below), or include individual files as needed --> 
 				<script src="js/bootstrap.js"></script>
 				<!-- Pie de página, se utilizará el mismo para todos. -->
@@ -388,8 +391,8 @@
 					<hr>
 					<div class="row">
 						<div class="text-center col-md-6 col-md-offset-3">
-							<h4>SGI</h4>
-							<p>Copyright &copy; 2018 &middot; All Rights Reserved &middot; <a href="http://www.umg.edu.gt/" >www.umg.edu.gt</a></p>
+							<h4>Sistema de gestión de inventario</h4>
+							<p>Copyright &copy; 2018 &middot; All Rights Reserved &middot; <a href="https://www.umg.edu.gt/" >Gemis Daniel Guevara Villeda - Gustavo Rodolfo Arriaza</a></p>
 						</div>
 					</div>
 					<hr>
