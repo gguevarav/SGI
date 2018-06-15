@@ -223,10 +223,11 @@
 						if($row['idProducto'] != null){
 							// Esta es la cantidad que ya existe en la base de datos
 							$CantidadDisponible = $row['CantidadInventario'];
+							$CantidadFinal =  0;
 							// Verificamos si la cantidad que se le dará salida es mayor o igual a la disponible en el inventario
 							if($CantidadDisponible >= $Cantidad){
 								// Sumamos la disponible más lo que se desea insertar
-								$CantidadFinal = $CantidadDisponible -= $Cantidad;
+							$CantidadFinal += $CantidadDisponible - $Cantidad;
 								// Línea del inventario que vamos a utilizará
 								$LineaInventario = $row['idInventario'];
 								// Consulta

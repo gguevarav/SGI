@@ -136,16 +136,26 @@
 											<div class="input-group input-group-lg">
 												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-asterisk"></i></span>
 												<select class="form-control" name="Producto" id="Producto">
-												<option value="" disabled selected>Producto</option>
+												<option value="" disabled selected>Producto   -   Cantidad disponible</option>
 													<!-- Acá mostraremos los puestos que existen en la base de datos -->
 													<?php							
-														$VerProductos = "SELECT idProducto, NombreProducto FROM producto WHERE EstadoProducto='Habilitado';";
+														$VerProductos = "SELECT * FROM inventario;";
 														// Hacemos la consulta
-														$resultado = $mysqli->query($VerProductos);			
-															while ($row = mysqli_fetch_array($resultado)){
+														$resultado = $mysqli->query($VerProductos);	
+														while ($row = mysqli_fetch_array($resultado)){
+															// Guardamos el id del Producto en una variable para su uso
+															$idProducto = $row['idProducto'];
+															// Hacemos la otra consulta para mostrar el nombre que tiene cada producto
+															$VerProducto = "SELECT NombreProducto FROM producto WHERE idProducto =".$idProducto.";";
+															$ResultadoVerProducto = $mysqli->query($VerProducto);			
+															$FilaResultante = mysqli_fetch_array($ResultadoVerProducto);
+															$NombreProducto = $FilaResultante['NombreProducto'];
+															$CantidadInventario = $row['CantidadInventario'];
+															if($CantidadInventario != 0){
 																?>
-																<option value="<?php echo $row['idProducto'];?>"><?php echo $row['NombreProducto'] ?></option>
+																<option value="<?php echo $idProducto ?>"><?php echo $NombreProducto. "   -   " . $row['CantidadInventario'] ?></option>
 													<?php
+																}
 															}
 													?>
 												</select>
@@ -408,8 +418,9 @@
 						if($row['idProducto'] != null){
 							// Esta es la cantidad que ya existe en la base de datos
 							$CantidadDisponible = $row['CantidadInventario'];
+							$CantidadFinal = 0;
 							// Sumamos la disponible más lo que se desea insertar
-							$CantidadFinal = $CantidadDisponible += $Cantidad;
+							$CantidadFinal += $CantidadDisponible + $Cantidad;
 							// Línea del inventario que vamos a utilizará
 							$LineaInventario = $row['idInventario'];
 							// Consulta
@@ -431,6 +442,42 @@
 								echo "Errno: " . $mysqli->errno . "\n";
 								echo "Error: " . $mysqli->error . "\n";
 								exit;
+							}
+							else{
+								?>
+								<div class="form-group">
+									<form name="Alerta">
+										<div class="container">
+											<div class="row text-center">
+												<div class="container-fluid">
+													<div class="row">
+														<div class="col-xs-10 col-xs-offset-1">
+															<div class="alert alert-success">Se agregó 
+																								<?php
+																									// Mostramos la cantidad que agregamos para ver de cuánto fué el ingreso del producto, también mostramos
+																									// el nombre del producto que estamos registrando
+																									$Cantidad = $_POST['Cantidad'];
+																									$Producto = $_POST['Producto']; 
+																									echo $Cantidad . " ";
+																									// Consultaremos el nombre del producto que estamos registrando
+																									$VerNombreProducto = "SELECT NombreProducto FROM Producto WHERE idProducto=".$Producto.";";
+																									// Hacemos la consulta
+																									$resultado = $mysqli->query($VerNombreProducto);			
+																									$row = mysqli_fetch_array($resultado);
+																									$NombreProducto = $row['NombreProducto'];
+																									echo $NombreProducto;
+																								?>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+								<?php
+								// Recargamos la página
+								echo "<meta http-equiv=\"refresh\" content=\"0;URL=EntradaInventario.php\">"; 
 							}
 						}
 						else{
@@ -494,7 +541,7 @@
 								</div>
 								<?php
 								// Recargamos la página
-								//echo "<meta http-equiv=\"refresh\" content=\"0;URL=EntradaInventario.php\">"; 
+								echo "<meta http-equiv=\"refresh\" content=\"0;URL=EntradaInventario.php\">"; 
 							}
 						}
 					}

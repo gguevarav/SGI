@@ -29,125 +29,51 @@
 			$NombreUsuario =$_SESSION["NombreUsuario"];
 			$idUsuario2 =$_SESSION["idUsuario"];
 			
-			$sql1 = 'SELECT FechaHoraSalida, CantidadSalida FROM registrosalida;';
-			$sql2 = 'SELECT FechaHoraEntrada, CantidadEntrada FROM registroentrada;';
-			$sql3 = 'select idProducto, sum(CantidadInventario) as suma from inventario GROUP by idProducto ORDER by suma desc';
+			$sql1 = 'SELECT idProducto, SUM(CantidadSalida) AS Suma FROM registrosalida GROUP BY idProducto ORDER BY Suma DESC;';
+			$sql2 = 'SELECT idProducto, SUM(CantidadEntrada) AS Suma FROM registroentrada GROUP BY idProducto ORDER BY Suma DESC;';
+			$sql3 = 'SELECT idProducto, SUM(CantidadInventario) AS Suma FROM inventario GROUP BY idProducto ORDER BY Suma DESC';
+			// Guardado
+			/*
 			$sql4 = 'SELECT producto.NombreProducto, SUM(inventario.CantidadInventario)
 					 FROM producto LEFT JOIN inventario ON producto.idProducto = inventario.idProducto
-					 GROUP BY producto.idProducto;';
+					 GROUP BY producto.idProducto;';*/
 			
-			// Guardamos las cantidades en variables
-			$CantidadEneroSalida = 0;
-			$CantidadFebreroSalida = 0;
-			$CantidadMarzoSalida = 0;
-			$CantidadAbrilSalida = 0;
-			$CantidadMayoSalida = 0;
-			$CantidadJunioSalida = 0;
-			$CantidadJulioSalida = 0;
-			$CantidadAgostoSalida = 0;
-			$CantidadSeptiembreSalida = 0;
-			$CantidadOctubreSalida = 0;
-			$CantidadNoviembreSalida = 0;
-			$CantidadDiciembreSalida = 0;
-			$MesSalidas;			
-			// Hacemos la consulta para mostrar las cantidades de salidas
-			$resultado = $mysqli->query($sql1);			
-			while ($row = mysqli_fetch_array($resultado)){
-				$MesSalidas = date("n", strtotime($row['FechaHoraSalida']));
-				switch($MesSalidas){
-					case 1:
-						$CantidadEneroSalida += $row['CantidadSalida'];
-						break;
-					case 2:
-						$CantidadFebreroSalida += $row['CantidadSalida'];
-						break;
-					case 3:
-						$CantidadMarzoSalida += $row['CantidadSalida'];
-						break;
-					case 4:
-						$CantidadAbrilSalida += $row['CantidadSalida'];
-						break;
-					case 5:
-						$CantidadMayoSalida += $row['CantidadSalida'];
-						break;
-					case 6:
-						$CantidadJunioSalida += $row['CantidadSalida'];
-						break;
-					case 7:
-						$CantidadJulioSalida += $row['CantidadSalida'];
-						break;
-					case 8:
-						$CantidadAgostoSalida += $row['CantidadSalida'];
-						break;
-					case 9:
-						$CantidadSeptiembreSalida += $row['CantidadSalida'];
-						break;
-					case 10:
-						$CantidadOctubreSalida += $row['CantidadSalida'];
-						break;
-					case 11:
-						$CantidadNoviembreSalida += $row['CantidadSalida'];
-						break;
-					case 12:
-						$CantidadDiciembreSalida += $row['CantidadSalida'];
-						break;
+			// Primer gráfica
+			$NombreTop10_Salidas;
+			$Top10_Salidas;
+			// Hacemos la consulta para mostrar las cantidades de Entradas
+			$resultado1 = $mysqli->query($sql1);
+			$Contador = 0;
+			while ($row1 = mysqli_fetch_array($resultado1)){
+				$VerNombreProducto = "SELECT NombreProducto FROM producto WHERE idProducto=".$row1['idProducto'].";";
+				// Hacemos la consulta
+				$ResultadoVerProducto = $mysqli->query($VerNombreProducto);
+				$FilaResultado = $ResultadoVerProducto->fetch_assoc();
+				$NombreTop10_Salidas[$Contador] = $FilaResultado['NombreProducto'];
+				$Top10_Salidas[$Contador] = $row1['Suma'];
+				// Aumentamos al contador
+				$Contador++;
+				if($Contador == 11){
+					break;
 				}
 			}
-			// Guardamos las cantidades en variables
-			$CantidadEneroEntrada = 0;
-			$CantidadFebreroEntrada = 0;
-			$CantidadMarzoEntrada = 0;
-			$CantidadAbrilEntrada = 0;
-			$CantidadMayoEntrada = 0;
-			$CantidadJunioEntrada = 0;
-			$CantidadJulioEntrada = 0;
-			$CantidadAgostoEntrada = 0;
-			$CantidadSeptiembreEntrada = 0;
-			$CantidadOctubreEntrada = 0;
-			$CantidadNoviembreEntrada = 0;
-			$CantidadDiciembreEntrada = 0;
-			$MesEntradas;
+			// Segunda Gráfica
+			$NombreTop10_Entradas;
+			$Top10_Entradas;
 			// Hacemos la consulta para mostrar las cantidades de Entradas
-			$resultado2 = $mysqli->query($sql2);			
+			$resultado2 = $mysqli->query($sql1);
+			$Contador = 0;
 			while ($row2 = mysqli_fetch_array($resultado2)){
-				$MesEntradas = date("n", strtotime($row2['FechaHoraEntrada']));
-				switch($MesEntradas){
-					case 1:
-						$CantidadEneroEntrada += $row2['CantidadEntrada'];
-						break;
-					case 2:
-						$CantidadFebreroEntrada += $row2['CantidadEntrada'];
-						break;
-					case 3:
-						$CantidadMarzoEntrada += $row2['CantidadEntrada'];
-						break;
-					case 4:
-						$CantidadAbrilEntrada += $row2['CantidadEntrada'];
-						break;
-					case 5:
-						$CantidadMayoEntrada += $row2['CantidadEntrada'];
-						break;
-					case 6:
-						$CantidadJunioEntrada += $row2['CantidadEntrada'];
-						break;
-					case 7:
-						$CantidadJulioEntrada += $row2['CantidadEntrada'];
-						break;
-					case 8:
-						$CantidadAgostoEntrada += $row2['CantidadEntrada'];
-						break;
-					case 9:
-						$CantidadSeptiembreEntrada += $row2['CantidadEntrada'];
-						break;
-					case 10:
-						$CantidadOctubreEntrada += $row2['CantidadEntrada'];
-						break;
-					case 11:
-						$CantidadNoviembreEntrada += $row2['CantidadEntrada'];
-						break;
-					case 12:
-						$CantidadDiciembreEntrada += $row2['CantidadEntrada'];
-						break;
+				$VerNombreProducto = "SELECT NombreProducto FROM producto WHERE idProducto=".$row2['idProducto'].";";
+				// Hacemos la consulta
+				$ResultadoVerProducto = $mysqli->query($VerNombreProducto);
+				$FilaResultado = $ResultadoVerProducto->fetch_assoc();
+				$NombreTop10_Entradas[$Contador] = $FilaResultado['NombreProducto'];
+				$Top10_Entradas[$Contador] = $row2['Suma'];
+				// Aumentamos al contador
+				$Contador++;
+				if($Contador == 11){
+					break;
 				}
 			}
 			// Guardamos las cantidades en variables (5)
@@ -162,7 +88,7 @@
 				$ResultadoVerProducto = $mysqli->query($VerNombreProducto);
 				$FilaResultado = $ResultadoVerProducto->fetch_assoc();
 				$NombreTop5_1[$Contador] = $FilaResultado['NombreProducto'];
-				$Top5_1[$Contador] = $row3['suma'];
+				$Top5_1[$Contador] = $row3['Suma'];
 				// Aumentamos al contador
 				$Contador++;
 				if($Contador == 6){
@@ -304,19 +230,18 @@
 				<script src="Chart.js/Chart.min.js"></script>
 				<script>
 					// Primer gráfica
-					var ctx = document.getElementById("ContenedorChart1").getContext('2d');
-					var myChart = new Chart(ctx, {
+					var ctx1 = document.getElementById("ContenedorChart1").getContext('2d');
+					var myChart1 = new Chart(ctx1, {
 						type: 'bar',
 						data: {
-							labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+							labels: [<?php echo "'".$NombreTop10_Entradas[0]."'"; ?>, <?php echo "'".$NombreTop10_Entradas[1]."'"; ?>,
+									 <?php echo "'".$NombreTop10_Entradas[2]."'"; ?>, <?php echo "'".$NombreTop10_Entradas[3]."'"; ?>,
+									 <?php echo "'".$NombreTop10_Entradas[4]."'"; ?>],
 							datasets: [{
-								label: 'Cantidad de salidas',
-								data: [<?php echo $CantidadEneroSalida ; ?>, <?php echo $CantidadFebreroSalida; ?>,
-								       <?php echo $CantidadMarzoSalida ; ?>, <?php echo $CantidadAbrilSalida ; ?>,
-									   <?php echo $CantidadMayoSalida ; ?>, <?php echo $CantidadJunioSalida ; ?>,
-									   <?php echo $CantidadJulioSalida ; ?>, <?php echo $CantidadAgostoSalida ; ?>,
-									   <?php echo $CantidadSeptiembreSalida ; ?>, <?php echo $CantidadOctubreSalida ; ?>,
-									   <?php echo $CantidadNoviembreSalida ; ?>, <?php echo $CantidadDiciembreSalida ; ?>],
+								label: 'Entradas',
+								data: [<?php echo $Top10_Entradas[0]; ?>, <?php echo $Top10_Entradas[1]; ?>,
+									   <?php echo $Top10_Entradas[2]; ?>, <?php echo $Top10_Entradas[3]; ?>,
+									   <?php echo $Top10_Entradas[4]; ?>],
 								backgroundColor: [
 									'rgba(255, 99, 132, 0.2)',
 									'rgba(54, 162, 235, 0.2)',
@@ -352,30 +277,28 @@
 							scales: {
 								yAxes: [{
 									ticks: {
-										beginAtZero:true
 									}
 								}]
 							},
 							title: {
 								display: true,
-								text: 'Salida de productos por mes'
+								text: 'Top 5 entradas'
 							}
 						}
 					});
 					// Segunda gráfica
-					var ctx = document.getElementById("ContenedorChart2").getContext('2d');
-					var myChart = new Chart(ctx, {
+					var ctx2 = document.getElementById("ContenedorChart2").getContext('2d');
+					var myChart2 = new Chart(ctx2, {
 						type: 'line',
 						data: {
-							labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+							labels: [<?php echo "'".$NombreTop10_Salidas[0]."'"; ?>, <?php echo "'".$NombreTop10_Salidas[1]."'"; ?>,
+									 <?php echo "'".$NombreTop10_Salidas[2]."'"; ?>, <?php echo "'".$NombreTop10_Salidas[3]."'"; ?>,
+									 <?php echo "'".$NombreTop10_Salidas[4]."'"; ?>],
 							datasets: [{
-								label: 'Cantidad de entradas',
-								data: [<?php echo $CantidadEneroEntrada ; ?>, <?php echo $CantidadFebreroEntrada; ?>,
-								       <?php echo $CantidadMarzoEntrada ; ?>, <?php echo $CantidadAbrilEntrada ; ?>,
-									   <?php echo $CantidadMayoEntrada ; ?>, <?php echo $CantidadJunioEntrada ; ?>,
-									   <?php echo $CantidadJulioEntrada ; ?>, <?php echo $CantidadAgostoEntrada ; ?>,
-									   <?php echo $CantidadSeptiembreEntrada ; ?>, <?php echo $CantidadOctubreEntrada ; ?>,
-									   <?php echo $CantidadNoviembreEntrada ; ?>, <?php echo $CantidadDiciembreEntrada ; ?>],
+								label: 'Salidas',
+								data: [<?php echo $Top10_Salidas[0]; ?>, <?php echo $Top10_Salidas[1]; ?>,
+									   <?php echo $Top10_Salidas[2]; ?>, <?php echo $Top10_Salidas[3]; ?>,
+									   <?php echo $Top10_Salidas[4]; ?>],
 								backgroundColor: ['rgba(54, 162, 235, 0.2)'],
 								borderColor: ['rgba(54, 162, 235, 1)'],
 								borderWidth: 1
@@ -385,27 +308,18 @@
 							scales: {
 								yAxes: [{
 									ticks: {
-										beginAtZero:true
 									}
 								}]
 							},
 							title: {
 								display: true,
-								text: 'Entrada de productos por mes'
-							},
-							legend: {
-								display: true,
-								position: 'top',
-								labels: {
-								  boxWidth: 80,
-								  fontColor: 'black'
-								}
+								text: 'Top 5 Salidas'
 							}
 						}
 					});
 					// Tercera gráfica
-					var ctx = document.getElementById("ContenedorChart3").getContext('2d');
-					var myChart = new Chart(ctx, {
+					var ctx3 = document.getElementById("ContenedorChart3").getContext('2d');
+					var myChart3 = new Chart(ctx3, {
 						type: 'doughnut',
 						data: {
 							labels: [<?php echo "'".$NombreTop5_1[0]."'"; ?>, <?php echo "'".$NombreTop5_1[1]."'"; ?>,
@@ -440,8 +354,8 @@
 						}
 					});
 					// Cuarta gráfica
-					var ctx = document.getElementById("ContenedorChart4").getContext('2d');
-					var myChart = new Chart(ctx, {
+					var ctx4 = document.getElementById("ContenedorChart4").getContext('2d');
+					var myChart4 = new Chart(ctx4, {
 						type: 'doughnut',
 						data: {
 							labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
