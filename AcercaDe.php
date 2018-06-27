@@ -1,5 +1,5 @@
 <!--
-	Módulo de Bitácora de entradas al inventario
+	Módulo de creación de usuarios
 	Gemis Daniel Guevara Villeda
 	Gustavo Rodolfo Arriaza
 	UMG - Morales Izabal
@@ -59,6 +59,7 @@
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ajuste<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="Ajuste.php">Ajuste de inventario</a></li>
+									<li><a href="#">Lista de Ajuste de inventario</a></li>
 								</ul>
 							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hojas de Reponsabilidad<span class="caret"></span></a>
@@ -103,7 +104,7 @@
 								<?php
 									}
 									?>
-								<li><a href="AcercaDe.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Acerca de...</a></li>
+								<li><a href="#"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Acerca de...</a></li>
 								<li><a href="Seguridad/logout.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Cerrar Sesión</a></li>
 							</ul>
 						</li>
@@ -116,89 +117,38 @@
 				<br>
 				<br>
 				<br>
-				<div class="form-group">
-						<div class="container">
-							<div class="row text-center">
-								<div class="container-fluid">
-									<div class="row">
-										<div class="col-xs-6 ">
-										<h1 class="text-center">Bitácora de entradas en el inventario</h1>
-										</div>
-										<!-- Contenedor del ícono del Usuario -->
-										<div class="col-xs-6 Icon">
-											<!-- Icono de usuario -->
-											<span class="glyphicon glyphicon-user"></span>
-										</div>
-									</div>
-									<br>
-									<div class="table-responsive">          
-										<table class="table">
-											<!-- Título -->
-											<thead>
-												<!-- Contenido -->
-												<tr>
-													<th>#</th>
-													<th>Fecha y hora</th>
-													<th>Artículo</th>
-													<th>Cantidad</th>
-													<th>Comentario</th>
-													<th>Razón entrada inventario</th>
-													<th>Realizado por</th>
-												</tr>
-											</thead>
-											<!-- Cuerpo de la tabla -->
-											<tbody>
-												<!-- Contenido de la tabla -->
-													<!-- Acá mostraremos los usuarios y seleccionaremos el que deseamos eliminar -->
-													<?php							
-														$VerProductos = "SELECT * FROM registroentrada";
-														// Hacemos la consulta
-														$resultado = $mysqli->query($VerProductos);
-															while ($row = mysqli_fetch_array($resultado)){
-																?>
-																<tr>
-																<td><span id="idRegistroEntrada<?php echo $row['idRegistroEntrada'];?>"><?php echo $row['idRegistroEntrada'] ?></span></td>
-																<td><span id="FechaHoraEntrada<?php echo $row['idRegistroEntrada'];?>"><?php echo $row['FechaHoraEntrada'] ?></span></td>
-																<td><span id="Producto<?php echo $row['idRegistroEntrada'];?>"><!-- Acá mostraremos el nombre del producto a partir del id que se tiene en la tabla -->
-																																		<?php							
-																																			$VerNombreProducto = "SELECT NombreProducto FROM producto WHERE idProducto=".$row['idProducto'].";";
-																																			// Hacemos la consulta
-																																			$ResultadoVerProducto = $mysqli->query($VerNombreProducto);
-																																			$FilaResultado = $ResultadoVerProducto->fetch_assoc();
-																																			$NombreProducto = $FilaResultado['NombreProducto'];
-																																			echo $NombreProducto;
-																																		?></span></td>
-																<td><span id="CantidadEntrada<?php echo $row['idRegistroEntrada'];?>"><?php echo $row['CantidadEntrada'] ?></span></td>
-																<td><span id="DetalleEntrada<?php echo $row['idRegistroEntrada'];?>"><?php echo $row['DetalleEntrada'] ?></span></td>
-																<td><span id="RazonEntrada<?php echo $row['idRegistroEntrada'];?>"><!-- Acá mostraremos el nombre del producto a partir del id que se tiene en la tabla -->
-																																<?php							
-																																	$VerNombreTipoEntrada = "SELECT NombreTipoEntrada FROM tipoentrada WHERE idTipoEntrada=".$row['idTipoEntrada'].";";
-																																	// Hacemos la consulta
-																																	$ResultadoVerEntrada = $mysqli->query($VerNombreTipoEntrada);
-																																	$FilaResultadoEntrada = $ResultadoVerEntrada->fetch_assoc();
-																																	$NombreEntrada = $FilaResultadoEntrada['NombreTipoEntrada'];
-																																	echo $NombreEntrada;
-																																?></span></td>
-																<td><span id="UsuarioEntrada<?php echo $row['idRegistroEntrada'];?>"><?php echo $row['UsuarioEntrada'] ?></span></td>
-																</tr>
-													<?php
-															}
-													?>
-											</tbody>
-										</table>
-									</div>								
-								</div>
+				<!-- Contenedor del ícono del Usuario -->
+				<div id="ContenedorAcerca">
+					<div class="IconoInicio">
+						<div class="row TextoInicioP">
+							<div class="col-xs-7 TextoInicio">
+							<h2 class="text-center">Acerca de...</h2>
+							</div>
+							<!-- Contenedor del ícono del Usuario -->
+							<div class="col-xs-4">
+							<!-- Icono de usuario -->
+							<span class="glyphicon glyphicon-question-sign"></span>
 							</div>
 						</div>
+					</div>
+					<div class="form-group">
+						<form name="Acercade" action="acercade.php" method="post">
+							<div class="input-group input-group-lg">
+								<h2 class="text-center">Estación de bomberos de la 73 Cía.</h2>
+								<h2 class="text-center">Morales Izabal</h2>
+								<h3 class="text-center">Sistema de Gestión de inventario</h3>
+								<h4 class="text-center">Universidad Mariano Gálvez</h4>
+								<h4 class="text-center">Morales Izabal</h4>
+								<h4 class="text-center">Copyright &copy; 2018 &middot; All Rights Reserved<h4>
+								<h5 class="text-center"><a href="https://www.umg.edu.gt/" >Gemis Daniel Guevara Villeda &middot; Gustavo Rodolfo Arriaza</a><h5>
+							</div>
+						</form>
 					</div>
 				</div>
 				<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
 				<script src="js/jquery-1.11.3.min.js"></script>
-
 				<!-- Include all compiled plugins (below), or include individual files as needed --> 
 				<script src="js/bootstrap.js"></script>
-				<!-- Incluimos el script que nos dará el nombre de la persona para mostrarlo en el modal -->
-				<script src="js/custom.js"></script>
 				<!-- Pie de página, se utilizará el mismo para todos. -->
 				<footer>
 					<hr>

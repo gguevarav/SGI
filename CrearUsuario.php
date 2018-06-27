@@ -93,16 +93,18 @@
 					  <ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
 							<!-- Acá mostramos el nombre del usuario -->
-							<a href="#" class="dropdown-toggle negrita" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+							<a href="#" class="dropdown-toggle negrita" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span></a>
 							<ul class="dropdown-menu">
 								<li><a href="#"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i><?php echo $NombreUsuario; ?></a></li>
 								<?php
 									if($_SESSION["PrivilegioUsuario"] == 'Administrador'){
 									?>
 										<li><a href="Administrador.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Módulo adminstrador</a></li>
+										<li><a href="JuntaOficiales.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Modificar junta oficiales</a></li>
 								<?php
 									}
 									?>
+								<li><a href="AcercaDe.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Acerca de...</a></li>
 								<li><a href="Seguridad/logout.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Cerrar Sesión</a></li>
 							</ul>
 						</li>
@@ -195,7 +197,7 @@
 								<div class="row">
 									<div class="col-xs-10 col-xs-offset-1">
 										<div class="input-group input-group-lg">
-											<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-lock"></i></span>
+											<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-calendar"></i></span>
 											<input type="date" class="form-control" name="FechaNacimiento" placeholder="Fecha de Nacimiento" id="FechaNacimiento" aria-describedby="sizing-addon1" required>
 										</div>
 									</div>
@@ -205,7 +207,7 @@
 								<div class="row">
 									<div class="col-xs-10 col-xs-offset-1">
 										<div class="input-group input-group-lg">
-											<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-lock"></i></span>
+											<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-tasks"></i></span>
 											<select class="form-control" name="PrivilegioUsuario" id="PrivilegioUsuario">
 											<option value="" disabled selected>Privilegios</option>
 													<option value="Administrador">Administrador</option>
@@ -220,8 +222,8 @@
 								<div class="row">
 									<div class="col-xs-10 col-xs-offset-1">
 										<div class="input-group input-group-lg">
-											<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-lock"></i></span>
-											<input type="text" class="form-control" name="username" placeholder="Nombre e Usuario" id="username" aria-describedby="sizing-addon1" required>
+											<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i></span>
+											<input type="text" class="form-control" name="username" placeholder="Nombre de usuario" id="username" aria-describedby="sizing-addon1" required>
 										</div>
 									</div>
 								</div>

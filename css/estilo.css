@@ -13,6 +13,16 @@
 	padding: 0px 9px 0px 9px;
 }
 
+#ContenedorAcerca{
+	width: 400px;
+	margin: 50px auto;
+	background-color: #F3EDED;
+        border: 1px solid #ECE8E8;
+	height: 450px;
+	border-radius:8px;
+	padding: 0px 9px 0px 9px;
+}
+
 /**
  * Aplicando al icono de usuario el color de fondo,
  * rellenado de 20px y un redondeado de 120px en forma

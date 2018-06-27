@@ -1,5 +1,5 @@
 <!--
-	Módulo de Bitácora de entradas al inventario
+	Módulo de creación de usuarios
 	Gemis Daniel Guevara Villeda
 	Gustavo Rodolfo Arriaza
 	UMG - Morales Izabal
@@ -59,6 +59,7 @@
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ajuste<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="Ajuste.php">Ajuste de inventario</a></li>
+									<li><a href="#">Lista de Ajuste de inventario</a></li>
 								</ul>
 							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hojas de Reponsabilidad<span class="caret"></span></a>
@@ -84,7 +85,7 @@
 							</li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestión de usuarios<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
-									<li><a href="CrearUsuario.php">Crear usuario</li>
+									<li><a href="#">Crear usuario</li>
 									<li><a href="Usuario.php">Ver usuarios</a></li>
 								</ul>
 							</li>
@@ -117,88 +118,173 @@
 				<br>
 				<br>
 				<div class="form-group">
+					<form name="CrearUsuario" action="JuntaOficiales.php" method="post">
 						<div class="container">
 							<div class="row text-center">
 								<div class="container-fluid">
 									<div class="row">
 										<div class="col-xs-6 ">
-										<h1 class="text-center">Bitácora de entradas en el inventario</h1>
+										<h1 class="text-center">Junta de oficiales</h1>
 										</div>
 										<!-- Contenedor del ícono del Usuario -->
 										<div class="col-xs-6 Icon">
 											<!-- Icono de usuario -->
-											<span class="glyphicon glyphicon-user"></span>
+											<span class="glyphicon glyphicon-dashboard"></span>
 										</div>
 									</div>
 									<br>
-									<div class="table-responsive">          
-										<table class="table">
-											<!-- Título -->
-											<thead>
-												<!-- Contenido -->
-												<tr>
-													<th>#</th>
-													<th>Fecha y hora</th>
-													<th>Artículo</th>
-													<th>Cantidad</th>
-													<th>Comentario</th>
-													<th>Razón entrada inventario</th>
-													<th>Realizado por</th>
-												</tr>
-											</thead>
-											<!-- Cuerpo de la tabla -->
-											<tbody>
-												<!-- Contenido de la tabla -->
-													<!-- Acá mostraremos los usuarios y seleccionaremos el que deseamos eliminar -->
-													<?php							
-														$VerProductos = "SELECT * FROM registroentrada";
-														// Hacemos la consulta
-														$resultado = $mysqli->query($VerProductos);
-															while ($row = mysqli_fetch_array($resultado)){
-																?>
-																<tr>
-																<td><span id="idRegistroEntrada<?php echo $row['idRegistroEntrada'];?>"><?php echo $row['idRegistroEntrada'] ?></span></td>
-																<td><span id="FechaHoraEntrada<?php echo $row['idRegistroEntrada'];?>"><?php echo $row['FechaHoraEntrada'] ?></span></td>
-																<td><span id="Producto<?php echo $row['idRegistroEntrada'];?>"><!-- Acá mostraremos el nombre del producto a partir del id que se tiene en la tabla -->
-																																		<?php							
-																																			$VerNombreProducto = "SELECT NombreProducto FROM producto WHERE idProducto=".$row['idProducto'].";";
-																																			// Hacemos la consulta
-																																			$ResultadoVerProducto = $mysqli->query($VerNombreProducto);
-																																			$FilaResultado = $ResultadoVerProducto->fetch_assoc();
-																																			$NombreProducto = $FilaResultado['NombreProducto'];
-																																			echo $NombreProducto;
-																																		?></span></td>
-																<td><span id="CantidadEntrada<?php echo $row['idRegistroEntrada'];?>"><?php echo $row['CantidadEntrada'] ?></span></td>
-																<td><span id="DetalleEntrada<?php echo $row['idRegistroEntrada'];?>"><?php echo $row['DetalleEntrada'] ?></span></td>
-																<td><span id="RazonEntrada<?php echo $row['idRegistroEntrada'];?>"><!-- Acá mostraremos el nombre del producto a partir del id que se tiene en la tabla -->
-																																<?php							
-																																	$VerNombreTipoEntrada = "SELECT NombreTipoEntrada FROM tipoentrada WHERE idTipoEntrada=".$row['idTipoEntrada'].";";
-																																	// Hacemos la consulta
-																																	$ResultadoVerEntrada = $mysqli->query($VerNombreTipoEntrada);
-																																	$FilaResultadoEntrada = $ResultadoVerEntrada->fetch_assoc();
-																																	$NombreEntrada = $FilaResultadoEntrada['NombreTipoEntrada'];
-																																	echo $NombreEntrada;
-																																?></span></td>
-																<td><span id="UsuarioEntrada<?php echo $row['idRegistroEntrada'];?>"><?php echo $row['UsuarioEntrada'] ?></span></td>
-																</tr>
-													<?php
-															}
-													?>
-											</tbody>
-										</table>
-									</div>								
+									<!-- Director de la compañia -->
+									<div class="row">
+										<div class="col-xs-10 col-xs-offset-1">
+											<div class="input-group input-group-lg">
+												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i></span>
+												<select class="form-control" name="Director" id="Director" required>
+												<option value="" disabled selected>Director de Cía.</option>
+														<!-- Acá mostraremos los puestos que existen en la base de datos -->
+														<?php							
+															$VerProductos = "SELECT idPersona, NombrePersona FROM persona;";
+															// Hacemos la consulta
+															$resultado = $mysqli->query($VerProductos);			
+																while ($row = mysqli_fetch_array($resultado)){
+																	?>
+																	<option value="<?php echo $row['idPersona'];?>"><?php echo $row['NombrePersona'] ?></option>
+														<?php
+																}
+														?>
+												</select>
+											</div>
+										</div>
+									</div>
+									<br>
+									<!-- Jefe de compañía -->
+									<div class="row">
+										<div class="col-xs-10 col-xs-offset-1">
+											<div class="input-group input-group-lg">
+												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i></span>
+												<select class="form-control" name="Jefe" id="Jefe" required>
+												<option value="" disabled selected>Jefe de Cía.</option>
+														<!-- Acá mostraremos los puestos que existen en la base de datos -->
+														<?php							
+															$VerProductos = "SELECT idPersona, NombrePersona FROM persona;";
+															// Hacemos la consulta
+															$resultado = $mysqli->query($VerProductos);			
+																while ($row = mysqli_fetch_array($resultado)){
+																	?>
+																	<option value="<?php echo $row['idPersona'];?>"><?php echo $row['NombrePersona'] ?></option>
+														<?php
+																}
+														?>
+												</select>
+											</div>
+										</div>
+									</div>
+									<br>
+									<!-- Jefe de compañía -->
+									<div class="row">
+										<div class="col-xs-10 col-xs-offset-1">
+											<div class="input-group input-group-lg">
+												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i></span>
+												<select class="form-control" name="Secretario" id="Secretario" required>
+												<option value="" disabled selected>Secretario de Cía.</option>
+														<!-- Acá mostraremos los puestos que existen en la base de datos -->
+														<?php							
+															$VerProductos = "SELECT idPersona, NombrePersona FROM persona;";
+															// Hacemos la consulta
+															$resultado = $mysqli->query($VerProductos);			
+																while ($row = mysqli_fetch_array($resultado)){
+																	?>
+																	<option value="<?php echo $row['idPersona'];?>"><?php echo $row['NombrePersona'] ?></option>
+														<?php
+																}
+														?>
+												</select>
+											</div>
+										</div>
+									</div>
+									<br>
+									<!-- Tesorero de Compañía -->
+									<div class="row">
+										<div class="col-xs-10 col-xs-offset-1">
+											<div class="input-group input-group-lg">
+												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i></span>
+												<select class="form-control" name="Tesorero" id="Tesorero" required>
+												<option value="" disabled selected>Tesorero de Cía.</option>
+														<!-- Acá mostraremos los puestos que existen en la base de datos -->
+														<?php							
+															$VerProductos = "SELECT idPersona, NombrePersona FROM persona;";
+															// Hacemos la consulta
+															$resultado = $mysqli->query($VerProductos);			
+																while ($row = mysqli_fetch_array($resultado)){
+																	?>
+																	<option value="<?php echo $row['idPersona'];?>"><?php echo $row['NombrePersona'] ?></option>
+														<?php
+																}
+														?>
+												</select>
+											</div>
+										</div>
+									</div>
+									<br>
+									<!-- Guardar -->
+									<div class="row">
+										<div class="col-xs-10 col-xs-offset-1">
+											<div class="input-group input-group-lg">
+												<div clss="btn-group">
+													<input type="submit" name="Guardar" class="btn btn-primary" value="Guardar">
+												</div>
+											</div>
+										</div>
+									</div>
+									<br>
 								</div>
 							</div>
 						</div>
-					</div>
+					</form>
 				</div>
+				<?php
+					if (isset($_POST['Guardar'])) {
+						// Obtenemos los valores de todos los campos y los almacenamos en variables
+						$Director=$_POST['Director'];
+						$Jefe=$_POST['Jefe'];
+						$Secretario=$_POST['Secretario'];
+						$Tesorero=$_POST['Tesorero'];
+						
+						//Primero revisamos que no exista la marca ya en la base de datos
+						$ConsultaExisteJuntaOficiales = "SELECT * FROM juntaoficiales;";
+						$ResultadoExisteJuntaOficiales = $mysqli->query($ConsultaExisteJuntaOficiales);			
+						$row = mysqli_fetch_array($ResultadoExisteJuntaOficiales);
+						if($row['idJuntaOficiales'] == null){
+							$InsertarJuntaOficiales = "INSERT INTO JuntaOficiales(DirectorJuntaOficiales, JefeJuntaOficiales, SecretarioJuntaOficiales, TesoreroJuntaOficiales)
+																		   Values(".$Director.", ".$Jefe.", ".$Secretario.", ".$Tesorero.");";
+							
+							if(!$resultado = $mysqli->query($InsertarJuntaOficiales)){
+								echo "Error: La ejecución de la consulta falló debido a: \n";
+								echo "Query: " . $InsertarJuntaOficiales . "\n";
+								echo "Error: " . $mysqli->errno . "\n";
+								exit;
+							}
+						}
+						else{
+							$ActualizarJuntaOficiales = "UPDATE JuntaOficiales SET
+														DirectorJuntaOficiales = ".$Director.",
+														JefeJuntaOficiales = ".$Jefe.",
+														SecretarioJuntaOficiales = ".$Secretario.",
+														TesoreroJuntaOficiales = ".$Tesorero."
+														WHERE idJuntaOficiales=1;";
+							
+							if(!$resultado2 = $mysqli->query($ActualizarJuntaOficiales)){
+								echo "Error: La ejecución de la consulta falló debido a: \n";
+								echo "Query: " . $ActualizarJuntaOficiales . "\n";
+								echo "Error: " . $mysqli->errno . "\n";
+								exit;
+							}
+						}
+					}
+				?>
 				<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
 				<script src="js/jquery-1.11.3.min.js"></script>
-
 				<!-- Include all compiled plugins (below), or include individual files as needed --> 
 				<script src="js/bootstrap.js"></script>
-				<!-- Incluimos el script que nos dará el nombre de la persona para mostrarlo en el modal -->
-				<script src="js/custom.js"></script>
 				<!-- Pie de página, se utilizará el mismo para todos. -->
 				<footer>
 					<hr>

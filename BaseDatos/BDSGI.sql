@@ -2,6 +2,10 @@ DROP DATABASE BDBomberos;
 
 CREATE OR REPLACE DATABASE BDBomberos;
 
+ALTER DATABASE BDBomberos CHARSET=utf8;
+
+ALTER DATABASE BDBomberos COLLATE=utf8_spanish_ci;
+
 USE BDBomberos;
 
 CREATE OR REPLACE TABLE Persona(
@@ -13,6 +17,35 @@ CREATE OR REPLACE TABLE Persona(
 	TelefonoPersona			VARCHAR(20),
 	FechaNacPersona			DATE			NOT NULL,
 	CorreoPersona			VARCHAR(50)
+)ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_spanish_ci;
+
+CREATE TABLE JuntaOficiales(
+	idJuntaOficiales		INTEGER			NOT NULL			PRIMARY KEY			AUTO_INCREMENT,
+	FechaCreacionJunta		TIMESTAMP		NOT NULL			DEFAULT				CURRENT_TIMESTAMP,
+	DirectorJuntaOficiales	INTEGER			NOT NULL,
+	JefeJuntaOficiales		INTEGER			NOT NULL,
+	SecretarioJuntaOficiales	INTEGER			NOT NULL,
+	TesoreroJuntaOficiales	INTEGER			NOT NULL,
+	INDEX (DirectorJuntaOficiales),
+	FOREIGN KEY (DirectorJuntaOficiales)
+		REFERENCES Persona(idPersona)
+		ON DELETE CASCADE
+		ON UPDATE NO ACTION,
+	INDEX (JefeJuntaOficiales),
+	FOREIGN KEY (JefeJuntaOficiales)
+		REFERENCES Persona(idPersona)
+		ON DELETE CASCADE
+		ON UPDATE NO ACTION,
+	INDEX (SecretarioJuntaOficiales),
+	FOREIGN KEY (SecretarioJuntaOficiales)
+		REFERENCES Persona(idPersona)
+		ON DELETE CASCADE
+		ON UPDATE NO ACTION,
+	INDEX (TesoreroJuntaOficiales),
+	FOREIGN KEY (TesoreroJuntaOficiales)
+		REFERENCES Persona(idPersona)
+		ON DELETE CASCADE
+		ON UPDATE NO ACTION
 )ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_spanish_ci;
 
 CREATE TABLE Usuario(

@@ -93,16 +93,18 @@
 					  <ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
 							<!-- Acá mostramos el nombre del usuario -->
-							<a href="#" class="dropdown-toggle negrita" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+							<a href="#" class="dropdown-toggle negrita" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span></a>
 							<ul class="dropdown-menu">
 								<li><a href="#"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i><?php echo $NombreUsuario; ?></a></li>
 								<?php
 									if($_SESSION["PrivilegioUsuario"] == 'Administrador'){
 									?>
 										<li><a href="Administrador.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Módulo adminstrador</a></li>
+										<li><a href="JuntaOficiales.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Modificar junta oficiales</a></li>
 								<?php
 									}
 									?>
+								<li><a href="AcercaDe.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Acerca de...</a></li>
 								<li><a href="Seguridad/logout.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Cerrar Sesión</a></li>
 							</ul>
 						</li>
@@ -125,7 +127,7 @@
 								<!-- Contenedor del ícono del Usuario -->
 								<div class="col-xs-6 Icon">
 									<!-- Icono de usuario -->
-									<span class="glyphicon glyphicon-user"></span>
+									<span class="glyphicon glyphicon-dashboard"></span>
 								</div>
 							</div>
 							<br>
@@ -164,7 +166,7 @@
 									<div class="row">
 										<div class="col-xs-10 col-xs-offset-1">
 											<div class="input-group input-group-lg">
-												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i></span>
+												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-lock"></i></span>
 												<input type="password" class="form-control" name="ContraseniaUsuario" placeholder="Contraseña" id="ContraseniaUsuario" aria-describedby="sizing-addon1" required>
 											</div>
 										</div>
@@ -174,7 +176,7 @@
 									<div class="row">
 										<div class="col-xs-10 col-xs-offset-1">
 											<div class="input-group input-group-lg">
-												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i></span>
+												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-lock"></i></span>
 												<input type="password" class="form-control" name="ReContraseniaUsuario" placeholder="Ingrese nuevamente la contraseña" id="ReContraseniaUsuario" aria-describedby="sizing-addon1" required>
 											</div>
 										</div>
@@ -201,11 +203,11 @@
 										</div>
 									</div>
 									<br>
-									<!-- Nombre del usuario -->
+									<!-- Nombre de entrada -->
 									<div class="row">
 										<div class="col-xs-10 col-xs-offset-1">
 											<div class="input-group input-group-lg">
-												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i></span>
+												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-comment"></i></span>
 												<input type="text" class="form-control" name="NombreEntrada" placeholder="Nombre de tipo de entrada" id="NombreEntrada" aria-describedby="sizing-addon1" required>
 											</div>
 										</div>

@@ -7,6 +7,7 @@
 	
 	// Realizamos la conexion
 	$mysqli = new mysqli(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
+	$mysqli->query("SET NAMES 'utf8'");
 	
 	// Por si hay error en la conexion
 	if ($mysqli->connect_errno)

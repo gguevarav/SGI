@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="shortcut icon" href="imagenes/icono.ico">
@@ -44,17 +44,24 @@
 			// Hacemos la consulta para mostrar las cantidades de Entradas
 			$resultado1 = $mysqli->query($sql1);
 			$Contador = 0;
-			while ($row1 = mysqli_fetch_array($resultado1)){
-				$VerNombreProducto = "SELECT NombreProducto FROM producto WHERE idProducto=".$row1['idProducto'].";";
-				// Hacemos la consulta
-				$ResultadoVerProducto = $mysqli->query($VerNombreProducto);
-				$FilaResultado = $ResultadoVerProducto->fetch_assoc();
-				$NombreTop10_Salidas[$Contador] = $FilaResultado['NombreProducto'];
-				$Top10_Salidas[$Contador] = $row1['Suma'];
-				// Aumentamos al contador
-				$Contador++;
-				if($Contador == 11){
-					break;
+			if(mysqli_fetch_array($resultado1) != NULL){
+				while ($row1 = mysqli_fetch_array($resultado1)){
+					$VerNombreProducto = "SELECT NombreProducto FROM producto WHERE idProducto=".$row1['idProducto'].";";
+					// Hacemos la consulta
+					$ResultadoVerProducto = $mysqli->query($VerNombreProducto);
+					$FilaResultado = $ResultadoVerProducto->fetch_assoc();
+					$NombreTop10_Salidas[$Contador] = $FilaResultado['NombreProducto'];
+					$Top10_Salidas[$Contador] = $row1['Suma'];
+					// Aumentamos al contador
+					$Contador++;
+					if($Contador == 6){
+						break;
+					}
+				}
+			}else{
+				for($Contador = 0; $Contador < 5; $Contador++){
+					$NombreTop10_Salidas[$Contador] = " ";
+					$Top10_Salidas[$Contador] = 0;
 				}
 			}
 			// Segunda Gráfica
@@ -63,17 +70,24 @@
 			// Hacemos la consulta para mostrar las cantidades de Entradas
 			$resultado2 = $mysqli->query($sql1);
 			$Contador = 0;
-			while ($row2 = mysqli_fetch_array($resultado2)){
-				$VerNombreProducto = "SELECT NombreProducto FROM producto WHERE idProducto=".$row2['idProducto'].";";
-				// Hacemos la consulta
-				$ResultadoVerProducto = $mysqli->query($VerNombreProducto);
-				$FilaResultado = $ResultadoVerProducto->fetch_assoc();
-				$NombreTop10_Entradas[$Contador] = $FilaResultado['NombreProducto'];
-				$Top10_Entradas[$Contador] = $row2['Suma'];
-				// Aumentamos al contador
-				$Contador++;
-				if($Contador == 11){
-					break;
+			if(mysqli_fetch_array($resultado2) != NULL){
+				while ($row2 = mysqli_fetch_array($resultado2)){
+					$VerNombreProducto = "SELECT NombreProducto FROM producto WHERE idProducto=".$row2['idProducto'].";";
+					// Hacemos la consulta
+					$ResultadoVerProducto = $mysqli->query($VerNombreProducto);
+					$FilaResultado = $ResultadoVerProducto->fetch_assoc();
+					$NombreTop10_Entradas[$Contador] = $FilaResultado['NombreProducto'];
+					$Top10_Entradas[$Contador] = $row2['Suma'];
+					// Aumentamos al contador
+					$Contador++;
+					if($Contador == 6){
+						break;
+					}
+				}
+			}else{
+				for($Contador = 0; $Contador < 5; $Contador++){
+					$NombreTop10_Entradas[$Contador] = " ";
+					$Top10_Entradas[$Contador] = 0;
 				}
 			}
 			// Guardamos las cantidades en variables (5)
@@ -82,17 +96,24 @@
 			// Hacemos la consulta para mostrar las cantidades de Entradas
 			$resultado3 = $mysqli->query($sql3);
 			$Contador = 0;
-			while ($row3 = mysqli_fetch_array($resultado3)){
-				$VerNombreProducto = "SELECT NombreProducto FROM producto WHERE idProducto=".$row3['idProducto'].";";
-				// Hacemos la consulta
-				$ResultadoVerProducto = $mysqli->query($VerNombreProducto);
-				$FilaResultado = $ResultadoVerProducto->fetch_assoc();
-				$NombreTop5_1[$Contador] = $FilaResultado['NombreProducto'];
-				$Top5_1[$Contador] = $row3['Suma'];
-				// Aumentamos al contador
-				$Contador++;
-				if($Contador == 6){
-					break;
+			if(mysqli_fetch_array($resultado3) != NULL){
+				while ($row3 = mysqli_fetch_array($resultado3)){
+					$VerNombreProducto = "SELECT NombreProducto FROM producto WHERE idProducto=".$row3['idProducto'].";";
+					// Hacemos la consulta
+					$ResultadoVerProducto = $mysqli->query($VerNombreProducto);
+					$FilaResultado = $ResultadoVerProducto->fetch_assoc();
+					$NombreTop5_1[$Contador] = $FilaResultado['NombreProducto'];
+					$Top5_1[$Contador] = $row3['Suma'];
+					// Aumentamos al contador
+					$Contador++;
+					if($Contador == 6){
+						break;
+					}
+				}
+			}else{
+				for($Contador = 0; $Contador < 5; $Contador++){
+					$NombreTop5_1[$Contador] = " ";
+					$Top5_1[$Contador] = 0;
 				}
 			}
 		?>
@@ -157,16 +178,18 @@
 					  <ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
 							<!-- Acá mostramos el nombre del usuario -->
-							<a href="#" class="dropdown-toggle negrita" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+							<a href="#" class="dropdown-toggle negrita" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span></a>
 							<ul class="dropdown-menu">
 								<li><a href="#"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i><?php echo $NombreUsuario; ?></a></li>
 								<?php
 									if($_SESSION["PrivilegioUsuario"] == 'Administrador'){
 									?>
 										<li><a href="Administrador.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Módulo adminstrador</a></li>
+										<li><a href="JuntaOficiales.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Modificar junta oficiales</a></li>
 								<?php
 									}
 									?>
+								<li><a href="AcercaDe.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Acerca de...</a></li>
 								<li><a href="Seguridad/logout.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Cerrar Sesión</a></li>
 							</ul>
 						</li>
@@ -247,28 +270,14 @@
 									'rgba(54, 162, 235, 0.2)',
 									'rgba(255, 206, 86, 0.2)',
 									'rgba(75, 192, 192, 0.2)',
-									'rgba(153, 102, 255, 0.2)',
-									'rgba(255, 159, 64, 0.2)',
-									'rgba(255, 99, 132, 0.2)',
-									'rgba(54, 162, 235, 0.2)',
-									'rgba(255, 206, 86, 0.2)',
-									'rgba(75, 192, 192, 0.2)',
-									'rgba(153, 102, 255, 0.2)',
-									'rgba(255, 159, 64, 0.2)'
+									'rgba(153, 102, 255, 0.2)'
 								],
 								borderColor: [
 									'rgba(255,99,132,1)',
 									'rgba(54, 162, 235, 1)',
 									'rgba(255, 206, 86, 1)',
 									'rgba(75, 192, 192, 1)',
-									'rgba(153, 102, 255, 1)',
-									'rgba(255, 159, 64, 1)',
-									'rgba(255,99,132,1)',
-									'rgba(54, 162, 235, 1)',
-									'rgba(255, 206, 86, 1)',
-									'rgba(75, 192, 192, 1)',
-									'rgba(153, 102, 255, 1)',
-									'rgba(255, 159, 64, 1)'
+									'rgba(153, 102, 255, 1)'
 								],
 								borderWidth: 1
 							}]
@@ -366,16 +375,14 @@
 									'rgba(54, 162, 235, 0.2)',
 									'rgba(255, 206, 86, 0.2)',
 									'rgba(75, 192, 192, 0.2)',
-									'rgba(153, 102, 255, 0.2)',
-									'rgba(255, 159, 64, 0.2)'
+									'rgba(153, 102, 255, 0.2)'
 								],
 								borderColor: [
 									'rgba(255,99,132,1)',
 									'rgba(54, 162, 235, 1)',
 									'rgba(255, 206, 86, 1)',
 									'rgba(75, 192, 192, 1)',
-									'rgba(153, 102, 255, 1)',
-									'rgba(255, 159, 64, 1)'
+									'rgba(153, 102, 255, 1)'
 								],
 								borderWidth: 1
 							}]
