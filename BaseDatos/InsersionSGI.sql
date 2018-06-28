@@ -16,7 +16,7 @@ INSERT INTO Persona (NombrePersona, ApellidoPersona, DireccionPersona,
                      '(502) 5179-7457', '1990-1-1', 'gemisdguevarav@gmail.com');
 
 INSERT INTO Usuario (NombreUsuario, ContraseniaUsuario, idPersona, PrivilegioUsuario)
-              VALUES('gguevara', 'e60c177bc95bb0d56e2f95ac372bde51', 2, 'Administrador');
+              VALUES('gguevara', 'e60c177bc95bb0d56e2f95ac372bde51', 2, 'Superadmin');
 
 INSERT INTO tipoentrada(NombreTipoEntrada)
 				   VALUES('Donación');

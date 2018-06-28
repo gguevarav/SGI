@@ -80,9 +80,9 @@
 			$FilaResultado = $ResultadoVerLinea->fetch_assoc();
 			$NombreLinea = $FilaResultado['NombreLineaProducto'];
 		
-		$pdf->Cell(10, 6, utf8_decode($Contador), 1, 0, 'C');
+		$pdf->Cell(5, 6, utf8_decode($Contador), 1, 0, 'C');
 		$pdf->Cell(13, 6, utf8_decode($FilaResultadoProducto['NumeroInvenProd']), 1, 0, 'C');
-		$pdf->Cell(40, 6, utf8_decode($FilaResultadoProducto['NombreProducto']), 1, 0, 'C');
+		$pdf->Cell(45, 6, utf8_decode($FilaResultadoProducto['NombreProducto']), 1, 0, 'C');
 		$pdf->Cell(20, 6, utf8_decode($NombreMarca), 1, 0, 'C');
 		$pdf->Cell(15, 6, utf8_decode($NombreUnidadMedida), 1, 0, 'C');
 		$pdf->Cell(15, 6, utf8_decode($FilaResultadoProducto['ModeloProducto']), 1, 0, 'C');

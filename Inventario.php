@@ -21,13 +21,18 @@
 <script src="js/CopiaElementos.js"></script>
 
 </head>
-	<?php
+	<?php	
 		// Incluimos el archivo que valida si hay una sesión activa
 		include_once "Seguridad/seguro.php";
 		// Primero hacemos la consulta en la tabla de persona
 		include_once "Seguridad/conexion.php";
 		// Si en la sesión activa tiene privilegios de administrador puede ver el formulario
-		if($_SESSION["PrivilegioUsuario"] == 'Administrador'){
+		if($_SESSION["PrivilegioUsuario"] == 'Administrador' ||
+	       $_SESSION["PrivilegioUsuario"] == 'Superadmin' ||
+		   $_SESSION["PrivilegioUsuario"] == 'Director' ||
+		   $_SESSION["PrivilegioUsuario"] == 'Jefe' ||
+		   $_SESSION["PrivilegioUsuario"] == 'Secretario' ||
+		   $_SESSION["PrivilegioUsuario"] == 'Tesorero'){
 			// Guardamos el nombre del usuario en una variable
 			$NombreUsuario =$_SESSION["NombreUsuario"];
 			$idUsuario2 =$_SESSION["idUsuario"];
@@ -42,31 +47,66 @@
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse" id="defaultNavbar1">
 						<ul class="nav navbar-nav">
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Inventario<span class="caret"></span></a>
+							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Inventario<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
-									<li><a href="EntradaInventario.php">Entrada de inventario</a></li>
-									<li><a href="SalidaInventario.php">Salida de inventario</a></li>
+								<?php
+									if($_SESSION["PrivilegioUsuario"] == 'Administrador' ||
+									   $_SESSION["PrivilegioUsuario"] == 'Superadmin' ||
+									   $_SESSION["PrivilegioUsuario"] == 'Secretario' ||
+									   $_SESSION["PrivilegioUsuario"] == 'Tesorero'){
+									?>
+										<li><a href="EntradaInventario.php">Entrada de inventario</a></li>
+										<li><a href="SalidaInventario.php">Salida de inventario</a></li>
+								<?php
+									}
+									?>
 									<li><a href="#">Ver inventario</a></li>
 								</ul>
 							</li>
-							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Productos<span class="caret"></span></a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="RegistroProducto.php">Registrar Producto</a></li>
-									<li><a href="Producto.php">Lista de Productos</a></li>
-								</ul>
-							</li>
-							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ajuste<span class="caret"></span></a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="Ajuste.php">Ajuste de inventario</a></li>
-								</ul>
-							</li>
-							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hojas de Reponsabilidad<span class="caret"></span></a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="CrearHojaResponsabilidad.php">Crear hoja de responsabilidad</a></li>
-									<li><a href="HojaResponsabilidad.php">Lista hojas de responsabilidad</a></li>
-								</ul>
-							</li>
+							<?php
+							if($_SESSION["PrivilegioUsuario"] == 'Administrador' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Superadmin' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Secretario' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Tesorero'){
+								?>
+								<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Productos<span class="caret"></span></a>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="RegistroProducto.php">Registrar Producto</a></li>
+										<li><a href="Producto.php">Lista de Productos</a></li>
+									</ul>
+								</li>
+								<?php
+							}
+							?>
+							<?php
+							if($_SESSION["PrivilegioUsuario"] == 'Administrador' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Superadmin' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Secretario' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Tesorero'){
+								?>
+								<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ajuste<span class="caret"></span></a>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="Ajuste.php">Ajuste de inventario</a></li>
+									</ul>
+								</li>
+								<?php
+							}
+							?>
+							<?php
+							if($_SESSION["PrivilegioUsuario"] == 'Administrador' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Superadmin' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Secretario' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Tesorero'){
+								?>
+								<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hojas de Reponsabilidad<span class="caret"></span></a>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="CrearHojaResponsabilidad.php">Crear hoja de responsabilidad</a></li>
+										<li><a href="HojaResponsabilidad.php">Lista hojas de responsabilidad</a></li>
+									</ul>
+								</li>
+								<?php
+							}
+							?>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Bitácoras<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="BitacoraEntradas.php">Bitácora de entradas de inventario</a></li>
@@ -82,12 +122,19 @@
 									<li><a href="Kardex.php" target="_blank">Kardex</a></li>
 								</ul>
 							</li>
-							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestión de usuarios<span class="caret"></span></a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="CrearUsuario.php">Crear usuario</li>
-									<li><a href="Usuario.php">Ver usuarios</a></li>
-								</ul>
-							</li>
+							<?php
+							if($_SESSION["PrivilegioUsuario"] == 'Administrador' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Superadmin'){
+								?>
+								<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestión de usuarios<span class="caret"></span></a>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="CrearUsuario.php">Crear usuario</li>
+										<li><a href="Usuario.php">Ver usuarios</a></li>
+									</ul>
+								</li>
+								<?php
+							}
+							?>
 					  </ul>
 					  <ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
@@ -96,7 +143,7 @@
 							<ul class="dropdown-menu">
 								<li><a href="#"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i><?php echo $NombreUsuario; ?></a></li>
 								<?php
-									if($_SESSION["PrivilegioUsuario"] == 'Administrador'){
+									if($_SESSION["PrivilegioUsuario"] == 'Administrador' || $_SESSION["PrivilegioUsuario"] == 'Superadmin'){
 									?>
 										<li><a href="Administrador.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Módulo adminstrador</a></li>
 										<li><a href="JuntaOficiales.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Modificar junta oficiales</a></li>
@@ -127,7 +174,7 @@
 										<!-- Contenedor del ícono del Usuario -->
 										<div class="col-xs-5 Icon">
 											<!-- Icono de usuario -->
-											<span class="glyphicon glyphicon-user"></span>
+											<span class="glyphicon glyphicon-list-alt"></span>
 										</div>
 										<div class="form-group">
 											<form name="Exportar" action="Inventario.php" method="post">
@@ -145,90 +192,97 @@
 										</div>
 									</div>
 									<br>
-									<div class="table-responsive">          
-										<table class="table">
-											<!-- Título -->
-											<thead>
-												<!-- Contenido -->
-												<tr>
-													<th>#</th>
-													<th>Código</th>
-													<th>Artículo</th>
-													<th>Marca</th>
-													<th>Unidad de medida</th>
-													<th>Modelo</th>
-													<th>Línea</th>
-													<th>Color</th>
-													<th>Precio</th>
-													<th>Cantidad</th>
-													<th>Total neto</th>
-												</tr>
-											</thead>
-											<!-- Cuerpo de la tabla -->
-											<tbody>
-												<!-- Contenido de la tabla -->
-													<!-- Acá mostraremos los usuarios y seleccionaremos el que deseamos eliminar -->
-													<?php							
-														$VerProducto = "SELECT * FROM producto";
-														// Hacemos la consulta
-														$resultado = $mysqli->query($VerProducto);
-															while ($row = mysqli_fetch_array($resultado)){
-																?>
-																<tr>
-																<td><span id="idProducto<?php echo $row['idProducto'];?>"><?php echo $row['idProducto'] ?></span></td>
-																<td><span id="NumeroInvenProd<?php echo $row['idProducto'];?>"><?php echo $row['NumeroInvenProd'] ?></span></td>
-																<td><span id="NombreProducto<?php echo $row['idProducto'];?>"><?php echo $row['NombreProducto'] ?></span></td>
-																<td><span id="Marca<?php echo $row['idProducto'];?>">
-																													<!-- Acá mostraremos el nombre de la marca a partir del id que se tiene en la tabla -->
-																													<?php							
-																														$VerNombreMarca = "SELECT NombreMarca FROM marca WHERE idMarca=".$row['idMarca'].";";
-																														// Hacemos la consulta
-																														$ResultadoVerMarca = $mysqli->query($VerNombreMarca);
-																														$FilaResultado = $ResultadoVerMarca->fetch_assoc();
-																														$NombreMarca = $FilaResultado['NombreMarca'];
-																														echo $NombreMarca;
-																													?></span></td>
-																<td><span id="UnidadMedida<?php echo $row['idProducto'];?>"><!-- Acá mostraremos nombre de la unidad de medida a partir del id que se tiene en la tabla -->
-																													<?php							
-																														$VerNombreMedida = "SELECT NombreUnidadMedida FROM unidadmedida WHERE idUnidadMedida=".$row['idUnidadMedida'].";";
-																														// Hacemos la consulta
-																														$ResultadoVerMedida = $mysqli->query($VerNombreMedida);
-																														$FilaResultado = $ResultadoVerMedida->fetch_assoc();
-																														$NombreUnidadMedida = $FilaResultado['NombreUnidadMedida'];
-																														echo $NombreUnidadMedida;
-																													?></span></td>
-																<td><span id="ModeloProducto<?php echo $row['idProducto'];?>"><?php echo $row['ModeloProducto'] ?></span></td>
-																<td><span id="Linea<?php echo $row['idProducto'];?>"><!-- Acá mostraremos nombre de la Linea a partir del id que se tiene en la tabla -->
-																													<?php							
-																														$VerNombreLinea = "SELECT NombreLineaProducto FROM lineaproducto WHERE idLinea=".$row['idLinea'].";";
-																														// Hacemos la consulta
-																														$ResultadoVerLinea = $mysqli->query($VerNombreLinea);
-																														$FilaResultado = $ResultadoVerLinea->fetch_assoc();
-																														$NombreLinea = $FilaResultado['NombreLineaProducto'];
-																														echo $NombreLinea;
-																													?></span></td>
-																<td><span id="ColorProducto<?php echo $row['idProducto'];?>"><?php echo $row['ColorProducto'] ?></span></td>
-																<td><span id="PrecioProducto<?php echo $row['idProducto'];?>"><?php echo $row['PrecioProducto'] ?></span></td>
-																<td><span id="CantidadProducto<?php echo $row['idProducto'];?>"><!-- Acá mostraremos nombre de la unidad de medida a partir del id que se tiene en la tabla -->
-																													<?php							
-																														// Primero haremos la consulta
-																														$VerInventario = "SELECT * FROM inventario WHERE idProducto='".$row['idProducto']."'";
-																														// Ejecutamos la consulta
-																														$ResultadoConsultaInventario = $mysqli->query($VerInventario);
-																														// Guardamos la consulta en un array
-																														$ResultadoInventario = $ResultadoConsultaInventario->fetch_assoc();
-																														// Cantidad en el inventario
-																														$CantidadInventario = $ResultadoInventario['CantidadInventario'];
-																														echo $CantidadInventario;
-																													?></span></td>
-																<td><span id="TotalNeto<?php echo $row['idProducto'];?>"><?php echo $row['PrecioProducto'] * $CantidadInventario ?></span></td>
-																</tr>
-													<?php
-															}
-													?>
-											</tbody>
-										</table>
-									</div>								
+									<div class="input-group">
+										<span class="input-group-addon">Buscar</span>
+										<input id="filtrar" type="text" class="form-control" placeholder="Buscar...">
+									</div>									
+									<br>
+									<div class="panel panel-primary">
+										<div class="table-responsive">          
+											<table class="table table-hover table-striped">
+												<!-- Título -->
+												<thead>
+													<!-- Contenido -->
+													<tr>
+														<th>#</th>
+														<th>Código</th>
+														<th>Artículo</th>
+														<th>Marca</th>
+														<th>Unidad de medida</th>
+														<th>Modelo</th>
+														<th>Línea</th>
+														<th>Color</th>
+														<th>Precio</th>
+														<th>Cantidad</th>
+														<th>Total neto</th>
+													</tr>
+												</thead>
+												<!-- Cuerpo de la tabla -->
+												<tbody class="buscar">
+													<!-- Contenido de la tabla -->
+														<!-- Acá mostraremos los usuarios y seleccionaremos el que deseamos eliminar -->
+														<?php							
+															$VerProducto = "SELECT * FROM producto";
+															// Hacemos la consulta
+															$resultado = $mysqli->query($VerProducto);
+																while ($row = mysqli_fetch_array($resultado)){
+																	?>
+																	<tr>
+																	<td><span id="idProducto<?php echo $row['idProducto'];?>"><?php echo $row['idProducto'] ?></span></td>
+																	<td><span id="NumeroInvenProd<?php echo $row['idProducto'];?>"><?php echo $row['NumeroInvenProd'] ?></span></td>
+																	<td><span id="NombreProducto<?php echo $row['idProducto'];?>"><?php echo $row['NombreProducto'] ?></span></td>
+																	<td><span id="Marca<?php echo $row['idProducto'];?>">
+																														<!-- Acá mostraremos el nombre de la marca a partir del id que se tiene en la tabla -->
+																														<?php							
+																															$VerNombreMarca = "SELECT NombreMarca FROM marca WHERE idMarca=".$row['idMarca'].";";
+																															// Hacemos la consulta
+																															$ResultadoVerMarca = $mysqli->query($VerNombreMarca);
+																															$FilaResultado = $ResultadoVerMarca->fetch_assoc();
+																															$NombreMarca = $FilaResultado['NombreMarca'];
+																															echo $NombreMarca;
+																														?></span></td>
+																	<td><span id="UnidadMedida<?php echo $row['idProducto'];?>"><!-- Acá mostraremos nombre de la unidad de medida a partir del id que se tiene en la tabla -->
+																														<?php							
+																															$VerNombreMedida = "SELECT NombreUnidadMedida FROM unidadmedida WHERE idUnidadMedida=".$row['idUnidadMedida'].";";
+																															// Hacemos la consulta
+																															$ResultadoVerMedida = $mysqli->query($VerNombreMedida);
+																															$FilaResultado = $ResultadoVerMedida->fetch_assoc();
+																															$NombreUnidadMedida = $FilaResultado['NombreUnidadMedida'];
+																															echo $NombreUnidadMedida;
+																														?></span></td>
+																	<td><span id="ModeloProducto<?php echo $row['idProducto'];?>"><?php echo $row['ModeloProducto'] ?></span></td>
+																	<td><span id="Linea<?php echo $row['idProducto'];?>"><!-- Acá mostraremos nombre de la Linea a partir del id que se tiene en la tabla -->
+																														<?php							
+																															$VerNombreLinea = "SELECT NombreLineaProducto FROM lineaproducto WHERE idLinea=".$row['idLinea'].";";
+																															// Hacemos la consulta
+																															$ResultadoVerLinea = $mysqli->query($VerNombreLinea);
+																															$FilaResultado = $ResultadoVerLinea->fetch_assoc();
+																															$NombreLinea = $FilaResultado['NombreLineaProducto'];
+																															echo $NombreLinea;
+																														?></span></td>
+																	<td><span id="ColorProducto<?php echo $row['idProducto'];?>"><?php echo $row['ColorProducto'] ?></span></td>
+																	<td><span id="PrecioProducto<?php echo $row['idProducto'];?>"><?php echo $row['PrecioProducto'] ?></span></td>
+																	<td><span id="CantidadProducto<?php echo $row['idProducto'];?>"><!-- Acá mostraremos nombre de la unidad de medida a partir del id que se tiene en la tabla -->
+																														<?php							
+																															// Primero haremos la consulta
+																															$VerInventario = "SELECT * FROM inventario WHERE idProducto='".$row['idProducto']."'";
+																															// Ejecutamos la consulta
+																															$ResultadoConsultaInventario = $mysqli->query($VerInventario);
+																															// Guardamos la consulta en un array
+																															$ResultadoInventario = $ResultadoConsultaInventario->fetch_assoc();
+																															// Cantidad en el inventario
+																															$CantidadInventario = $ResultadoInventario['CantidadInventario'];
+																															echo $CantidadInventario;
+																														?></span></td>
+																	<td><span id="TotalNeto<?php echo $row['idProducto'];?>"><?php echo $row['PrecioProducto'] * $CantidadInventario ?></span></td>
+																	</tr>
+														<?php
+																}
+														?>
+												</tbody>
+											</table>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>

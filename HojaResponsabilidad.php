@@ -27,12 +27,15 @@
 		// Primero hacemos la consulta en la tabla de persona
 		include_once "Seguridad/conexion.php";
 		// Si en la sesión activa tiene privilegios de administrador puede ver el formulario
-		if($_SESSION["PrivilegioUsuario"] == 'Administrador'){
+		if($_SESSION["PrivilegioUsuario"] == 'Administrador' ||
+	       $_SESSION["PrivilegioUsuario"] == 'Superadmin' ||
+		   $_SESSION["PrivilegioUsuario"] == 'Secretario' ||
+		   $_SESSION["PrivilegioUsuario"] == 'Tesorero'){
 			// Guardamos el nombre del usuario en una variable
 			$NombreUsuario =$_SESSION["NombreUsuario"];
 			$idUsuario2 =$_SESSION["idUsuario"];
 		?>
-			<body>
+						<body>
 				<nav class="navbar navbar-default navbar-fixed-top">
 				  <div class="container-fluid"> 
 					<!-- Brand and toggle get grouped for better mobile display -->
@@ -42,31 +45,66 @@
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse" id="defaultNavbar1">
 						<ul class="nav navbar-nav">
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Inventario<span class="caret"></span></a>
+							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Inventario<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
-									<li><a href="EntradaInventario.php">Entrada de inventario</a></li>
-									<li><a href="SalidaInventario.php">Salida de inventario</a></li>
+								<?php
+									if($_SESSION["PrivilegioUsuario"] == 'Administrador' ||
+									   $_SESSION["PrivilegioUsuario"] == 'Superadmin' ||
+									   $_SESSION["PrivilegioUsuario"] == 'Secretario' ||
+									   $_SESSION["PrivilegioUsuario"] == 'Tesorero'){
+									?>
+										<li><a href="EntradaInventario.php">Entrada de inventario</a></li>
+										<li><a href="SalidaInventario.php">Salida de inventario</a></li>
+								<?php
+									}
+									?>
 									<li><a href="Inventario.php">Ver inventario</a></li>
 								</ul>
 							</li>
-							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Productos<span class="caret"></span></a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="RegistroProducto.php">Registrar Producto</a></li>
-									<li><a href="Producto.php">Lista de Productos</a></li>
-								</ul>
-							</li>
-							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ajuste<span class="caret"></span></a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="Ajuste.php">Ajuste de inventario</a></li>
-								</ul>
-							</li>
-							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hojas de Reponsabilidad<span class="caret"></span></a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="CrearHojaResponsabilidad.php">Crear hoja de responsabilidad</a></li>
-									<li><a href="#">Lista hojas de responsabilidad</a></li>
-								</ul>
-							</li>
+							<?php
+							if($_SESSION["PrivilegioUsuario"] == 'Administrador' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Superadmin' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Secretario' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Tesorero'){
+								?>
+								<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Productos<span class="caret"></span></a>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="RegistroProducto.php">Registrar Producto</a></li>
+										<li><a href="Producto.php">Lista de Productos</a></li>
+									</ul>
+								</li>
+								<?php
+							}
+							?>
+							<?php
+							if($_SESSION["PrivilegioUsuario"] == 'Administrador' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Superadmin' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Secretario' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Tesorero'){
+								?>
+								<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ajuste<span class="caret"></span></a>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="Ajuste.php">Ajuste de inventario</a></li>
+									</ul>
+								</li>
+								<?php
+							}
+							?>
+							<?php
+							if($_SESSION["PrivilegioUsuario"] == 'Administrador' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Superadmin' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Secretario' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Tesorero'){
+								?>
+								<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hojas de Reponsabilidad<span class="caret"></span></a>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="CrearHojaResponsabilidad.php">Crear hoja de responsabilidad</a></li>
+										<li><a href="#">Lista hojas de responsabilidad</a></li>
+									</ul>
+								</li>
+								<?php
+							}
+							?>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Bitácoras<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="BitacoraEntradas.php">Bitácora de entradas de inventario</a></li>
@@ -82,12 +120,19 @@
 									<li><a href="Kardex.php" target="_blank">Kardex</a></li>
 								</ul>
 							</li>
-							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestión de usuarios<span class="caret"></span></a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="CrearUsuario.php">Crear usuario</li>
-									<li><a href="Usuario.php">Ver usuarios</a></li>
-								</ul>
-							</li>
+							<?php
+							if($_SESSION["PrivilegioUsuario"] == 'Administrador' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Superadmin'){
+								?>
+								<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestión de usuarios<span class="caret"></span></a>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="CrearUsuario.php">Crear usuario</li>
+										<li><a href="Usuario.php">Ver usuarios</a></li>
+									</ul>
+								</li>
+								<?php
+							}
+							?>
 					  </ul>
 					  <ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
@@ -96,7 +141,7 @@
 							<ul class="dropdown-menu">
 								<li><a href="#"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i><?php echo $NombreUsuario; ?></a></li>
 								<?php
-									if($_SESSION["PrivilegioUsuario"] == 'Administrador'){
+									if($_SESSION["PrivilegioUsuario"] == 'Administrador' || $_SESSION["PrivilegioUsuario"] == 'Superadmin'){
 									?>
 										<li><a href="Administrador.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Módulo adminstrador</a></li>
 										<li><a href="JuntaOficiales.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Modificar junta oficiales</a></li>
@@ -131,66 +176,73 @@
 										</div>
 									</div>
 									<br>
-									<div class="table-responsive">          
-										<table class="table">
-											<!-- Título -->
-											<thead>
-												<!-- Contenido -->
-												<tr>
-													<th>#</th>
-													<th>Fecha de generación</th>
-													<th>Entregado por</th>
-													<th>Recibido por</th>
-													<th>Observaciones</th>
-													<th>Detalle</th>
-												</tr>
-											</thead>
-											<!-- Cuerpo de la tabla -->
-											<tbody>
-												<!-- Contenido de la tabla -->
-													<!-- Acá mostraremos los usuarios y seleccionaremos el que deseamos eliminar -->
-													<?php
-														$VerHojasResponsabilidad = "SELECT * FROM hojaresponsabilidad";
-														// Hacemos la consulta
-														$resultado = $mysqli->query($VerHojasResponsabilidad);
-															while ($row = mysqli_fetch_array($resultado)){
-																?>
-																<tr>
-																<td><span id="idHojaResponsabilidad<?php echo $row['idHojaResponsabilidad'];?>"><?php echo $row['idHojaResponsabilidad'] ?></span></td>
-																<td><span id="FechaGenerada<?php echo $row['idHojaResponsabilidad'];?>"><?php echo $row['FechaHoraHojaRespons'] ?></span></td>
-																<td><span id="EntregadoPor<?php echo $row['idHojaResponsabilidad'];?>"><!-- Acá mostraremos el nombre de la persona a partir del id que se tiene en la tabla -->
-																																		<?php							
-																																			$VerNombrePersona = "SELECT NombrePersona, ApellidoPersona FROM persona WHERE idPersona=".$row['idPersonaEntrega'].";";
-																																			// Hacemos la consulta
-																																			$ResultadoVerPersona = $mysqli->query($VerNombrePersona);
-																																			$FilaResultado = $ResultadoVerPersona->fetch_assoc();
-																																			$NombrePersona = $FilaResultado['NombrePersona'] . " " . $FilaResultado['ApellidoPersona'];
-																																			echo $NombrePersona;
-																																		?></span></td>
-																<td><span id="RecibidoPor<?php echo $row['idHojaResponsabilidad'];?>"><!-- Acá mostraremos el nombre de la persona a partir del id que se tiene en la tabla -->
-																																		<?php							
-																																			$VerNombrePersona = "SELECT NombrePersona, ApellidoPersona FROM persona WHERE idPersona=".$row['idPersonaRecibe'].";";
-																																			// Hacemos la consulta
-																																			$ResultadoVerPersona = $mysqli->query($VerNombrePersona);
-																																			$FilaResultado = $ResultadoVerPersona->fetch_assoc();
-																																			$NombrePersona = $FilaResultado['NombrePersona'] . " " . $FilaResultado['ApellidoPersona'];
-																																			echo $NombrePersona;
-																																		?></span></td>
-																<td><span id="Observaciones<?php echo $row['idHojaResponsabilidad'];?>"><?php echo $row['ObservacionHojaRespons'] ?></span></td>
-																<td>
-																	<!-- Ver detalles de hoja  -->
-																	<div>
-																		<div class="input-group input-group-lg">
-																			<button type="button" class="btn btn-success DetalleHojaResponsabilidad" value="<?php	$row['idHojaResponsabilidad']; ?>"><span class="glyphicon glyphicon-list-alt">Ver detalles</span></button>
+									<div class="input-group">
+										<span class="input-group-addon">Buscar</span>
+										<input id="filtrar" type="text" class="form-control" placeholder="Buscar...">
+									</div>									
+									<br>
+									<div class="panel panel-primary">
+										<div class="table-responsive">          
+											<table class="table table-hover table-striped">
+												<!-- Título -->
+												<thead>
+													<!-- Contenido -->
+													<tr>
+														<th>#</th>
+														<th>Fecha de generación</th>
+														<th>Entregado por</th>
+														<th>Recibido por</th>
+														<th>Observaciones</th>
+														<th>Detalle</th>
+													</tr>
+												</thead>
+												<!-- Cuerpo de la tabla -->
+												<tbody class="buscar">
+													<!-- Contenido de la tabla -->
+														<!-- Acá mostraremos los usuarios y seleccionaremos el que deseamos eliminar -->
+														<?php
+															$VerHojasResponsabilidad = "SELECT * FROM hojaresponsabilidad";
+															// Hacemos la consulta
+															$resultado = $mysqli->query($VerHojasResponsabilidad);
+																while ($row = mysqli_fetch_array($resultado)){
+																	?>
+																	<tr>
+																	<td><span id="idHojaResponsabilidad<?php echo $row['idHojaResponsabilidad'];?>"><?php echo $row['idHojaResponsabilidad'] ?></span></td>
+																	<td><span id="FechaGenerada<?php echo $row['idHojaResponsabilidad'];?>"><?php echo $row['FechaHoraHojaRespons'] ?></span></td>
+																	<td><span id="EntregadoPor<?php echo $row['idHojaResponsabilidad'];?>"><!-- Acá mostraremos el nombre de la persona a partir del id que se tiene en la tabla -->
+																																			<?php							
+																																				$VerNombrePersona = "SELECT NombrePersona, ApellidoPersona FROM persona WHERE idPersona=".$row['idPersonaEntrega'].";";
+																																				// Hacemos la consulta
+																																				$ResultadoVerPersona = $mysqli->query($VerNombrePersona);
+																																				$FilaResultado = $ResultadoVerPersona->fetch_assoc();
+																																				$NombrePersona = $FilaResultado['NombrePersona'] . " " . $FilaResultado['ApellidoPersona'];
+																																				echo $NombrePersona;
+																																			?></span></td>
+																	<td><span id="RecibidoPor<?php echo $row['idHojaResponsabilidad'];?>"><!-- Acá mostraremos el nombre de la persona a partir del id que se tiene en la tabla -->
+																																			<?php							
+																																				$VerNombrePersona = "SELECT NombrePersona, ApellidoPersona FROM persona WHERE idPersona=".$row['idPersonaRecibe'].";";
+																																				// Hacemos la consulta
+																																				$ResultadoVerPersona = $mysqli->query($VerNombrePersona);
+																																				$FilaResultado = $ResultadoVerPersona->fetch_assoc();
+																																				$NombrePersona = $FilaResultado['NombrePersona'] . " " . $FilaResultado['ApellidoPersona'];
+																																				echo $NombrePersona;
+																																			?></span></td>
+																	<td><span id="Observaciones<?php echo $row['idHojaResponsabilidad'];?>"><?php echo $row['ObservacionHojaRespons'] ?></span></td>
+																	<td>
+																		<!-- Ver detalles de hoja  -->
+																		<div>
+																			<div class="input-group input-group-lg">
+																				<button type="button" class="btn btn-success DetalleHojaResponsabilidad" value="<?php	$row['idHojaResponsabilidad']; ?>"><span class="glyphicon glyphicon-list-alt">Ver detalles</span></button>
+																			</div>
 																		</div>
-																	</div>
-																</td>
-																</tr>
-													<?php
-															}
-													?>
-											</tbody>
-										</table>
+																	</td>
+																	</tr>
+														<?php
+																}
+														?>
+												</tbody>
+											</table>
+										</div>
 									</div>								
 								</div>
 							</div>

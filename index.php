@@ -25,7 +25,13 @@
 		// Incluimos el archivo que valida si hay una sesión activa
 		include_once "Seguridad/seguro.php";
 		// Si en la sesión activa tiene privilegios de administrador puede ver el formulario
-		if($_SESSION["PrivilegioUsuario"] == 'Administrador'){// Guardamos el nombre del usuario en una variable
+		if($_SESSION["PrivilegioUsuario"] == 'Administrador' ||
+	       $_SESSION["PrivilegioUsuario"] == 'Superadmin' ||
+		   $_SESSION["PrivilegioUsuario"] == 'Director' ||
+		   $_SESSION["PrivilegioUsuario"] == 'Jefe' ||
+		   $_SESSION["PrivilegioUsuario"] == 'Secretario' ||
+		   $_SESSION["PrivilegioUsuario"] == 'Tesorero'){
+			// Guardamos el nombre del usuario en una variable
 			$NombreUsuario =$_SESSION["NombreUsuario"];
 			$idUsuario2 =$_SESSION["idUsuario"];
 			
@@ -44,7 +50,12 @@
 			// Hacemos la consulta para mostrar las cantidades de Entradas
 			$resultado1 = $mysqli->query($sql1);
 			$Contador = 0;
-			if(mysqli_fetch_array($resultado1) != NULL){
+			// Llenamos la matriz para que pueda mostrar aunque no tenga información completa
+			for($Contador1 = 0; $Contador1 < 5; $Contador1++){
+					$NombreTop10_Salidas[$Contador1] = " ";
+					$Top10_Salidas[$Contador1] = 0;
+				}
+			// Si el objeto no está vacio entonces guardamos la información en la matriz
 				while ($row1 = mysqli_fetch_array($resultado1)){
 					$VerNombreProducto = "SELECT NombreProducto FROM producto WHERE idProducto=".$row1['idProducto'].";";
 					// Hacemos la consulta
@@ -58,36 +69,29 @@
 						break;
 					}
 				}
-			}else{
-				for($Contador = 0; $Contador < 5; $Contador++){
-					$NombreTop10_Salidas[$Contador] = " ";
-					$Top10_Salidas[$Contador] = 0;
-				}
-			}
 			// Segunda Gráfica
 			$NombreTop10_Entradas;
 			$Top10_Entradas;
 			// Hacemos la consulta para mostrar las cantidades de Entradas
-			$resultado2 = $mysqli->query($sql1);
+			$resultado2 = $mysqli->query($sql2);
 			$Contador = 0;
-			if(mysqli_fetch_array($resultado2) != NULL){
-				while ($row2 = mysqli_fetch_array($resultado2)){
-					$VerNombreProducto = "SELECT NombreProducto FROM producto WHERE idProducto=".$row2['idProducto'].";";
-					// Hacemos la consulta
-					$ResultadoVerProducto = $mysqli->query($VerNombreProducto);
-					$FilaResultado = $ResultadoVerProducto->fetch_assoc();
-					$NombreTop10_Entradas[$Contador] = $FilaResultado['NombreProducto'];
-					$Top10_Entradas[$Contador] = $row2['Suma'];
-					// Aumentamos al contador
-					$Contador++;
-					if($Contador == 6){
-						break;
-					}
-				}
-			}else{
-				for($Contador = 0; $Contador < 5; $Contador++){
-					$NombreTop10_Entradas[$Contador] = " ";
-					$Top10_Entradas[$Contador] = 0;
+			// Llenamos la matriz para que pueda mostrar aunque no tenga información completa
+			for($Contador2 = 0; $Contador2 < 5; $Contador2++){
+				$NombreTop10_Entradas[$Contador2] = " ";
+				$Top10_Entradas[$Contador2] = 0;
+			}
+		// Si el objeto no está vacio entonces guardamos la información en la matriz
+			while ($row2 = mysqli_fetch_array($resultado2)){
+				$VerNombreProducto = "SELECT NombreProducto FROM producto WHERE idProducto=".$row2['idProducto'].";";
+				// Hacemos la consulta
+				$ResultadoVerProducto = $mysqli->query($VerNombreProducto);
+				$FilaResultado = $ResultadoVerProducto->fetch_assoc();
+				$NombreTop10_Entradas[$Contador] = $FilaResultado['NombreProducto'];
+				$Top10_Entradas[$Contador] = $row2['Suma'];
+				// Aumentamos al contador
+				$Contador++;
+				if($Contador == 6){
+					break;
 				}
 			}
 			// Guardamos las cantidades en variables (5)
@@ -96,7 +100,12 @@
 			// Hacemos la consulta para mostrar las cantidades de Entradas
 			$resultado3 = $mysqli->query($sql3);
 			$Contador = 0;
-			if(mysqli_fetch_array($resultado3) != NULL){
+			// Llenamos la matriz para que pueda mostrar aunque no tenga información completa
+			for($Contador3 = 0; $Contador3 < 5; $Contador3++){
+					$NombreTop5_1[$Contador3] = " ";
+					$Top5_1[$Contador3] = 0;
+				}
+			// Si el objeto no está vacio entonces guardamos la información en la matriz
 				while ($row3 = mysqli_fetch_array($resultado3)){
 					$VerNombreProducto = "SELECT NombreProducto FROM producto WHERE idProducto=".$row3['idProducto'].";";
 					// Hacemos la consulta
@@ -110,49 +119,77 @@
 						break;
 					}
 				}
-			}else{
-				for($Contador = 0; $Contador < 5; $Contador++){
-					$NombreTop5_1[$Contador] = " ";
-					$Top5_1[$Contador] = 0;
-				}
-			}
 		?>
-			<body ondragstart="return false;" ondrop="return false;">
+			<body>
 				<nav class="navbar navbar-default navbar-fixed-top">
 				  <div class="container-fluid"> 
 					<!-- Brand and toggle get grouped for better mobile display -->
 					<div class="navbar-header">
 					  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#defaultNavbar1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
-					  <a class="navbar-brand" href="#"><img src="imagenes/logo.png" class="img-circle" width="25" height="25"></a></div>
+					  <a class="navbar-brand" href="index.php"><img src="imagenes/logo.png" class="img-circle" width="25" height="25"></a></div>
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse" id="defaultNavbar1">
 						<ul class="nav navbar-nav">
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Inventario<span class="caret"></span></a>
+							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Inventario<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
-									<li><a href="EntradaInventario.php">Entrada de inventario</a></li>
-									<li><a href="SalidaInventario.php">Salida de inventario</a></li>
-									<li><a href="Inventario.php">Ver inventario</a></li>
+								<?php
+									if($_SESSION["PrivilegioUsuario"] == 'Administrador' ||
+									   $_SESSION["PrivilegioUsuario"] == 'Superadmin' ||
+									   $_SESSION["PrivilegioUsuario"] == 'Secretario' ||
+									   $_SESSION["PrivilegioUsuario"] == 'Tesorero'){
+									?>
+										<li><a href="EntradaInventario.php">Entrada de inventario</a></li>
+										<li><a href="SalidaInventario.php">Salida de inventario</a></li>
+								<?php
+									}
+									?>
+									<li><a href="#">Ver inventario</a></li>
 								</ul>
 							</li>
-							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Productos<span class="caret"></span></a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="RegistroProducto.php">Registrar Producto</a></li>
-									<li><a href="Producto.php">Lista de Productos</a></li>
-								</ul>
-							</li>
-							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ajuste<span class="caret"></span></a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="Ajuste.php">Ajuste de inventario</a></li>
-									<li><a href="#">Lista de Ajuste de inventario</a></li>
-								</ul>
-							</li>
-							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hojas de Reponsabilidad<span class="caret"></span></a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="CrearHojaResponsabilidad.php">Crear hoja de responsabilidad</a></li>
-									<li><a href="HojaResponsabilidad.php">Lista hojas de responsabilidad</a></li>
-								</ul>
-							</li>
+							<?php
+							if($_SESSION["PrivilegioUsuario"] == 'Administrador' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Superadmin' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Secretario' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Tesorero'){
+								?>
+								<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Productos<span class="caret"></span></a>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="RegistroProducto.php">Registrar Producto</a></li>
+										<li><a href="Producto.php">Lista de Productos</a></li>
+									</ul>
+								</li>
+								<?php
+							}
+							?>
+							<?php
+							if($_SESSION["PrivilegioUsuario"] == 'Administrador' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Superadmin' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Secretario' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Tesorero'){
+								?>
+								<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ajuste<span class="caret"></span></a>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="Ajuste.php">Ajuste de inventario</a></li>
+									</ul>
+								</li>
+								<?php
+							}
+							?>
+							<?php
+							if($_SESSION["PrivilegioUsuario"] == 'Administrador' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Superadmin' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Secretario' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Tesorero'){
+								?>
+								<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hojas de Reponsabilidad<span class="caret"></span></a>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="CrearHojaResponsabilidad.php">Crear hoja de responsabilidad</a></li>
+										<li><a href="HojaResponsabilidad.php">Lista hojas de responsabilidad</a></li>
+									</ul>
+								</li>
+								<?php
+							}
+							?>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Bitácoras<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="BitacoraEntradas.php">Bitácora de entradas de inventario</a></li>
@@ -168,12 +205,19 @@
 									<li><a href="Kardex.php" target="_blank">Kardex</a></li>
 								</ul>
 							</li>
-							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestión de usuarios<span class="caret"></span></a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="CrearUsuario.php">Crear usuario</li>
-									<li><a href="Usuario.php">Ver usuarios</a></li>
-								</ul>
-							</li>
+							<?php
+							if($_SESSION["PrivilegioUsuario"] == 'Administrador' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Superadmin'){
+								?>
+								<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestión de usuarios<span class="caret"></span></a>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="CrearUsuario.php">Crear usuario</li>
+										<li><a href="Usuario.php">Ver usuarios</a></li>
+									</ul>
+								</li>
+								<?php
+							}
+							?>
 					  </ul>
 					  <ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
@@ -182,7 +226,7 @@
 							<ul class="dropdown-menu">
 								<li><a href="#"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i><?php echo $NombreUsuario; ?></a></li>
 								<?php
-									if($_SESSION["PrivilegioUsuario"] == 'Administrador'){
+									if($_SESSION["PrivilegioUsuario"] == 'Administrador' || $_SESSION["PrivilegioUsuario"] == 'Superadmin'){
 									?>
 										<li><a href="Administrador.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Módulo adminstrador</a></li>
 										<li><a href="JuntaOficiales.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Modificar junta oficiales</a></li>

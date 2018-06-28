@@ -27,12 +27,15 @@
 		// Primero hacemos la consulta en la tabla de persona
 		include_once "Seguridad/conexion.php";
 		// Si en la sesión activa tiene privilegios de administrador puede ver el formulario
-		if($_SESSION["PrivilegioUsuario"] == 'Administrador'){
+		if($_SESSION["PrivilegioUsuario"] == 'Administrador' ||
+	       $_SESSION["PrivilegioUsuario"] == 'Superadmin' ||
+		   $_SESSION["PrivilegioUsuario"] == 'Secretario' ||
+		   $_SESSION["PrivilegioUsuario"] == 'Tesorero'){
 			// Guardamos el nombre del usuario en una variable
 			$NombreUsuario =$_SESSION["NombreUsuario"];
 			$idUsuario2 =$_SESSION["idUsuario"];
 		?>
-			<body>
+						<body>
 				<nav class="navbar navbar-default navbar-fixed-top">
 				  <div class="container-fluid"> 
 					<!-- Brand and toggle get grouped for better mobile display -->
@@ -42,31 +45,66 @@
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse" id="defaultNavbar1">
 						<ul class="nav navbar-nav">
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Inventario<span class="caret"></span></a>
+							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Inventario<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
-									<li><a href="EntradaInventario.php">Entrada de inventario</a></li>
-									<li><a href="SalidaInventario.php">Salida de inventario</a></li>
+								<?php
+									if($_SESSION["PrivilegioUsuario"] == 'Administrador' ||
+									   $_SESSION["PrivilegioUsuario"] == 'Superadmin' ||
+									   $_SESSION["PrivilegioUsuario"] == 'Secretario' ||
+									   $_SESSION["PrivilegioUsuario"] == 'Tesorero'){
+									?>
+										<li><a href="EntradaInventario.php">Entrada de inventario</a></li>
+										<li><a href="SalidaInventario.php">Salida de inventario</a></li>
+								<?php
+									}
+									?>
 									<li><a href="Inventario.php">Ver inventario</a></li>
 								</ul>
 							</li>
-							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Productos<span class="caret"></span></a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="RegistroProducto.php">Registrar Producto</a></li>
-									<li><a href="#">Lista de Productos</a></li>
-								</ul>
-							</li>
-							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ajuste<span class="caret"></span></a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="Ajuste.php">Ajuste de inventario</a></li>
-								</ul>
-							</li>
-							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hojas de Reponsabilidad<span class="caret"></span></a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="CrearHojaResponsabilidad.php">Crear hoja de responsabilidad</a></li>
-									<li><a href="HojaResponsabilidad.php">Lista hojas de responsabilidad</a></li>
-								</ul>
-							</li>
+							<?php
+							if($_SESSION["PrivilegioUsuario"] == 'Administrador' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Superadmin' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Secretario' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Tesorero'){
+								?>
+								<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Productos<span class="caret"></span></a>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="RegistroProducto.php">Registrar Producto</a></li>
+										<li><a href="#">Lista de Productos</a></li>
+									</ul>
+								</li>
+								<?php
+							}
+							?>
+							<?php
+							if($_SESSION["PrivilegioUsuario"] == 'Administrador' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Superadmin' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Secretario' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Tesorero'){
+								?>
+								<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ajuste<span class="caret"></span></a>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="Ajuste.php">Ajuste de inventario</a></li>
+									</ul>
+								</li>
+								<?php
+							}
+							?>
+							<?php
+							if($_SESSION["PrivilegioUsuario"] == 'Administrador' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Superadmin' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Secretario' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Tesorero'){
+								?>
+								<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hojas de Reponsabilidad<span class="caret"></span></a>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="CrearHojaResponsabilidad.php">Crear hoja de responsabilidad</a></li>
+										<li><a href="HojaResponsabilidad.php">Lista hojas de responsabilidad</a></li>
+									</ul>
+								</li>
+								<?php
+							}
+							?>
 							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Bitácoras<span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="BitacoraEntradas.php">Bitácora de entradas de inventario</a></li>
@@ -82,12 +120,19 @@
 									<li><a href="Kardex.php" target="_blank">Kardex</a></li>
 								</ul>
 							</li>
-							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestión de usuarios<span class="caret"></span></a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="CrearUsuario.php">Crear usuario</li>
-									<li><a href="Usuario.php">Ver usuarios</a></li>
-								</ul>
-							</li>
+							<?php
+							if($_SESSION["PrivilegioUsuario"] == 'Administrador' ||
+							   $_SESSION["PrivilegioUsuario"] == 'Superadmin'){
+								?>
+								<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestión de usuarios<span class="caret"></span></a>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="CrearUsuario.php">Crear usuario</li>
+										<li><a href="Usuario.php">Ver usuarios</a></li>
+									</ul>
+								</li>
+								<?php
+							}
+							?>
 					  </ul>
 					  <ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
@@ -96,7 +141,7 @@
 							<ul class="dropdown-menu">
 								<li><a href="#"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i><?php echo $NombreUsuario; ?></a></li>
 								<?php
-									if($_SESSION["PrivilegioUsuario"] == 'Administrador'){
+									if($_SESSION["PrivilegioUsuario"] == 'Administrador' || $_SESSION["PrivilegioUsuario"] == 'Superadmin'){
 									?>
 										<li><a href="Administrador.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Módulo adminstrador</a></li>
 										<li><a href="JuntaOficiales.php"><i class="fa fa-sign-out" aria-hidden="true">&nbsp;</i>Modificar junta oficiales</a></li>
@@ -127,7 +172,7 @@
 									<!-- Contenedor del ícono del Usuario -->
 									<div class="col-xs-5 Icon">
 										<!-- Icono de usuario -->
-										<span class="glyphicon glyphicon-user"></span>
+										<span class="glyphicon glyphicon-asterisk"></span>
 									</div>
 									<div class="form-group">
 											<form name="Exportar" action="Producto.php" method="post">
@@ -145,127 +190,136 @@
 										</div>
 								</div>
 								<br>
-								<div class="table-responsive">          
-									<table class="table">
-										<!-- Título -->
-										<thead>
-											<!-- Contenido -->
-											<tr>
-												<th>#</th>
-												<th>Código</th>´
-												<th>Nombre</th>´
-												<th>Marca</th>
-												<th>Modelo</th>
-												<th>Línea</th>
-												<th>UM</th>
-												<th>Color</th>
-												<th>Precio</th>
-												<th>Estado del producto</th>
-												<th>Editar</th>
-												<th>Habilitar/Deshaibilitar</th>
-											</tr>
-										</thead>
-										<!-- Cuerpo de la tabla -->
-										<tbody>
-											<!-- Contenido de la tabla -->
-												<!-- Acá mostraremos los usuarios y seleccionaremos el que deseamos eliminar -->
-												<?php
-													$VerProductos = "SELECT * FROM producto";
-													// Hacemos la consulta
-													$resultado = $mysqli->query($VerProductos);
-													while ($row = mysqli_fetch_array($resultado)){
+								<div class="input-group">
+									<span class="input-group-addon">Buscar</span>
+									<input id="filtrar" type="text" class="form-control" placeholder="Buscar...">
+								</div>									
+								<br>
+								<br>
+								<div class="panel panel-primary">
+										<div class="table-responsive">          
+											<table class="table table-hover table-striped">
+												<!-- Título -->
+												<thead>
+													<!-- Contenido -->
+													<tr>
+														<th>#</th>
+														<th>Código</th>´
+														<th>Nombre</th>´
+														<th>Marca</th>
+														<th>Modelo</th>
+														<th>Línea</th>
+														<th>UM</th>
+														<th>Color</th>
+														<th>Precio</th>
+														<th>Estado del producto</th>
+														<th>Editar</th>
+														<th>Habilitar/Deshaibilitar</th>
+													</tr>
+												</thead>
+												<!-- Cuerpo de la tabla -->
+												<tbody class="buscar">
+													<!-- Contenido de la tabla -->
+														<!-- Acá mostraremos los usuarios y seleccionaremos el que deseamos eliminar -->
+														<?php
+															$VerProductos = "SELECT * FROM producto";
+															// Hacemos la consulta
+															$resultado = $mysqli->query($VerProductos);
+															while ($row = mysqli_fetch_array($resultado)){
+																?>
+																<tr>
+																	<td><span id="idProducto<?php echo $row['idProducto'];?>"><?php echo $row['idProducto'] ?></span></td>
+																	<td><span id="CodigoProducto<?php echo $row['idProducto'];?>"><?php echo $row['NumeroInvenProd'] ?></span></td>
+																	<td><span id="NombreProducto<?php echo $row['idProducto'];?>"><?php echo $row['NombreProducto'] ?></span></td>
+																	<td><span id="idMarca<?php echo $row['idProducto'];?>"><!-- Acá mostraremos el nombre de la persona a partir del id que se tiene en la tabla -->
+																															<?php							
+																																$VerMarca = "SELECT NombreMarca FROM Marca WHERE idMarca='".$row['idMarca']."';";
+																																// Hacemos la consulta
+																																$ResultadoConsultaMarca = $mysqli->query($VerMarca);
+																																$FilaResultadoMarca = $ResultadoConsultaMarca->fetch_assoc();
+																																$NombreMarca = $FilaResultadoMarca['NombreMarca'];
+																																echo $NombreMarca;
+																															?></span></td>
+																	<td><span id="ModeloProducto<?php echo $row['idProducto'];?>"><?php echo $row['ModeloProducto'] ?></span></td>
+																	<td><span id="NombreLineaProducto<?php echo $row['idProducto'];?>"><!-- Acá mostraremos el nombre de la persona a partir del id que se tiene en la tabla -->
+																																		<?php							
+																																			$VerLineaProducto = "SELECT NombreLineaProducto FROM lineaproducto WHERE idLinea='".$row['idLinea']."';";
+																																			// Hacemos la consulta
+																																			$ResultadoConsultaLineaProducto = $mysqli->query($VerLineaProducto);
+																																			$FilaResultadoLinea = $ResultadoConsultaLineaProducto->fetch_assoc();
+																																			$NombreLinea = $FilaResultadoLinea['NombreLineaProducto'];
+																																			echo $NombreLinea;
+																																		?></span></td>
+																	<td><span id="NombreUnidadMedida<?php echo $row['idProducto'];?>"><!-- Acá mostraremos el nombre de la persona a partir del id que se tiene en la tabla -->
+																																		<?php							
+																																			$VerMedida = "SELECT NombreUnidadMedida FROM unidadmedida WHERE idUnidadMedida='".$row['idUnidadMedida']."';";
+																																			// Hacemos la consulta
+																																			$ResultadoConsultaMedida = $mysqli->query($VerMedida);
+																																			$FilaResultadoMedida = $ResultadoConsultaMedida->fetch_assoc();
+																																			$NombreMedida = $FilaResultadoMedida['NombreUnidadMedida'];
+																																			echo $NombreMedida;
+																																		?></span></td>
+																	<td><span id="ColorProducto<?php echo $row['idProducto'];?>"><?php echo $row['ColorProducto'] ?></span></td>
+																	<td><span id="PrecioProducto<?php echo $row['idProducto'];?>"><?php echo $row['PrecioProducto'] ?></span></td>
+																	<td><span id="EstadoProducto<?php echo $row['idProducto'];?>"><?php echo $row['EstadoProducto'] ?></span></td>
+																	<td>
+																	<?php
+																		if($row['EstadoProducto'] == 'Habilitado'){
+																		?>
+																			<!-- Edición activada-->
+																			<div>
+																				<div class="input-group input-group-lg">
+																					<button type="button" class="btn btn-success EditarProducto" value="<?php echo $row['idProducto']; ?>"><span class="glyphicon glyphicon-edit"></span></button>
+																				</div>
+																			</div>
+																		<?php
+																		}
+																		else if($row['EstadoProducto'] == 'Deshabilitado'){
+																		?>
+																			<!-- Edición desactivada-->
+																			<div>
+																				<div class="input-group input-group-lg">
+																					<button type="button" class="btn btn-success EditarProductoDesac" disabled="true"><span class="glyphicon glyphicon-edit"></span></button>
+																				</div>
+																			</div>
+																		<?php
+																		}
+																		?>
+																	</td>
+																	<?php
+																		if($row['EstadoProducto'] == 'Habilitado'){
+																		?>
+																			<td>
+																				<!-- Deshabilitación -->
+																				<div>
+																					<div class="input-group input-group-lg">
+																						<button type="button" class="btn btn-warning DeshabilitarProducto"  value="<?php echo $row['idProducto']; ?>"><span class="glyphicon glyphicon-minus"></span></button>
+																					</div>
+																				</div>
+																			</td>
+																		<?php
+																		}
+																		else if($row['EstadoProducto'] == 'Deshabilitado'){
+																		?>
+																			<td>
+																				<!-- Habilitación -->
+																				<div>
+																					<div class="input-group input-group-lg">
+																						<button type="button" class="btn btn-success HabilitarProducto"  value="<?php echo $row['idProducto']; ?>"><span class="glyphicon glyphicon-check"></span></button>
+																					</div>
+																				</div>
+																			</td>
+																		<?php
+																		}
+																	?>
+																</tr>
+														<?php
+																}
 														?>
-														<tr>
-															<td><span id="idProducto<?php echo $row['idProducto'];?>"><?php echo $row['idProducto'] ?></span></td>
-															<td><span id="CodigoProducto<?php echo $row['idProducto'];?>"><?php echo $row['NumeroInvenProd'] ?></span></td>
-															<td><span id="NombreProducto<?php echo $row['idProducto'];?>"><?php echo $row['NombreProducto'] ?></span></td>
-															<td><span id="idMarca<?php echo $row['idProducto'];?>"><!-- Acá mostraremos el nombre de la persona a partir del id que se tiene en la tabla -->
-																													<?php							
-																														$VerMarca = "SELECT NombreMarca FROM Marca WHERE idMarca='".$row['idMarca']."';";
-																														// Hacemos la consulta
-																														$ResultadoConsultaMarca = $mysqli->query($VerMarca);
-																														$FilaResultadoMarca = $ResultadoConsultaMarca->fetch_assoc();
-																														$NombreMarca = $FilaResultadoMarca['NombreMarca'];
-																														echo $NombreMarca;
-																													?></span></td>
-															<td><span id="ModeloProducto<?php echo $row['idProducto'];?>"><?php echo $row['ModeloProducto'] ?></span></td>
-															<td><span id="NombreLineaProducto<?php echo $row['idProducto'];?>"><!-- Acá mostraremos el nombre de la persona a partir del id que se tiene en la tabla -->
-																																<?php							
-																																	$VerLineaProducto = "SELECT NombreLineaProducto FROM lineaproducto WHERE idLinea='".$row['idLinea']."';";
-																																	// Hacemos la consulta
-																																	$ResultadoConsultaLineaProducto = $mysqli->query($VerLineaProducto);
-																																	$FilaResultadoLinea = $ResultadoConsultaLineaProducto->fetch_assoc();
-																																	$NombreLinea = $FilaResultadoLinea['NombreLineaProducto'];
-																																	echo $NombreLinea;
-																																?></span></td>
-															<td><span id="NombreUnidadMedida<?php echo $row['idProducto'];?>"><!-- Acá mostraremos el nombre de la persona a partir del id que se tiene en la tabla -->
-																																<?php							
-																																	$VerMedida = "SELECT NombreUnidadMedida FROM unidadmedida WHERE idUnidadMedida='".$row['idUnidadMedida']."';";
-																																	// Hacemos la consulta
-																																	$ResultadoConsultaMedida = $mysqli->query($VerMedida);
-																																	$FilaResultadoMedida = $ResultadoConsultaMedida->fetch_assoc();
-																																	$NombreMedida = $FilaResultadoMedida['NombreUnidadMedida'];
-																																	echo $NombreMedida;
-																																?></span></td>
-															<td><span id="ColorProducto<?php echo $row['idProducto'];?>"><?php echo $row['ColorProducto'] ?></span></td>
-															<td><span id="PrecioProducto<?php echo $row['idProducto'];?>"><?php echo $row['PrecioProducto'] ?></span></td>
-															<td><span id="EstadoProducto<?php echo $row['idProducto'];?>"><?php echo $row['EstadoProducto'] ?></span></td>
-															<td>
-															<?php
-																if($row['EstadoProducto'] == 'Habilitado'){
-																?>
-																	<!-- Edición activada-->
-																	<div>
-																		<div class="input-group input-group-lg">
-																			<button type="button" class="btn btn-success EditarProducto" value="<?php echo $row['idProducto']; ?>"><span class="glyphicon glyphicon-edit"></span></button>
-																		</div>
-																	</div>
-																<?php
-																}
-																else if($row['EstadoProducto'] == 'Deshabilitado'){
-																?>
-																	<!-- Edición desactivada-->
-																	<div>
-																		<div class="input-group input-group-lg">
-																			<button type="button" class="btn btn-success EditarProductoDesac" disabled="true"><span class="glyphicon glyphicon-edit"></span></button>
-																		</div>
-																	</div>
-																<?php
-																}
-																?>
-															</td>
-															<?php
-																if($row['EstadoProducto'] == 'Habilitado'){
-																?>
-																	<td>
-																		<!-- Deshabilitación -->
-																		<div>
-																			<div class="input-group input-group-lg">
-																				<button type="button" class="btn btn-warning DeshabilitarProducto"  value="<?php echo $row['idProducto']; ?>"><span class="glyphicon glyphicon-minus"></span></button>
-																			</div>
-																		</div>
-																	</td>
-																<?php
-																}
-																else if($row['EstadoProducto'] == 'Deshabilitado'){
-																?>
-																	<td>
-																		<!-- Habilitación -->
-																		<div>
-																			<div class="input-group input-group-lg">
-																				<button type="button" class="btn btn-success HabilitarProducto"  value="<?php echo $row['idProducto']; ?>"><span class="glyphicon glyphicon-check"></span></button>
-																			</div>
-																		</div>
-																	</td>
-																<?php
-																}
-															?>
-														</tr>
-												<?php
-														}
-												?>
-										</tbody>
-									</table>
+												</tbody>
+											</table>
+										</div>
+									</div>
 								</div>								
 							</div>
 						</div>
@@ -409,7 +463,7 @@
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
-										<input type="submit" name="EditarProducto" class="btn btn-success" value="Editar Usuario">
+										<input type="submit" name="EditarProducto" class="btn btn-success" value="Editar producto">
 									</div>
 								</form>
 							</div>
