@@ -4,7 +4,7 @@ $(document).ready(function(){
 		var id=$(this).val();
 	
 		$('#frmVerDetalle').modal('show');
-		$('#idHojaResponsabilidad').val(Usuario);
+		$('#idHojaResponsabilidad').val(id);
 	});
 });
 

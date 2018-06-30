@@ -230,11 +230,13 @@
 																	<td><span id="Observaciones<?php echo $row['idHojaResponsabilidad'];?>"><?php echo $row['ObservacionHojaRespons'] ?></span></td>
 																	<td>
 																		<!-- Ver detalles de hoja  -->
-																		<div>
-																			<div class="input-group input-group-lg">
-																				<button type="button" class="btn btn-success DetalleHojaResponsabilidad" value="<?php	$row['idHojaResponsabilidad']; ?>"><span class="glyphicon glyphicon-list-alt">Ver detalles</span></button>
+																		<form method="post" action="DetalleHojaResponsabilidad.php">
+																			<div>
+																				<div class="input-group input-group-lg">
+																					<button type="submit" class="btn btn-success" name="VerDetalle" value="<?php $row['idHojaResponsabilidad']; ?>"><span class="glyphicon glyphicon-list-alt">Ver detalles</span></button>
+																				</div>
 																			</div>
-																		</div>
+																		</form>
 																	</td>
 																	</tr>
 														<?php
