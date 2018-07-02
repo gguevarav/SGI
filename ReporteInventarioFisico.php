@@ -115,6 +115,149 @@
 			</div>
 		</body>
 	</html>');
+	
+	// Mostraremos las personas de la junta de oficiales
+	// Primero la consutla para ver todos los oficiales
+	$ConsultaJunta = "SELECT * FROM juntaoficiales;";
+	// Ejecutamos la consulta
+	$ResultadoJunta = $mysqli->query($ConsultaJunta);
+	// Si al ejecutar la consulta el valor es nulo entonces no hay junta directiva registrada
+	if(($FilaResultadoVerJunta = $ResultadoJunta->fetch_assoc()) != null){
+		$Director = $FilaResultadoVerJunta['DirectorJuntaOficiales'];
+		$Jefe =  $FilaResultadoVerJunta['JefeJuntaOficiales'];
+		$Secretario  =  $FilaResultadoVerJunta['SecretarioJuntaOficiales'];
+		$Tesorero  =  $FilaResultadoVerJunta['TesoreroJuntaOficiales'];
+		
+		// Consulta para ver el nomnbre de la persona que queremos mostrar
+		$ConsultaVerNombreDirector = "SELECT NombrePersona, ApellidoPersona FROM persona WHERE idPersona=".$Director.";";
+		$ConsultaVerNombreJefe = "SELECT NombrePersona, ApellidoPersona FROM persona WHERE idPersona=".$Jefe.";";
+		$ConsultaVerNombreSecretario = "SELECT NombrePersona, ApellidoPersona FROM persona WHERE idPersona=".$Secretario.";";
+		$ConsultaVerNombreTesorero = "SELECT NombrePersona, ApellidoPersona FROM persona WHERE idPersona=".$Tesorero.";";
+		
+		// Ejecutamos la consulta para ver el nombre de cada 
+		// Director
+		$ResultadoVerNombreDirector = $mysqli->query($ConsultaVerNombreDirector);
+		$FilaResultadoNombreDirector = $ResultadoVerNombreDirector->fetch_assoc();
+		$NommbreDirector = $FilaResultadoNombreDirector['NombrePersona'] . " " . $FilaResultadoNombreDirector['ApellidoPersona'];
+		// Jefe
+		$ResultadoVerNombreJefe = $mysqli->query($ConsultaVerNombreJefe);
+		$FilaResultadoNombreJefe = $ResultadoVerNombreJefe->fetch_assoc();
+		$NommbreJefe = $FilaResultadoNombreJefe['NombrePersona'] . " " . $FilaResultadoNombreJefe['ApellidoPersona'];
+		// Secretario
+		$ResultadoVerNombreSecretario = $mysqli->query($ConsultaVerNombreSecretario);
+		$FilaResultadoNombreSecretario = $ResultadoVerNombreSecretario->fetch_assoc();
+		$NommbreSecretario = $FilaResultadoNombreSecretario['NombrePersona'] . " " . $FilaResultadoNombreSecretario['ApellidoPersona'];
+		// Tesorero
+		$ResultadoVerNombreTesorero = $mysqli->query($ConsultaVerNombreTesorero);
+		$FilaResultadoNombreTesorero = $ResultadoVerNombreTesorero->fetch_assoc();
+		$NommbreTesorero = $FilaResultadoNombreTesorero['NombrePersona'] . " " . $FilaResultadoNombreTesorero['ApellidoPersona'];
+		
+		$mpdf -> WriteHTML('
+							<br>
+							<br>
+							<br>
+							<br>
+							<br>
+							<table class="table">
+								<tbody>
+									<tr>
+										<td>
+												f:________________________________
+											<br>
+													'.$NommbreDirector.'
+											<br>
+														Director de Cía.
+											<br>
+											<br>
+											<br>
+											<br>
+											<br>
+											<br>
+											<br>
+										</td>
+										<td>
+												f:________________________________
+											<br>
+													'.$NommbreJefe.'
+											<br>
+														Jefe de Cía.
+											<br>
+											<br>
+											<br>
+											<br>
+											<br>
+											<br>
+											<br>
+										</td>
+									</tr>
+									<tr>
+										<td>
+												f:________________________________
+											<br>
+													'.$NommbreSecretario.'
+											<br>
+														Secretario de Cía.
+										</td>
+										<td>
+												f:________________________________
+											<br>
+													'.$NommbreTesorero.'
+											<br>
+														Tesorero de Cía.
+										</td>
+									</tr>
+								</tbody>
+							</table>');
+	}else{
+		$mpdf -> WriteHTML('
+							<br>
+							<br>
+							<br>
+							<br>
+							<br>
+							<table class="table">
+								<tbody>
+									<tr>
+										<td>
+												f:________________________________
+											<br>
+														Director de Cía.
+											<br>
+											<br>
+											<br>
+											<br>
+											<br>
+											<br>
+											<br>
+										</td>
+										<td>
+												f:________________________________
+											<br>
+														Jefe de Cía.
+											<br>
+											<br>
+											<br>
+											<br>
+											<br>
+											<br>
+											<br>
+										</td>
+									</tr>
+									<tr>
+										<td>
+												f:________________________________
+											<br>
+														Secretario de Cía.
+										</td>
+										<td>
+												f:________________________________
+											<br>
+														Tesorero de Cía.
+										</td>
+									</tr>
+								</tbody>
+							</table>');
+	}
 
 	$mpdf -> Output('ReporteInventarioFisico.pdf','I');
 	exit;
