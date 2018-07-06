@@ -186,6 +186,7 @@
 								<h4 class="text-center">Universidad Mariano Gálvez</h4>
 								<h4 class="text-center">Morales Izabal</h4>
 								<h4 class="text-center">Copyright &copy; 2018 &middot; All Rights Reserved<h4>
+								<h5 class="text-center"><a href="Documentos/Manual.pdf" target="_blank">Manual de usuario</a><h5>
 								<h5 class="text-center"><a href="https://www.umg.edu.gt/" >Gemis Daniel Guevara Villeda &middot; Gustavo Rodolfo Arriaza</a><h5>
 							</div>
 						</form>
