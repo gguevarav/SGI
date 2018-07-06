@@ -230,7 +230,7 @@
 										<div class="col-xs-10 col-xs-offset-1">
 											<div class="input-group input-group-lg">
 												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-ok"></i></span>
-												<input type="number" class="form-control" name="Modelo" placeholder="Modelo" id="Modelo" aria-describedby="sizing-addon1">
+												<input type="text" class="form-control" name="Modelo" placeholder="Modelo" id="Modelo" aria-describedby="sizing-addon1">
 											</div>
 										</div>
 									</div>

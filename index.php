@@ -143,7 +143,7 @@
 								<?php
 									}
 									?>
-									<li><a href="#">Ver inventario</a></li>
+									<li><a href="Inventario.php">Ver inventario</a></li>
 								</ul>
 							</li>
 							<?php

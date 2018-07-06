@@ -183,26 +183,17 @@
 											<div class="input-group input-group-lg">
 												<span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-asterisk"></i></span>
 												<select class="form-control" name="Producto" id="Producto">
-												<option value="" disabled selected>Producto   -   Cantidad disponible</option>
+												<option value="" disabled selected>Producto</option>
 													<!-- Acá mostraremos los puestos que existen en la base de datos -->
 													<?php							
-														$VerProductos = "SELECT * FROM inventario;";
+														$VerProductos = "SELECT idProducto, NombreProducto FROM producto WHERE EstadoProducto='Habilitado';";
 														// Hacemos la consulta
 														$resultado = $mysqli->query($VerProductos);	
 														while ($row = mysqli_fetch_array($resultado)){
-															// Guardamos el id del Producto en una variable para su uso
-															$idProducto = $row['idProducto'];
-															// Hacemos la otra consulta para mostrar el nombre que tiene cada producto
-															$VerProducto = "SELECT NombreProducto FROM producto WHERE idProducto =".$idProducto.";";
-															$ResultadoVerProducto = $mysqli->query($VerProducto);			
-															$FilaResultante = mysqli_fetch_array($ResultadoVerProducto);
-															$NombreProducto = $FilaResultante['NombreProducto'];
-															$CantidadInventario = $row['CantidadInventario'];
-															if($CantidadInventario != 0){
+															// Guardamos el id del Producto en una variable para su uso	
 																?>
-																<option value="<?php echo $idProducto ?>"><?php echo $NombreProducto. "   -   " . $row['CantidadInventario'] ?></option>
+																<option value="<?php echo $row['idProducto'] ?>"><?php echo $row['NombreProducto'] ?></option>
 													<?php
-																}
 															}
 													?>
 												</select>

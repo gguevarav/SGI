@@ -415,7 +415,7 @@
 											</div>
 											<div class="form-group input-group">
 												<span class="input-group-addon" style="width:150px;">Modelo</span>
-												<input type="number" style="width:350px;" class="form-control" name="ModeloProducto" id="ModeloProducto">
+												<input type="text" style="width:350px;" class="form-control" name="ModeloProducto" id="ModeloProducto">
 											</div>
 											<div class="form-group input-group">
 												<span class="input-group-addon" style="width:150px;">Línea</span>
